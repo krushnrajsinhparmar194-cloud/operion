@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operion Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #04060e;
+      --card: rgba(255, 255, 255, 0.04);
+      --accent: #4da8ff;
+      --text: #f6f8ff;
+      --muted: #9badcf;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, rgba(77,168,255,.25), transparent 60%), var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      color: var(--text);
+    }
+    .shell {
+      width: min(900px, 100%);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 0;
+      border-radius: 1.8rem;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 40px 90px rgba(0,0,0,0.45);
+    }
+    .panel {
+      padding: 2.5rem;
+      background: var(--card);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hero {
+      padding: 2.5rem;
+      background: linear-gradient(160deg, rgba(77,168,255,0.35), rgba(124,107,255,0.35));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: var(--text);
+    }
+    .hero img {
+      width: 140px;
+      margin-bottom: 1.2rem;
+    }
+    .hero h2 {
+      font-size: 2.1rem;
+      margin: 0.3rem 0 1rem;
+    }
+    h1 { margin: 0 0 1.5rem; font-size: 1.9rem; }
+    label { font-size: 0.75rem; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; }
+    input {
+      width: 100%;
+      margin-top: 0.3rem;
+      margin-bottom: 1.2rem;
+      padding: 0.9rem 1rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+    }
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 1rem;
+      padding: 0.95rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #4da8ff, #7c6bff);
+      color: #05101f;
+      cursor: pointer;
+    }
+    .alt {
+      margin-top: 1.2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 720px) {
+      body { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="hero">
+      <img src="https://operion-preview.vercel.app/op-logo.png" alt="Operion logo" onerror="this.style.display='none'" />
+      <p class="label">Welcome to Operion</p>
+      <h2>Command every agent from one console.</h2>
+      <p>Spin up backend, frontend, design, QA and ops specialists with live telemetry.</p>
+    </div>
+    <div class="panel">
+      <h1>Sign in</h1>
+      <form>
+        <label>Email</label>
+        <input type="email" placeholder="you@operion.ai" />
+        <label>Password</label>
+        <input type="password" placeholder="••••••••" />
+        <button type="button">Login</button>
+      </form>
+      <p class="alt">No account? <a href="/signup.html">Create one</a></p>
+    </div>
+  </div>
+</body>
+</html>

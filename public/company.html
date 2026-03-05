@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operion · Workspace Setup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #04060e;
+      --card: rgba(255, 255, 255, 0.04);
+      --accent: #4da8ff;
+      --text: #f6f8ff;
+      --muted: #9badcf;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, rgba(77,168,255,.25), transparent 60%), var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      color: var(--text);
+    }
+    .wrap {
+      width: min(620px, 100%);
+      border-radius: 1.8rem;
+      padding: 2.5rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: var(--card);
+      box-shadow: 0 40px 120px rgba(0,0,0,0.45);
+    }
+    h1 { margin: 0 0 0.5rem; }
+    p { margin: 0 0 1.6rem; color: var(--muted); }
+    label { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    input {
+      width: 100%;
+      margin-top: 0.4rem;
+      margin-bottom: 1.4rem;
+      padding: 0.95rem 1.2rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 1rem;
+      padding: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #4da8ff, #7c6bff);
+      color: #041021;
+      cursor: pointer;
+    }
+    .hint { margin-top: 0.8rem; font-size: 0.9rem; color: var(--muted); text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="label" style="letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Step 2</p>
+    <h1>Name your workspace</h1>
+    <p>This label appears on dashboards, invoices, and agent invitations. You can change it later.</p>
+    <form id="companyForm">
+      <label>Company / workspace name</label>
+      <input type="text" placeholder="Operion Labs" required />
+      <label>Workspace URL (optional)</label>
+      <input type="text" placeholder="operion" />
+      <button type="submit">Continue</button>
+    </form>
+    <p class="hint">Next: invite teammates & allocate credits.</p>
+  </div>
+  <script>
+    document.getElementById('companyForm').addEventListener('submit', e => {
+      e.preventDefault();
+      alert('Workspace saved (placeholder).');
+    });
+  </script>
+</body>
+</html>
