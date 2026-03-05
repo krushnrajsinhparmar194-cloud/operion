@@ -104,7 +104,8 @@
     </div>
     <div class="panel">
       <h1>Create account</h1>
-      <form>
+      <div class="nav"><a href="/" class="link">← Home</a></div>
+      <form id="signupForm">
         <label>Full Name</label>
         <input type="text" placeholder="Krushnaraj Parmar" />
         <label>Email</label>
@@ -113,7 +114,22 @@
         <input type="password" placeholder="Create a strong password" />
         <label>Confirm Password</label>
         <input type="password" placeholder="Repeat your password" />
-        <button type="button" onclick="window.location.href='/company.html'">Sign Up</button>
+        <div class="alert" id="passwordAlert" style="display:none;">Passwords do not match.</div>
+        <button type="button" onclick="submitSignup()">Sign Up</button>
+        <script>
+          function submitSignup() {
+            const pass = document.querySelector('input[type=password]').value;
+            const confirm = document.querySelectorAll('input[type=password]')[1].value;
+            const alertBox = document.getElementById('passwordAlert');
+            if (pass !== confirm) {
+              alertBox.style.display = 'block';
+              alertBox.style.color = '#ff8b8b';
+              return;
+            }
+            alertBox.style.display = 'none';
+            window.location.href = '/company.html';
+          }
+        </script>
       </form>
       <p class="alt">Already have an account? <a href="/login.html">Log in</a></p>
     </div>
