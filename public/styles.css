@@ -1,6 +1,8 @@
 :root {
   font-family: 'Inter', system-ui, sans-serif;
   --bg: #03040c;
+  --layer1: rgba(77, 168, 255, 0.25);
+  --layer2: rgba(124, 107, 255, 0.18);
   --text: #f8fbff;
   --muted: #a6b5d6;
 }
@@ -11,9 +13,28 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top, rgba(77, 168, 255, 0.2), transparent 60%), var(--bg);
   color: var(--text);
   padding: 2rem;
+  background: var(--bg);
+}
+body::before, body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: radial-gradient(circle at 30% 20%, var(--layer1), transparent 55%),
+              radial-gradient(circle at 70% 80%, var(--layer2), transparent 55%);
+  animation: drift 18s ease-in-out infinite alternate;
+}
+body::after {
+  z-index: -3;
+  filter: blur(60px);
+  opacity: 0.7;
+  animation-duration: 24s;
+}
+@keyframes drift {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-30px) scale(1.05); }
 }
 .hero {
   text-align: center;

@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #03040c;
+  color: #f8fbff;
+  font-family: 'Inter', system-ui, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+body::before, body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 20% 20%, rgba(77,168,255,0.18), transparent 55%),
+              radial-gradient(circle at 80% 70%, rgba(124,107,255,0.15), transparent 55%);
+  animation: nebula 22s ease-in-out infinite alternate;
+}
+body::after { filter: blur(70px); opacity: 0.6; animation-duration: 30s; }
+@keyframes nebula {
+  from { transform: translate3d(0,0,0) scale(1); }
+  to { transform: translate3d(-25px,-30px,0) scale(1.04); }
+}
