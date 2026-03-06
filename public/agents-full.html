@@ -36,8 +36,9 @@
   <a href="/dashboard.html" class="nav-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Back</span></a>
   <div class="wrap">
     <h1>All agents</h1>
-    <div class="list" id="agentGrid" data-link="/agent-detail.html"></div>Loading…</div>
+    <div class="list" id="agentGrid" data-link="/agent-detail.html"></div>
   </div>
+  <a href="/agent-live-chat.html" class="chat-cta">Agent's live chat</a>
   <script>
     const preset = JSON.parse(sessionStorage.getItem('operionAgents') || '[]');
     const commons = JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]');

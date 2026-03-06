@@ -95,7 +95,7 @@
     const name = params.get('name') || 'Agent';
     const lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
 
-    document.getElementById('agentName').textContent = name;
+    document.getElementById('agentName').textContent = `${name}`;
     document.getElementById('agentDescription').textContent = descriptions[name] || 'This agent is standing by to support your team.';
     const status = Math.random() > 0.5 ? 'free' : 'busy';
     document.getElementById('agentMeta').innerHTML = `<span class="pill ${status}">${status === 'free' ? 'Free now' : 'Busy'}</span><span>Reports to: ${lead.name || 'Command agent'}</span>`;

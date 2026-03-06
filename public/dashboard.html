@@ -34,6 +34,9 @@
     header { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
     header h1 { margin: 0; font-size: 1.9rem; }
     header .muted { margin: 0; color: var(--muted); }
+    .profile-chip { display: flex; align-items: center; gap: 0.8rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; padding: 0.6rem 1rem; background: rgba(255,255,255,0.05); }
+    .profile-btn { border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; padding: 0.35rem 0.9rem; text-decoration: none; color: var(--text); background: rgba(124,107,255,0.2); font-size: 0.85rem; }
+    .profile-chip .avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
     .summaries { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
     .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
     .card { border-radius: 1.35rem; border: 1px solid rgba(255,255,255,0.08); background: var(--card); padding: 1.4rem; }
@@ -64,13 +67,14 @@
       <p class="muted" id="dashboardGreeting">Welcome back</p>
       <h1 id="companyTitle">Operion Control Center</h1>
     </div>
+    <a href="/profile.html" class="profile-chip">
+      <div class="avatar">👤</div>
+      <div>
+        <strong id="profileName">User</strong>
+        <p class="muted" id="profileRole">Command operator</p>
+      </div>
+    </div></a>
   </header>
-  <section class="summaries">
-    <div class="card"><h3>Company</h3><p id="companySummary"></p></div>
-    <div class="card"><h3>Lead agent</h3><p id="leadSummary"></p></div>
-    <div class="card"><h3>Languages</h3><p id="languageSummary"></p></div>
-    <div class="card"><h3>Your profile</h3><p id="userSummary"></p></div>
-  </section>
   <section class="panel-row">
     <div class="card">
       <h3>Agents selected</h3>
@@ -94,6 +98,8 @@
     const langs = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
     const user = JSON.parse(sessionStorage.getItem('operionUserDetails') || '{}');
     const userName = sessionStorage.getItem('operionUserName') || '';
+    document.getElementById('profileName').textContent = userName || 'Operator';
+    document.getElementById('profileRole').textContent = user.occupation || 'Ops lead';
     const company = sessionStorage.getItem('operionCompanyName') || 'Operion workspace';
     const preset = JSON.parse(sessionStorage.getItem('operionAgents') || '[]');
     const commons = JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]');
@@ -112,7 +118,6 @@
 
     document.getElementById('dashboardGreeting').textContent = `Hi ${userName || 'operator'}, ${lead.name || 'your command agent'} is online.`;
     document.getElementById('companyTitle').textContent = company;
-    document.getElementById('companySummary').textContent = company;
     document.getElementById('leadSummary').textContent = lead.name || '—';
     document.getElementById('languageSummary').textContent = langs.length ? langs.join(', ') : 'No languages set yet';
     document.getElementById('userSummary').textContent = `Age ${user.age || '—'} · Fav color ${user.favoriteColor || '—'} · Fav place ${user.favoritePlace || '—'} · Role ${user.occupation || '—'}`;
