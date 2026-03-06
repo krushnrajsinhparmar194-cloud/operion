@@ -21,20 +21,60 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: transparent;
+      background: radial-gradient(circle at 20% 20%, rgba(124, 107, 255, 0.25), transparent 55%),
+                  radial-gradient(circle at 80% 10%, rgba(77, 168, 255, 0.22), transparent 50%),
+                  var(--bg);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
+      padding: 3rem 2rem 2rem;
       color: var(--text);
+      position: relative;
+      overflow: hidden;
     }
     .wrap {
-      width: min(620px, 100%);
-      border-radius: 1.8rem;
-      padding: 2.5rem;
+      width: min(660px, 100%);
+      border-radius: 2rem;
+      padding: 2.8rem;
       border: 1px solid rgba(255,255,255,0.08);
-      background: var(--card);
+      background: rgba(6, 11, 22, 0.72);
       box-shadow: 0 40px 120px rgba(0,0,0,0.45);
+      backdrop-filter: blur(30px);
+    }
+
+    .nav-top {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(4, 6, 14, 0.72);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+    .nav-top .link {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .nav-top .icon {
+      width: 1.1rem;
+      height: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-top .icon svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--text);
     }
     h1 { margin: 0 0 0.5rem; }
     p { margin: 0 0 1.6rem; color: var(--muted); }
@@ -67,15 +107,16 @@
   <link rel="stylesheet" href="/auth.css" />
 </head>
 <body>
+  <div class="nav-top"><a href="/signup.html" class="link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Back</a></div>
   <div class="wrap">
     <p class="label" style="letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Step 2</p>
     <h1>Name your workspace</h1>
     <p>This label appears on dashboards, invoices, and agent invitations. You can change it later.</p>
-    <form id="companyForm">
+        <form id="companyForm">
       <label>Company / workspace name</label>
       <input type="text" placeholder="Operion Labs" required />
-      <label>Workspace URL (optional)</label>
-      <input type="text" placeholder="operion" />
+      <label>Submit your URL (optional)</label>
+      <input type="text" placeholder="https://" />
       <button type="submit">Continue</button>
     </form>
     <p class="hint">Next: invite teammates & allocate credits.</p>
@@ -83,7 +124,9 @@
   <script>
     document.getElementById('companyForm').addEventListener('submit', e => {
       e.preventDefault();
-      alert('Workspace saved (placeholder).');
+      const name = e.target.querySelector('input[type="text"]').value.trim();
+      sessionStorage.setItem('operionCompanyName', name || 'Your company');
+      window.location.href = '/industry.html';
     });
   </script>
 </body>

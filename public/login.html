@@ -21,22 +21,53 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: transparent;
+      background: radial-gradient(circle at 20% 20%, rgba(124, 107, 255, 0.25), transparent 55%),
+                  radial-gradient(circle at 80% 10%, rgba(77, 168, 255, 0.22), transparent 50%),
+                  var(--bg);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
+      padding: 3rem 2rem 2rem;
       color: var(--text);
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-top {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(4, 6, 14, 0.72);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+    .nav-top .link {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .nav-top .link::before {
+      content: '←';
+      font-size: 1rem;
     }
     .shell {
-      width: min(900px, 100%);
+      width: min(980px, 100%);
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 0;
-      border-radius: 1.8rem;
+      border-radius: 2rem;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.08);
       box-shadow: 0 40px 90px rgba(0,0,0,0.45);
+      background: rgba(6, 11, 22, 0.6);
+      backdrop-filter: blur(28px);
     }
     .panel {
       padding: 2.5rem;
@@ -53,14 +84,8 @@
       justify-content: center;
       color: var(--text);
     }
-    .hero img {
-      width: 140px;
-      margin-bottom: 1.2rem;
-    }
-    .hero h2 {
-      font-size: 2.1rem;
-      margin: 0.3rem 0 1rem;
-    }
+    .hero img { width: 140px; margin-bottom: 1.2rem; }
+    .hero h2 { font-size: 2.1rem; margin: 0.3rem 0 1rem; }
     h1 { margin: 0 0 1.5rem; font-size: 1.9rem; }
     label { font-size: 0.75rem; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; }
     input {
@@ -86,20 +111,14 @@
       color: #05101f;
       cursor: pointer;
     }
-    .alt {
-      margin-top: 1.2rem;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
+    .alt { margin-top: 1.2rem; text-align: center; color: var(--muted); font-size: 0.9rem; }
     a { color: var(--accent); text-decoration: none; }
-    @media (max-width: 720px) {
-      body { padding: 1rem; }
-    }
+    @media (max-width: 720px) { body { padding: 1rem; } }
   </style>
   <link rel="stylesheet" href="/auth.css" />
 </head>
 <body>
+  <div class="nav-top"><a href="/" class="link">Back</a></div>
   <div class="shell">
     <div class="hero">
       <img src="https://operion-preview.vercel.app/op-logo.png" alt="Operion logo" onerror="this.style.display='none'" />
@@ -109,7 +128,6 @@
     </div>
     <div class="panel">
       <h1>Sign in</h1>
-      <div class="nav"><a href="/" class="link">← Home</a></div>
       <form>
         <label>Email</label>
         <input type="email" placeholder="you@operion.ai" />

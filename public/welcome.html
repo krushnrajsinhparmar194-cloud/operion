@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operion · Welcome Aboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #04060e;
+      --text: #f6f8ff;
+      --muted: #9badcf;
+      --accent: #7c6bff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, rgba(124, 107, 255, 0.25), transparent 55%),
+                  radial-gradient(circle at 80% 10%, rgba(77, 168, 255, 0.22), transparent 50%),
+                  var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+      color: var(--text);
+      text-align: center;
+    }
+    .card {
+      width: min(700px, 100%);
+      border-radius: 2rem;
+      padding: 3rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(5, 9, 20, 0.85);
+      box-shadow: 0 30px 100px rgba(0,0,0,0.5);
+      backdrop-filter: blur(34px);
+    }
+    h1 { margin: 0 0 0.6rem; font-size: 2rem; }
+    p { margin: 0 0 1.4rem; color: var(--muted); font-size: 1.05rem; }
+    .primary { margin-top: 2rem; border: none; border-radius: 1rem; padding: 1rem 1.6rem; font-weight: 600; text-transform: uppercase; background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 id="welcomeTitle">Welcome!</h1>
+    <p id="welcomeText">Your command agent is ready to orchestrate your ops.</p>
+    <button class="primary" id="goDashboard">Enter dashboard</button>
+  </div>
+  <script>
+    const lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
+    const userName = sessionStorage.getItem('operionUserName') || '';
+    const title = document.getElementById('welcomeTitle');
+    const text = document.getElementById('welcomeText');
+
+    const agentName = lead.name || 'your command agent';
+    title.textContent = `Welcome aboard, ${userName || 'operator'}!`;
+    text.textContent = `${agentName} is all set. Let’s sync everything up on your dashboard.`;
+
+    document.getElementById('goDashboard').addEventListener('click', () => {
+      window.location.href = '/dashboard.html';
+    });
+  </script>
+</body>
+</html>

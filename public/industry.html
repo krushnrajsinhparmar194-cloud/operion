@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operion · Select Industry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #04060e;
+      --card: rgba(255, 255, 255, 0.04);
+      --accent: #7c6bff;
+      --text: #f6f8ff;
+      --muted: #9badcf;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, rgba(124, 107, 255, 0.25), transparent 55%),
+                  radial-gradient(circle at 80% 10%, rgba(77, 168, 255, 0.22), transparent 50%),
+                  var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem 2rem;
+      color: var(--text);
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-top {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(4, 6, 14, 0.72);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+    .nav-top .link {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .nav-top .icon {
+      width: 1.1rem;
+      height: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-top .icon svg {
+      width: 100%;
+      height: 100%;
+    }
+    .wrap {
+      width: min(700px, 100%);
+      border-radius: 2rem;
+      padding: 3rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(6, 11, 22, 0.72);
+      box-shadow: 0 40px 120px rgba(0,0,0,0.45);
+      backdrop-filter: blur(30px);
+    }
+    h1 { margin: 0 0 0.5rem; }
+    p { margin: 0 0 1.6rem; color: var(--muted); }
+    label { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    select {
+      width: 100%;
+      margin-top: 0.6rem;
+      margin-bottom: 1.4rem;
+      padding: 1rem 1.2rem;
+      border-radius: 1.1rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      font-size: 1rem;
+      min-height: 220px;
+    }
+    option { color: #02060f; }
+    .dropdown {
+      position: relative;
+      margin-bottom: 1.6rem;
+    }
+    .dropdown-head {
+      width: 100%;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      padding: 0.95rem 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .dropdown-head svg {
+      width: 1rem;
+      height: 1rem;
+      transition: transform 0.2s ease;
+    }
+    .dropdown-list {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 0;
+      width: 100%;
+      border-radius: 1.2rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(6, 11, 22, 0.95);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.45);
+      padding: 0.4rem;
+      display: none;
+      max-height: 260px;
+      overflow-y: auto;
+      z-index: 10;
+    }
+    .dropdown-list button {
+      width: 100%;
+      text-align: left;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      padding: 0.75rem 0.9rem;
+      border-radius: 0.9rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .dropdown-list button:hover {
+      background: rgba(124,107,255,0.16);
+    }
+    .dropdown.open .dropdown-list {
+      display: block;
+    }
+    .dropdown.open .dropdown-head svg {
+      transform: rotate(180deg);
+    }
+    button.primary {
+      width: 100%;
+      border: none;
+      border-radius: 1rem;
+      padding: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #4da8ff, #7c6bff);
+      color: #041021;
+      cursor: pointer;
+    }
+  </style>
+  <link rel="stylesheet" href="/auth.css" />
+</head>
+<body>
+  <div class="nav-top"><a href="/company.html" class="link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Back</a></div>
+  <div class="wrap">
+    <p class="label" style="letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Step 3</p>
+    <h1>Select your industry</h1>
+    <p>We tailor starter playbooks and agent packs based on your domain. Choose the closest fit below.</p>
+    <label>Industries</label>
+    <div class="dropdown" id="industryDropdown">
+      <button class="dropdown-head" type="button" aria-haspopup="listbox" aria-expanded="false">
+        <span id="selectedIndustry">Select an industry</span>
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 7l5 6 5-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="dropdown-list" role="listbox" tabindex="-1">
+        <button type="button" role="option">Software & SaaS</button>
+        <button type="button" role="option">Fintech / Banking</button>
+        <button type="button" role="option">E-commerce & Retail</button>
+        <button type="button" role="option">Logistics & Supply Chain</button>
+        <button type="button" role="option">Healthcare & Life Sciences</button>
+        <button type="button" role="option">Manufacturing</button>
+        <button type="button" role="option">Media & Entertainment</button>
+        <button type="button" role="option">Education / EdTech</button>
+        <button type="button" role="option">Marketing & Advertising</button>
+        <button type="button" role="option">Real Estate</button>
+        <button type="button" role="option">Energy & Utilities</button>
+        <button type="button" role="option">Travel & Hospitality</button>
+        <button type="button" role="option">Telecommunications</button>
+        <button type="button" role="option">Government / Public Sector</button>
+        <button type="button" role="option">Non-profit / Social Impact</button>
+        <button type="button" role="option">Other</button>
+      </div>
+    </div>
+    <button type="button" id="industryContinue" class="primary">Continue</button>
+  </div>
+  <script>
+    const dropdown = document.getElementById('industryDropdown');
+    const head = dropdown.querySelector('.dropdown-head');
+    const list = dropdown.querySelector('.dropdown-list');
+    const options = Array.from(list.querySelectorAll('button'));
+    const selectedLabel = document.getElementById('selectedIndustry');
+    let selectedValue = sessionStorage.getItem('operionIndustry') || '';
+
+    if (selectedValue) {
+      selectedLabel.textContent = selectedValue;
+    }
+
+    function closeDropdown() {
+      dropdown.classList.remove('open');
+      head.setAttribute('aria-expanded', 'false');
+    }
+
+    head.addEventListener('click', () => {
+      const willOpen = !dropdown.classList.contains('open');
+      dropdown.classList.toggle('open');
+      head.setAttribute('aria-expanded', String(willOpen));
+      if (willOpen) {
+        list.focus({ preventScroll: true });
+      }
+    });
+
+    options.forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedValue = btn.textContent.trim();
+        selectedLabel.textContent = selectedValue;
+        sessionStorage.setItem('operionIndustry', selectedValue);
+        closeDropdown();
+      });
+    });
+
+    document.addEventListener('click', evt => {
+      if (!dropdown.contains(evt.target)) {
+        closeDropdown();
+      }
+    });
+
+    document.getElementById('industryContinue').addEventListener('click', () => {
+      const value = selectedValue || options[0].textContent.trim();
+      sessionStorage.setItem('operionIndustry', value);
+      window.location.href = '/agents.html';
+    });
+  </script>
+</body>
+</html>

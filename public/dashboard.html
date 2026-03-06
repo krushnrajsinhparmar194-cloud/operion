@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operion · Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #04060f;
+      --card: rgba(255,255,255,0.03);
+      --card-strong: rgba(255,255,255,0.06);
+      --text: #eef2ff;
+      --muted: #9badcf;
+      --accent: #7c6bff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 15% 20%, rgba(124,107,255,0.35), transparent 60%),
+                  radial-gradient(circle at 85% 5%, rgba(71,169,255,0.3), transparent 55%),
+                  linear-gradient(180deg, #03050b, #04060f);
+      color: var(--text);
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    header { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
+    header h1 { margin: 0; font-size: 1.9rem; }
+    header .muted { margin: 0; color: var(--muted); }
+    .summaries { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+    .card { border-radius: 1.35rem; border: 1px solid rgba(255,255,255,0.08); background: var(--card); padding: 1.4rem; }
+    .card h3 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .card p { margin: 0; }
+    .panel-row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 1rem; }
+    .agent-list { max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.8rem; }
+    .see-all { margin-top: 1rem; text-align: right; }
+    .see-all a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .agent-pill { border-radius: 1rem; border: 1px solid rgba(255,255,255,0.12); padding: 0.9rem 1rem; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.04); }
+    .work-list { display: flex; flex-direction: column; gap: 0.9rem; max-height: 320px; overflow-y: auto; }
+    .work-item { border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 0.9rem; background: rgba(255,255,255,0.03); }
+    .chat { border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.1); background: var(--card-strong); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .chat-log { min-height: 120px; max-height: 220px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .chat-entry { display: flex; flex-direction: column; gap: 0.25rem; }
+    .chat-entry span { font-size: 0.85rem; color: var(--muted); }
+    .chat form { display: flex; gap: 0.8rem; }
+    .chat input { flex: 1; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: var(--text); padding: 0.85rem 1rem; }
+    .chat button { border: none; border-radius: 1rem; padding: 0.9rem 1.3rem; background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; font-weight: 600; cursor: pointer; }
+    @media (max-width: 960px) {
+      .panel-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <p class="muted" id="dashboardGreeting">Welcome back</p>
+      <h1 id="companyTitle">Operion Control Center</h1>
+    </div>
+  </header>
+  <section class="summaries">
+    <div class="card"><h3>Company</h3><p id="companySummary"></p></div>
+    <div class="card"><h3>Lead agent</h3><p id="leadSummary"></p></div>
+    <div class="card"><h3>Languages</h3><p id="languageSummary"></p></div>
+    <div class="card"><h3>Your profile</h3><p id="userSummary"></p></div>
+  </section>
+  <section class="panel-row">
+    <div class="card">
+      <h3>Agents selected</h3>
+      <div class="agent-list" id="agentList">Loading…</div>
+      <div class="see-all"><a href="/agents-full.html">See all</a></div>
+    </div>
+    <div class="card">
+      <h3>Work board</h3>
+      <div class="work-list" id="workList">Preparing tasks…</div>
+    </div>
+  </section>
+  <section class="chat">
+    <div class="chat-log" id="chatLog"></div>
+    <form id="chatForm">
+      <input type="text" id="chatInput" placeholder="Ask your agent anything…" />
+      <button type="submit">Send</button>
+    </form>
+  </section>
+  <script>
+    const lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
+    const langs = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
+    const user = JSON.parse(sessionStorage.getItem('operionUserDetails') || '{}');
+    const userName = sessionStorage.getItem('operionUserName') || '';
+    const company = sessionStorage.getItem('operionCompanyName') || 'Operion workspace';
+    const preset = JSON.parse(sessionStorage.getItem('operionAgents') || '[]');
+    const commons = JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]');
+    const customs = JSON.parse(sessionStorage.getItem('operionCustomAgents') || '[]');
+
+    const selectedAgents = Array.from(new Set([
+      ...preset,
+      ...commons,
+      ...customs.map(c => c.name)
+    ].filter(Boolean)));
+
+    const agentWork = selectedAgents.map((name, idx) => ({
+      name,
+      work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}`
+    }));
+
+    document.getElementById('dashboardGreeting').textContent = `Hi ${userName || 'operator'}, ${lead.name || 'your command agent'} is online.`;
+    document.getElementById('companyTitle').textContent = company;
+    document.getElementById('companySummary').textContent = company;
+    document.getElementById('leadSummary').textContent = lead.name || '—';
+    document.getElementById('languageSummary').textContent = langs.length ? langs.join(', ') : 'No languages set yet';
+    document.getElementById('userSummary').textContent = `Age ${user.age || '—'} · Fav color ${user.favoriteColor || '—'} · Fav place ${user.favoritePlace || '—'} · Role ${user.occupation || '—'}`;
+
+    const agentListEl = document.getElementById('agentList');
+    const limitedAgents = selectedAgents.slice(0, 6);
+    agentListEl.innerHTML = limitedAgents.length ? limitedAgents.map(name => `
+      <div class="agent-pill">
+        <strong>${name}</strong>
+        <span>${lead.name || 'Command'} ready</span>
+      </div>
+    `).join('') : 'No agents selected.';
+
+    const workListEl = document.getElementById('workList');
+    workListEl.innerHTML = agentWork.length ? agentWork.map(item => `
+      <div class="work-item">
+        <strong>${item.name}</strong>
+        <p>${item.work}</p>
+      </div>
+    `).join('') : '<p>No agent work queued yet.</p>';
+
+    const chatLog = document.getElementById('chatLog');
+    function addMessage(from, text) {
+      const block = document.createElement('div');
+      block.className = 'chat-entry';
+      block.innerHTML = `<span>${from}</span><p>${text}</p>`;
+      chatLog.appendChild(block);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+    addMessage(lead.name || "Command agent", "Welcome to your dashboard. Ask me to run a playbook or summarize today's work.");
+
+    document.getElementById('chatForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      if (!message) return;
+      addMessage(userName || 'You', message);
+      setTimeout(() => addMessage(lead.name || 'Command agent', "Got it! I'll queue that up."), 600);
+      input.value = '';
+    });
+  </script></script>
+</body>
+</html>

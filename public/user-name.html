@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operion · Add Your Name</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #04060e;
+      --text: #f6f8ff;
+      --muted: #9badcf;
+      --accent: #7c6bff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, rgba(124, 107, 255, 0.25), transparent 55%),
+                  radial-gradient(circle at 80% 10%, rgba(77, 168, 255, 0.22), transparent 50%),
+                  var(--bg);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 4rem 2rem 3rem;
+      color: var(--text);
+    }
+    .nav-top { z-index: 50; position: fixed; top: 1.5rem; left: 1.5rem; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); background: rgba(4, 6, 14, 0.8); color: var(--text); text-decoration: none; font-weight: 500; }
+    .nav-top .icon { width: 1.1rem; height: 1.1rem; display: inline-flex; align-items: center; justify-content: center; }
+    .nav-top .icon svg { width: 100%; height: 100%; }
+    .wrap { width: min(700px, 100%); border-radius: 2rem; border: 1px solid rgba(255,255,255,0.08); padding: 2.5rem; background: rgba(5, 9, 20, 0.82); box-shadow: 0 40px 120px rgba(0,0,0,0.45); backdrop-filter: blur(30px); }
+    h1 { margin: 0 0 0.4rem; }
+    p { margin: 0 0 1.4rem; color: var(--muted); }
+    label { display: block; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+    input { width: 100%; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.03); color: var(--text); padding: 0.95rem 1.1rem; font-size: 1rem; }
+    button { width: 100%; border: none; border-radius: 1rem; padding: 1rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; cursor: pointer; margin-top: 1.5rem; }
+    .note { margin-top: 1rem; color: var(--muted); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <a href="/language.html" class="nav-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Back</span></a>
+  <div class="wrap">
+    <h1>Add your name</h1>
+    <p>Let Operion know how to address you in dashboards and agent reports.</p>
+    <form id="userNameForm">
+      <label for="userName">Your name</label>
+      <input type="text" id="userName" placeholder="e.g. Krushnaraj Parmar" required />
+      <button type="submit">Save & finish</button>
+      <div class="note" id="status"></div>
+    </form>
+  </div>
+  <script>
+    const form = document.getElementById('userNameForm');
+    const status = document.getElementById('status');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('userName').value.trim();
+      if (!name) {
+        status.textContent = 'Please enter your name.';
+        return;
+      }
+      sessionStorage.setItem('operionUserName', name);
+      window.location.href = '/user-details.html';
+    });
+  </script>
+</body>
+</html>
