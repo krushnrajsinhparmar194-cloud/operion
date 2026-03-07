@@ -109,13 +109,13 @@
     let selectedAgents = Array.from(new Set([
       ...preset,
       ...commons,
-      ...customs.map(c => c.name)
+      ...customs.map(c => c?.name || c)
     ].filter(Boolean)));
 
     if (!selectedAgents.length && legacyCombined) {
       selectedAgents = Array.from(new Set([
         ...(legacyCombined.preset || []),
-        ...((legacyCombined.custom || []).map(c => c.name || c)),
+        ...((legacyCombined.custom || []).map(c => c?.name || c)),
         ...(legacyCombined.commons || [])
       ].filter(Boolean)));
     }
