@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operion · Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #030610;
+      --card: rgba(255,255,255,0.03);
+      --text: #eef2ff;
+      --muted: #9badcf;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 20% 10%, rgba(124,107,255,0.25), transparent 50%), var(--bg); color: var(--text); padding: 3rem 2rem; }
+    .nav-top { position: fixed; top: 1rem; left: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(4,6,14,0.85); color: var(--text); text-decoration: none; }
+    .nav-top .icon { width: 1.1rem; height: 1.1rem; display: inline-flex; align-items: center; justify-content: center; }
+    .wrap { max-width: 900px; margin: 0 auto; border: 1px solid rgba(255,255,255,0.08); border-radius: 2rem; background: var(--card); padding: 2.5rem; backdrop-filter: blur(30px); display: flex; flex-direction: column; gap: 1.5rem; }
+    h1 { margin: 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .card { border: 1px solid rgba(255,255,255,0.1); border-radius: 1.2rem; padding: 1rem; background: rgba(255,255,255,0.04); }
+  </style>
+</head>
+<body>
+  <a href="dashboard.html" class="nav-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Back</span></a>
+  <div class="wrap">
+    <h1 id="profileHeading">Profile</h1>
+    <div class="grid">
+      <div class="card"><strong>Full name</strong><p id="profileName">—</p></div>
+      <div class="card"><strong>Age</strong><p id="profileAge">—</p></div>
+      <div class="card"><strong>Favorite color</strong><p id="profileColor">—</p></div>
+      <div class="card"><strong>Favorite place</strong><p id="profilePlace">—</p></div>
+      <div class="card"><strong>Occupation</strong><p id="profileOccupation">—</p></div>
+      <div class="card"><strong>Languages</strong><p id="profileLanguages">—</p></div>
+    </div>
+  </div>
+  <script>
+    const user = JSON.parse(sessionStorage.getItem('operionUserDetails') || '{}');
+    const userName = sessionStorage.getItem('operionUserName') || '';
+    const languages = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
+    document.getElementById('profileHeading').textContent = userName || 'Profile';
+    document.getElementById('profileName').textContent = userName || '—';
+    document.getElementById('profileAge').textContent = user.age || '—';
+    document.getElementById('profileColor').textContent = user.favoriteColor || '—';
+    document.getElementById('profilePlace').textContent = user.favoritePlace || '—';
+    document.getElementById('profileOccupation').textContent = user.occupation || '—';
+    document.getElementById('profileLanguages').textContent = languages.length ? languages.join(', ') : '—';
+  </script>
+</body>
+</html>
