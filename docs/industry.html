@@ -161,10 +161,10 @@
       cursor: pointer;
     }
   </style>
-  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="/auth.css" />
 </head>
 <body>
-  <div class="nav-top"><a href="company.html" class="link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Back</a></div>
+  <div class="nav-top"><a href="/company.html" class="link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Back</a></div>
   <div class="wrap">
     <p class="label" style="letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Step 3</p>
     <h1>Select your industry</h1>
@@ -240,7 +240,7 @@
     document.getElementById('industryContinue').addEventListener('click', () => {
       const value = selectedValue || options[0].textContent.trim();
       sessionStorage.setItem('operionIndustry', value);
-      window.location.href = 'agents.html';
+      window.location.href = '/agents.html';
     });
   </script>
 </body>

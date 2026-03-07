@@ -104,10 +104,10 @@
     }
     .hint { margin-top: 0.8rem; font-size: 0.9rem; color: var(--muted); text-align: center; }
   </style>
-  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="/auth.css" />
 </head>
 <body>
-  <div class="nav-top"><a href="signup.html" class="link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Back</a></div>
+  <div class="nav-top"><a href="/signup.html" class="link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Back</a></div>
   <div class="wrap">
     <p class="label" style="letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Step 2</p>
     <h1>Name your workspace</h1>
@@ -126,7 +126,7 @@
       e.preventDefault();
       const name = e.target.querySelector('input[type="text"]').value.trim();
       sessionStorage.setItem('operionCompanyName', name || 'Your company');
-      window.location.href = 'industry.html';
+      window.location.href = '/industry.html';
     });
   </script>
 </body>
