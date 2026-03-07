@@ -1,2 +1,0 @@
-# Operion docs placeholder
-
