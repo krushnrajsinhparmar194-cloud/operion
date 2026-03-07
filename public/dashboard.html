@@ -125,11 +125,16 @@
       work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}`
     }));
 
-    document.getElementById('dashboardGreeting').textContent = `Hi ${userName || 'operator'}, ${lead.name || 'your command agent'} is online.`;
-    document.getElementById('companyTitle').textContent = company;
-    document.getElementById('leadSummary').textContent = lead.name || '—';
-    document.getElementById('languageSummary').textContent = langs.length ? langs.join(', ') : 'No languages set yet';
-    document.getElementById('userSummary').textContent = `Age ${user.age || '—'} · Fav color ${user.favoriteColor || '—'} · Fav place ${user.favoritePlace || '—'} · Role ${user.occupation || '—'}`;
+    const greetEl = document.getElementById('dashboardGreeting');
+    if (greetEl) greetEl.textContent = `Hi ${userName || 'operator'}, ${lead.name || 'your command agent'} is online.`;
+    const titleEl = document.getElementById('companyTitle');
+    if (titleEl) titleEl.textContent = company;
+    const leadEl = document.getElementById('leadSummary');
+    if (leadEl) leadEl.textContent = lead.name || '—';
+    const langEl = document.getElementById('languageSummary');
+    if (langEl) langEl.textContent = langs.length ? langs.join(', ') : 'No languages set yet';
+    const userEl = document.getElementById('userSummary');
+    if (userEl) userEl.textContent = `Age ${user.age || '—'} · Fav color ${user.favoriteColor || '—'} · Fav place ${user.favoritePlace || '—'} · Role ${user.occupation || '—'}`;
 
     const agentListEl = document.getElementById('agentList');
     const limitedAgents = selectedAgents.slice(0, 6);
