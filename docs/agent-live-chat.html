@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operion · Agent Live Chat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #030610;
+      --card: rgba(255,255,255,0.03);
+      --text: #eef2ff;
+      --muted: #9badcf;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 20% 10%, rgba(124,107,255,0.25), transparent 50%), var(--bg); color: var(--text); padding: 3rem 2rem; }
+    .nav-top { position: fixed; top: 1rem; left: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(4,6,14,0.85); color: var(--text); text-decoration: none; }
+    .nav-top .icon { width: 1.1rem; height: 1.1rem; display: inline-flex; align-items: center; justify-content: center; }
+    .nav-top .icon { width: 1.1rem; height: 1.1rem; display: inline-flex; align-items: center; justify-content: center; }
+    .chat-shell { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; background: var(--card); padding: 2rem; backdrop-filter: blur(25px); }
+    .chat-log { min-height: 400px; border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; overflow-y: auto; background: rgba(255,255,255,0.02); }
+    .chat-entry { display: flex; flex-direction: column; gap: 0.3rem; padding: 0.8rem 1rem; border-radius: 1rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+    .chat-entry.agent { align-self: flex-start; }
+    .chat-entry.user { align-self: flex-end; background: rgba(124,107,255,0.25); border-color: rgba(124,107,255,0.4); }
+    .chat-entry span { font-size: 0.75rem; color: var(--muted); }
+    form { display: flex; gap: 0.8rem; }
+    form input { flex: 1; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: var(--text); padding: 0.9rem 1rem; }
+    form button { border: none; border-radius: 1rem; padding: 0.9rem 1.4rem; background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; font-weight: 600; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <a href="agents-full.html" class="nav-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Back</span></a>
+  <div class="chat-shell">
+    <h1>Agent live chat</h1>
+    <p>Live snippets from your agents while they coordinate.</p>
+    <div class="chat-log" id="chatLog"></div>
+  </div>
+  <script>
+    const chatLog = document.getElementById('chatLog');
+    const lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
+    const storedAgents = JSON.parse(sessionStorage.getItem('operionAgents') || '[]');
+    const commons = JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]');
+    const roster = storedAgents.concat(commons).slice(0,4);
+    const participants = roster.length ? roster : ['Ops Generalist','Automation Builder','Customer Success Copilot'];
+
+    function addMessage(from, text, role = 'agent') {
+      const entry = document.createElement('div');
+      entry.className = `chat-entry ${role}`;
+      entry.innerHTML = `<span>${from}</span><p>${text}</p>`;
+      chatLog.appendChild(entry);
+    }
+
+    const sampleLog = [
+      { from: lead.name || 'Command agent', text: 'All squads sync in. Need status on morning deploy.', role: 'agent' },
+      { from: participants[0], text: 'Release build ready. Waiting on QA green-light.', role: 'agent' },
+      { from: participants[1] || 'Automation Builder', text: 'Automation checks passed. Shipping config to prod in 10 minutes.', role: 'agent' },
+      { from: participants[2] || 'Customer Success Copilot', text: 'Support macros updated. Notifying success team.', role: 'agent' },
+      { from: 'QA Sentinel', text: 'Regression run is green. Deploy at 11:05.', role: 'agent' },
+      { from: lead.name || 'Command agent', text: 'Copy that. Let’s give QA 5 more and then ship.', role: 'agent' },
+      { from: 'Customer Success Copilot', text: 'Pushing customer bulletins once deploy is live.', role: 'agent' }
+    ];
+    sampleLog.forEach(msg => addMessage(msg.from, msg.text, msg.role));
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      if (!message) return;
+      addMessage('You', message, 'user');
+      setTimeout(() => addMessage(lead.name || 'Command agent', 'Acknowledged. I'll route this to the right agent.'), 600);
+      input.value = '';
+    });
+  </script>
+</body>
+</html>

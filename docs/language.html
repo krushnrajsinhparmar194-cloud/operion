@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operion · Choose Agent Languages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #04060e;
+      --text: #f6f8ff;
+      --muted: #9badcf;
+      --accent: #7c6bff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, rgba(124, 107, 255, 0.25), transparent 55%),
+                  radial-gradient(circle at 80% 10%, rgba(77, 168, 255, 0.22), transparent 50%),
+                  var(--bg);
+      color: var(--text);
+      padding: 3rem 2rem 2rem;
+    }
+    .nav-top { z-index: 50; position: fixed; top: 1rem; left: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(4,6,14,0.85); text-decoration: none; color: var(--text); font-weight: 500; }
+    .nav-top .icon { width: 1.1rem; height: 1.1rem; display: inline-flex; align-items: center; justify-content: center; }
+    .nav-top .icon svg { width: 100%; height: 100%; }
+    .wrap { width: min(1200px, 100%); display: flex; flex-direction: column; gap: 1.5rem; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 1.5rem; }
+    .main { border: 1px solid rgba(255,255,255,0.1); border-radius: 1.2rem; padding: 1rem; background: rgba(5,9,20,0.82); max-height: calc(100vh - 8rem); overflow-y: auto; }
+    .sticky-search { position: sticky; top: 0; padding-bottom: 1rem; background: rgba(5,9,20,0.95); z-index: 6; }
+    .search { width: 100%; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: var(--text); padding: 0.9rem 1rem; font-size: 1rem; }
+    .list { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.6rem; }
+    button.lang { border: 1px solid rgba(255,255,255,0.15); border-radius: 0.9rem; padding: 0.75rem 0.9rem; background: rgba(255,255,255,0.03); color: var(--text); text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
+    button.lang.active { border-color: rgba(124,107,255,0.7); background: rgba(124,107,255,0.15); }
+    .side { border: 1px solid rgba(255,255,255,0.1); border-radius: 1.2rem; padding: 0.9rem; background: rgba(5,9,20,0.9); max-height: calc(100vh - 8rem); display: flex; flex-direction: column; gap: 0.5rem; position: sticky; top: 1.5rem; }
+    .selected-box { flex: 1; min-height: 0; border: 1px dashed rgba(255,255,255,0.2); border-radius: 0.85rem; padding: 0.5rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.45rem; }
+    .pill { display: flex; justify-content: space-between; align-items: center; border-radius: 0.9rem; border: 1px solid rgba(255,255,255,0.15); padding: 0.45rem 0.75rem; font-size: 0.9rem; }
+    .pill button { border: none; background: transparent; color: var(--muted); cursor: pointer; font-size: 0.9rem; }
+    .primary { border: none; border-radius: 1rem; padding: 0.95rem; text-transform: uppercase; font-weight: 600; background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <a href="main-agent.html" class="nav-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Back</span></a>
+  <div class="wrap">
+    <div>
+      <h1>Choose your agent languages</h1>
+      <p class="lede">Select every language your command agent should understand. You can add or remove languages later.</p>
+    </div>
+    <div class="layout">
+      <div class="main">
+        <div class="list" id="languageList"></div>
+      </div>
+      <div class="side">
+        <h3>Selected languages</h3>
+        <div class="selected-box" id="selectedBox">None selected yet.</div>
+        <button class="primary" id="saveLanguages">Save languages</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const languages = [
+      'English','Gujarati','Hindi','Spanish','French','German','Portuguese','Italian','Arabic','Bengali','Mandarin','Japanese','Korean','Russian','Dutch','Swedish','Norwegian','Danish','Turkish','Thai','Vietnamese','Indonesian','Malay','Punjabi','Marathi','Telugu','Tamil','Kannada','Malayalam','Filipino','Hebrew','Greek','Polish','Czech','Ukrainian','Romanian','Hungarian'
+    ];
+
+    const listEl = document.getElementById('languageList');
+    const selectedBox = document.getElementById('selectedBox');
+    const saveBtn = document.getElementById('saveLanguages');
+    const selected = new Set(JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]'));
+
+    function renderList() {
+      listEl.innerHTML = languages.map(lang => {
+        const active = selected.has(lang) ? 'active' : '';
+        return `<button type="button" class="lang ${active}" data-lang="${lang}">${lang}<span>${active ? '✓' : ''}</span></button>`;
+      }).join('');
+    }
+
+    function renderSelected() {
+      if (!selected.size) {
+        selectedBox.textContent = 'None selected yet.';
+        return;
+      }
+      selectedBox.innerHTML = Array.from(selected).map(lang => `
+        <div class="pill">
+          <span>${lang}</span>
+          <button type="button" data-lang="${lang}">✕</button>
+        </div>
+      `).join('');
+      selectedBox.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selected.delete(btn.dataset.lang);
+          renderSelected();
+          renderList();
+        });
+      });
+    }
+
+    listEl.addEventListener('click', e => {
+      if (e.target.closest('button.lang')) {
+        const btn = e.target.closest('button.lang');
+        const lang = btn.dataset.lang;
+        if (selected.has(lang)) selected.delete(lang); else selected.add(lang);
+        renderSelected();
+        renderList();
+      }
+    });
+
+    saveBtn.addEventListener('click', () => {
+      if (!selected.size) {
+        alert('Please pick at least one language.');
+        return;
+      }
+      sessionStorage.setItem('operionAgentLanguage', JSON.stringify(Array.from(selected)));
+      window.location.href = 'user-name.html';
+    });
+
+    renderList();
+    renderSelected();
+  </script>
+</body>
+</html>

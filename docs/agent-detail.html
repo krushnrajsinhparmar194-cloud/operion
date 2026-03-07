@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operion · Agent Detail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #03060f;
+      --card: rgba(255,255,255,0.03);
+      --text: #eef2ff;
+      --muted: #9badcf;
+      --accent: #7c6bff;
+      --success: #82ffbd;
+      --warn: #ffdc96;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 20% 10%, rgba(124,107,255,0.25), transparent 50%), var(--bg); color: var(--text); padding: 3rem 2rem; }
+    .nav-top { z-index: 50; position: fixed; top: 1rem; left: 1rem; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(4,6,14,0.85); text-decoration: none; color: var(--text); }
+    .nav-top .icon { width: 1.1rem; height: 1.1rem; display: inline-flex; align-items: center; justify-content: center; }
+    .nav-top .icon svg { width: 100%; height: 100%; }
+    .wrapper { max-width: 900px; margin: 0 auto; border-radius: 1.8rem; border: 1px solid rgba(255,255,255,0.1); background: var(--card); padding: 2.5rem; backdrop-filter: blur(25px); display: flex; flex-direction: column; gap: 1.5rem; }
+    .chip-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .chip { padding: 0.35rem 0.8rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); font-size: 0.85rem; display: inline-flex; gap: 0.4rem; align-items: center; }
+    .chip span { font-size: 0.75rem; color: var(--muted); border-left: 1px solid rgba(255,255,255,0.15); padding-left: 0.4rem; }
+    h1 { margin-top: 0; }
+    .meta { display: flex; flex-wrap: wrap; gap: 0.8rem; color: var(--muted); }
+    .pill { padding: 0.35rem 0.8rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); font-size: 0.85rem; }
+    .pill.free { border-color: rgba(82,255,189,0.5); color: var(--success); }
+    .pill.busy { border-color: rgba(255,190,92,0.5); color: var(--warn); }
+    .section { border: 1px solid rgba(255,255,255,0.08); border-radius: 1.2rem; padding: 1.2rem; background: rgba(255,255,255,0.02); }
+    .collab-grid { display: flex; flex-direction: column; gap: 0.8rem; }
+    .collab-item { border: 1px solid rgba(255,255,255,0.1); border-radius: 0.9rem; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); display: flex; flex-direction: column; gap: 0.4rem; }
+    .collab-item .row { display: flex; justify-content: space-between; width: 100%; align-items: center; }
+    .badge { padding: 0.25rem 0.6rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); font-size: 0.75rem; }
+    .tasks { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.8rem; }
+    .task-card { border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,0.04); min-height: 120px; display: flex; flex-direction: column; gap: 0.4rem; }
+    .task-card strong { font-size: 0.95rem; }
+    .task-card span { color: var(--muted); font-size: 0.85rem; }
+    .history { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.7rem; }
+    .history-item { border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,0.03); }
+    .history-item span { display: block; font-size: 0.82rem; color: var(--muted); margin-top: 0.4rem; }
+    .progress { height: 10px; border-radius: 999px; background: rgba(255,255,255,0.1); margin-top: 0.5rem; overflow: hidden; }
+    .progress span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(120deg, #4da8ff, #7c6bff); }
+  </style>
+</head>
+<body>
+  <a href="agents-full.html" class="nav-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Back</span></a>
+  <div class="wrapper">
+    <div>
+      <h1 id="agentName">Agent</h1>
+      <p id="agentDescription">Loading description…</p>
+      <div class="meta" id="agentMeta"></div>
+    </div>
+    <div class="section">
+      <h2>Work samples</h2>
+      <div class="tasks" id="agentTasks"></div>
+    </div>
+    <div class="section">
+      <h2>Past highlights</h2>
+      <div class="history" id="historyList">Loading…</div>
+    </div>
+    <div class="section">
+      <h2>Current work & collaborators</h2>
+      <div class="collab-grid" id="collabInfo">Loading…</div>
+    </div>
+    <div class="section">
+      <h2>Connected agents</h2>
+      <div class="chip-grid" id="connectedList">Loading…</div>
+    </div>
+    <div class="section">
+      <h2>Active jobs</h2>
+      <div class="history" id="jobsList">Loading…</div>
+    </div>
+    <div class="section">
+      <h2>Progress</h2>
+      <p id="progressText"></p>
+      <div class="progress"><span id="progressBar" style="width:0%"></span></div>
+    </div>
+  </div>
+  <script>
+    const descriptions = {
+      'Release Pilot': 'Keeps your deployment cadence humming with logs, rollbacks, and change notes.',
+      'Incident Triage': 'Monitors alerts, groups incidents, and routes owners instantly.',
+      'Product QA': 'Runs scripted and exploratory tests before every release.',
+      'Customer Success Copilot': 'Summarizes tickets and drafts responses in your tone.'
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name') || 'Agent';
+    const lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
+
+    document.getElementById('agentName').textContent = `${name}`;
+    document.getElementById('agentDescription').textContent = descriptions[name] || 'This agent is standing by to support your team.';
+    const status = Math.random() > 0.5 ? 'free' : 'busy';
+    document.getElementById('agentMeta').innerHTML = `<span class="pill ${status}">${status === 'free' ? 'Free now' : 'Busy'}</span><span>Reports to: ${lead.name || 'Command agent'}</span>`;
+
+    const samples = [
+      { title: 'Prep brief', desc: 'Outline blockers and context.' },
+      { title: 'Execute task', desc: 'Run assigned workflow.' },
+      { title: 'Report status', desc: 'Summarize key updates.' },
+      { title: 'Escalate issue', desc: 'Flag risks to lead agent.' }
+    ];
+    document.getElementById('agentTasks').innerHTML = samples.map(item => `
+      <div class="task-card"><strong>${item.title}</strong><span>${item.desc}</span></div>
+    `).join('');
+
+    const history = [
+      { title: 'Closed incident #248', date: '3 days ago' },
+      { title: 'Delivered Q2 ops summary', date: 'Last week' },
+      { title: 'Finished compliance checklist', date: '2 weeks ago' }
+    ];
+    document.getElementById('historyList').innerHTML = history.map(item => `
+      <div class="history-item">${item.title}<span>${item.date}</span></div>
+    `).join('');
+
+    const storedAgents = JSON.parse(sessionStorage.getItem('operionAgents') || '[]');
+    const collabAgents = (storedAgents.length ? storedAgents : ['Ops Generalist','Automation Builder','Inbox Copilot']).slice(0,3);
+    const commonAgents = JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]');
+    const connected = Array.from(new Set([...collabAgents, ...((commonAgents.length ? commonAgents.slice(0,4) : ['Compliance Desk','Risk Analyst','Support Inbox Copilot']))]));
+    const tags = ['Ops','Finance','Support','Growth'];
+    document.getElementById('collabInfo').innerHTML = collabAgents.length ? collabAgents.map((agent, idx) => `
+      <div class=\"collab-item\">
+        <div class=\"row\"><strong>${agent}</strong><span class=\"badge\">Active</span></div>
+        <p>Completed ${(idx+1)*2} tasks this week.</p>
+      </div>
+    `).join('') : `${name} is waiting for assignments.`;
+    document.getElementById('connectedList').innerHTML = connected.length ? connected.map((agent, idx) => `
+      <span class=\"chip\">${agent}<span>${tags[idx % tags.length]}</span></span>
+    `).join('') : 'No linked agents yet.';
+
+    const progress = Math.floor(Math.random()*60)+30;
+    document.getElementById('progressText').textContent = `${progress}% of active sprint complete.`;
+    document.getElementById('progressBar').style.width = `${progress}%`;
+    const jobs = [
+      { title: 'Incident response runbook', eta: 'Due in 4h', progress: 60 },
+      { title: 'Weekly ops recap', eta: 'Due tomorrow', progress: 30 },
+      { title: 'Compliance checklist', eta: 'Due in 2 days', progress: 15 }
+    ];
+    document.getElementById('jobsList').innerHTML = jobs.map(job => `
+      <div class="history-item">
+        <strong>${job.title}</strong><span>${job.eta}</span>
+        <div class="progress"><span style="width:${job.progress}%"></span></div>
+      </div>
+    `).join('');
+  </script>
+</body>
+</html>

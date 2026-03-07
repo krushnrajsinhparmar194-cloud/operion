@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operion · Choose Agents</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #04060e;
+      --card: rgba(255, 255, 255, 0.04);
+      --accent: #7c6bff;
+      --text: #f6f8ff;
+      --muted: #9badcf;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, rgba(124, 107, 255, 0.25), transparent 55%),
+                  radial-gradient(circle at 80% 10%, rgba(77, 168, 255, 0.22), transparent 50%),
+                  var(--bg);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 4rem 2rem 3rem;
+      color: var(--text);
+      position: relative;
+      overflow-y: auto;
+    }
+    .nav-top {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(4, 6, 14, 0.72);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+    .nav-top .link {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .nav-top .icon {
+      width: 1.1rem;
+      height: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-top .icon svg {
+      width: 100%;
+      height: 100%;
+    }
+    .wrap {
+      width: min(960px, 100%);
+      border-radius: 2rem;
+      padding: 3rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(6, 11, 22, 0.72);
+      box-shadow: 0 40px 120px rgba(0,0,0,0.45);
+      backdrop-filter: blur(30px);
+    }
+    h1 { margin: 0 0 0.6rem; }
+    p { margin: 0 0 1.6rem; color: var(--muted); }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      font-size: 0.85rem;
+      margin-bottom: 1.2rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    label.card {
+      border-radius: 1.4rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    label.card:hover {
+      border-color: rgba(124,107,255,0.6);
+      background: rgba(124,107,255,0.08);
+    }
+    label.card input {
+      appearance: none;
+      width: 1.05rem;
+      height: 1.05rem;
+      border-radius: 0.3rem;
+      border: 1px solid rgba(255,255,255,0.35);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    label.card input:checked {
+      background: linear-gradient(120deg, #7c6bff, #4da8ff);
+      border-color: transparent;
+    }
+    label.card input:checked::after {
+      content: '';
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 0.15rem;
+      background: #041021;
+    }
+    .card-title {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin-top: 2rem;
+    }
+    .primary {
+      width: 100%;
+      border: none;
+      border-radius: 1rem;
+      padding: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #4da8ff, #7c6bff);
+      color: #041021;
+      cursor: pointer;
+    }
+    .secondary {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 1rem;
+      padding: 1rem;
+      font-weight: 500;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .custom {
+      margin-top: 2.5rem;
+      padding: 1.8rem;
+      border-radius: 1.6rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.02);
+    }
+    .custom-head {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .custom-head p {
+      margin: 0.2rem 0 1rem;
+      color: var(--muted);
+    }
+    .custom label {
+      display: block;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.9rem;
+    }
+    .custom input, .custom textarea {
+      width: 100%;
+      margin-top: 0.3rem;
+      padding: 0.9rem 1rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    .custom textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .custom-actions {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .tertiary {
+      border: 1px dashed rgba(255,255,255,0.3);
+      border-radius: 1rem;
+      background: transparent;
+      color: var(--text);
+      padding: 0.85rem 1.2rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .custom-list {
+      margin-top: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .custom-card {
+      border-radius: 1.2rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 1rem;
+      background: rgba(255,255,255,0.02);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .custom-card strong {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .remove-btn {
+      border: none;
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 0.4rem 0.6rem;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .status {
+      min-height: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-align: center;
+    }
+    .status.success {
+      color: #8dffa9;
+    }
+    .status.error {
+      color: #ff9f9f;
+    }
+  </style>
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+  <div class="nav-top"><a href="industry.html" class="link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Back</a></div>
+  <div class="wrap">
+    <p class="label" style="letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Step 4</p>
+    <h1>Pick the agents you need</h1>
+    <p>Here are the day-to-day office agents we recommend. Pick everything that matches the work you want Operion to handle first.</p>
+    <div class="pill" id="industryTag">Industry: Software & SaaS</div>
+    <div class="grid" id="agentGrid"></div>
+    <section class="custom">
+      <div class="custom-head">
+        <div>Need something else?</div>
+        <p>Create a custom agent with exact responsibilities.</p>
+      </div>
+      <form id="customAgentForm">
+        <label>Agent name</label>
+        <input type="text" id="customName" placeholder="e.g. Ops Concierge" required />
+        <label>What should this agent do?</label>
+        <textarea id="customDesc" placeholder="Describe the workflow, tools, or outputs" rows="3" required></textarea>
+        <div class="custom-actions">
+          <button type="submit" class="tertiary">Add custom agent</button>
+          <span id="customStatus" class="status"></span>
+        </div>
+      </form>
+      <div class="custom-list" id="customList"></div>
+    </section>
+
+    <div class="actions">
+      <button class="primary" id="agentContinue">Launch selected agents</button>
+      <button class="secondary" id="agentSkip">Skip for now</button>
+      <div class="status" id="agentStatus"></div>
+    </div>
+  </div>
+  <script>
+    const industryTag = document.getElementById('industryTag');
+    const grid = document.getElementById('agentGrid');
+    const storedIndustry = sessionStorage.getItem('operionIndustry') || 'Software & SaaS';
+    industryTag.textContent = `Industry: ${storedIndustry}`;
+
+    const agentCatalog = {
+      'Software & SaaS': [
+        { name: 'Release Pilot', desc: 'Keeps sprint deploys, changelogs, and rollback plans tidy.' },
+        { name: 'Sprint PM', desc: 'Tracks standups, blockers, and owner follow-ups.' },
+        { name: 'QA Sentinel', desc: 'Queues scripted tests and ships bug repro bundles.' },
+        { name: 'Customer Success Copilot', desc: 'Summarizes tickets and drafts replies from your tone.' },
+        { name: 'Billing Desk', desc: 'Monitors invoices, failed payments, and finance escalations.' },
+        { name: 'Ops Analyst', desc: 'Builds quick health dashboards from product + revenue data.' }
+      ],
+      'Fintech / Banking': [
+        { name: 'Compliance Desk', desc: 'Collects KYC docs, AML alerts, and audit-ready notes.' },
+        { name: 'Risk Analyst', desc: 'Rolls up exposure metrics with daily explainers.' },
+        { name: 'Claims Ops', desc: 'Preps claim packets, missing info nudges, and approvals.' },
+        { name: 'Treasury Desk', desc: 'Tracks settlements, reconciles ledgers, and flags outliers.' },
+        { name: 'Customer Trust Copilot', desc: 'Drafts regulatory-safe responses for escalations.' }
+      ],
+      'E-commerce & Retail': [
+        { name: 'Inventory Pilot', desc: 'Forecasts stockouts and pings suppliers automatically.' },
+        { name: 'Merch Ops', desc: 'Refreshes catalogs, pricing ladders, and assets.' },
+        { name: 'Support Inbox Copilot', desc: 'Macros + summaries for shipping/refund tickets.' },
+        { name: 'Logistics Tracker', desc: 'Monitors carrier SLAs and escalates late parcels.' },
+        { name: 'Promo Calendar', desc: 'Keeps drops, bundles, and creative tasks aligned.' }
+      ],
+      'Logistics & Supply Chain': [
+        { name: 'Route Optimizer', desc: 'Simulates ETAs and suggests re-routes.' },
+        { name: 'Fleet Ops', desc: 'Schedules maintenance and compliance checks.' },
+        { name: 'Dispatch Desk', desc: 'Assigns loads, pushes updates, and logs proof-of-delivery.' },
+        { name: 'Vendor Liaison', desc: 'Chases shipment confirmations + docs.' },
+        { name: 'Compliance Tracker', desc: 'Maintains permits and driver credentials.' }
+      ],
+      'Healthcare & Life Sciences': [
+        { name: 'Intake Specialist', desc: 'Triages forms and syncs data to EHRs.' },
+        { name: 'Clinical Ops Monitor', desc: 'Tracks site milestones and deviations.' },
+        { name: 'Regulatory Writer', desc: 'Drafts filings, safety reports, and SOP updates.' },
+        { name: 'Billing Navigator', desc: 'Pairs claims with codes and payer reminders.' },
+        { name: 'People Ops Buddy', desc: 'Runs onboarding + credentialing checklists.' }
+      ],
+      'Manufacturing': [
+        { name: 'Production Planner', desc: 'Aligns orders, shifts, and capacity.' },
+        { name: 'Quality Sentinel', desc: 'aggregates QC readings and flags drift.' },
+        { name: 'Maintenance Scheduler', desc: 'Builds preventive maintenance queues.' },
+        { name: 'Procurement Ops', desc: 'Tracks PO status, approvals, and vendor SLAs.' },
+        { name: 'Inventory Analyst', desc: 'Balances raw materials vs. finished goods.' }
+      ],
+      'Media & Entertainment': [
+        { name: 'Content Calendar', desc: 'Plans shoots, approvals, and drops.' },
+        { name: 'Rights Tracker', desc: 'Keeps licensing windows in view.' },
+        { name: 'Campaign Editor', desc: 'Packages scripts, briefs, and edit notes.' },
+        { name: 'Partnership Desk', desc: 'Manages brand deals and deliverables.' },
+        { name: 'Community Producer', desc: 'Drafts recaps + highlight reels for socials.' }
+      ],
+      'Education / EdTech': [
+        { name: 'Curriculum Ops', desc: 'Version-controls lesson plans and LMS pushes.' },
+        { name: 'Admissions Copilot', desc: 'Sorts applicants and drafts replies.' },
+        { name: 'Learner Success', desc: 'Alerts coaches about at-risk students.' },
+        { name: 'Faculty Scheduler', desc: 'Handles timetables and swaps.' },
+        { name: 'Compliance Desk', desc: 'Keeps accreditation docs and reports ready.' }
+      ],
+      'Marketing & Advertising': [
+        { name: 'Campaign Pilot', desc: 'Tracks asset readiness and approvals.' },
+        { name: 'Insights Analyst', desc: 'Turns channel data into quick recaps.' },
+        { name: 'Client Desk', desc: 'Preps QBRs and stakeholder updates.' },
+        { name: 'Asset Librarian', desc: 'Organizes creative files + usage rights.' },
+        { name: 'Finance Tracker', desc: 'Monitors budgets, POs, and vendor invoices.' }
+      ],
+      'Real Estate': [
+        { name: 'Deal Desk', desc: 'Keeps LOIs, diligence, and approvals moving.' },
+        { name: 'Portfolio Ops', desc: 'Monitors repairs, inspections, and vendor SLAs.' },
+        { name: 'Marketing Concierge', desc: 'Updates listings and pushes to portals.' },
+        { name: 'Tenant Support', desc: 'Summaries + replies for resident requests.' },
+        { name: 'Field Maintenance Desk', desc: 'Dispatches crews and tracks completion.' }
+      ],
+      'Energy & Utilities': [
+        { name: 'Grid Monitor', desc: 'Rolls up load, outage, and field tickets.' },
+        { name: 'Reg Compliance', desc: 'Drafts filings and rulebook updates.' },
+        { name: 'Field Dispatch', desc: 'Assigns crews and logs ETAs.' },
+        { name: 'Asset Planner', desc: 'Schedules inspections + replacements.' },
+        { name: 'Finance Reporting', desc: 'Builds variance reports + forecasts.' }
+      ],
+      'Travel & Hospitality': [
+        { name: 'Guest Ops Copilot', desc: 'Pre-arrival checklists and delight touches.' },
+        { name: 'Revenue Ops', desc: 'Refreshes rates, pace, and comp sets.' },
+        { name: 'Experience Desk', desc: 'Builds itineraries + vendor holds.' },
+        { name: 'Vendor Concierge', desc: 'Confirms transport, dining, and activities.' },
+        { name: 'Support Inbox Copilot', desc: 'Handles cancellations and refunds politely.' }
+      ],
+      'Telecommunications': [
+        { name: 'Network Watch', desc: 'Keeps incidents + maint windows summarized.' },
+        { name: 'Provisioning Agent', desc: 'Automates activations and plan swaps.' },
+        { name: 'Customer Success Ops', desc: 'Drafts outreach for churn-risk accounts.' },
+        { name: 'Field Dispatch', desc: 'Books technicians and updates customers.' },
+        { name: 'Billing Desk', desc: 'Tracks disputes, credits, and escalations.' }
+      ],
+      'Government / Public Sector': [
+        { name: 'Grant Tracker', desc: 'Manages deadlines, submissions, and reports.' },
+        { name: 'Civic Support', desc: 'Routes citizen tickets with summaries.' },
+        { name: 'Procurement Copilot', desc: 'Keeps bids, vendors, and compliance tidy.' },
+        { name: 'Public Comms Desk', desc: 'Drafts advisories, press notes, and FAQs.' },
+        { name: 'Compliance Auditor', desc: 'Maintains policy updates + attestations.' }
+      ],
+      'Non-profit / Social Impact': [
+        { name: 'Donor Desk', desc: 'Logs pledges, drafts thank-yous, segments lists.' },
+        { name: 'Program Ops', desc: 'Tracks beneficiaries, metrics, and stories.' },
+        { name: 'Volunteer Coordinator', desc: 'Matches people to events and reminders.' },
+        { name: 'Grant Writer', desc: 'Compiles proposals + reporting packets.' },
+        { name: 'Finance Steward', desc: 'Monitors budgets, reimbursements, and receipts.' }
+      ],
+      'Other': [
+        { name: 'Ops Generalist', desc: 'Flexible agent for checklists + coordination.' },
+        { name: 'Documentation Scribe', desc: 'Polishes notes, SOPs, and briefs.' },
+        { name: 'Inbox Copilot', desc: 'Sorts mail, drafts replies, routes owners.' },
+        { name: 'Data Entry Desk', desc: 'Updates sheets, CRMs, and trackers.' },
+        { name: 'Automation Builder', desc: 'Creates lightweight workflows across apps.' }
+      ]
+    };
+
+    const agents = agentCatalog[storedIndustry] || agentCatalog['Other'];
+
+    const fragment = document.createDocumentFragment();
+    agents.forEach(agent => {
+      const label = document.createElement('label');
+      label.className = 'card';
+      label.innerHTML = `
+        <div class="card-top">
+          <div>
+            <div class="card-title">${agent.name}</div>
+            <div class="card-desc">${agent.desc}</div>
+          </div>
+          <input type="checkbox" value="${agent.name}">
+        </div>
+      `;
+      fragment.appendChild(label);
+    });
+    grid.appendChild(fragment);
+
+    const statusBox = document.getElementById('agentStatus');
+    const customForm = document.getElementById('customAgentForm');
+    const customList = document.getElementById('customList');
+    const customStatus = document.getElementById('customStatus');
+
+    function showStatus(text, type = 'success') {
+      statusBox.textContent = text;
+      statusBox.classList.remove('success', 'error');
+      statusBox.classList.add(type);
+    }
+
+    function showCustomStatus(text, type = 'success') {
+      customStatus.textContent = text;
+      customStatus.classList.remove('success', 'error');
+      customStatus.classList.add(type);
+    }
+
+    document.getElementById('agentContinue').addEventListener('click', () => {
+      const checked = Array.from(grid.querySelectorAll('input:checked')).map(inp => inp.value);
+      const customs = JSON.parse(sessionStorage.getItem('operionCustomAgents') || '[]');
+      if (!checked.length && !customs.length) {
+        showStatus('Select or add at least one agent to continue.', 'error');
+        return;
+      }
+      sessionStorage.setItem('operionAgents', JSON.stringify(checked));
+      sessionStorage.setItem('operionCombinedAgents', JSON.stringify({ preset: checked, custom: customs }));
+      window.location.href = 'common-agents.html';
+    });
+
+    document.getElementById('agentSkip').addEventListener('click', () => {
+      sessionStorage.removeItem('operionAgents');
+      sessionStorage.removeItem('operionCustomAgents');
+      customList.innerHTML = '';
+      showStatus('Skipped selection — you can add agents later.', 'success');
+    });
+
+    function renderCustomAgents() {
+      const customs = JSON.parse(sessionStorage.getItem('operionCustomAgents') || '[]');
+      customList.innerHTML = customs.map((agent, idx) => `
+        <div class="custom-card">
+          <div>
+            <strong>${agent.name}</strong>
+            <span>${agent.desc}</span>
+          </div>
+          <button type="button" class="remove-btn" data-index="${idx}">Remove</button>
+        </div>
+      `).join('');
+      customList.querySelectorAll('.remove-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const customs = JSON.parse(sessionStorage.getItem('operionCustomAgents') || '[]');
+          customs.splice(Number(btn.dataset.index), 1);
+          sessionStorage.setItem('operionCustomAgents', JSON.stringify(customs));
+          renderCustomAgents();
+        });
+      });
+    }
+
+    renderCustomAgents();
+
+    customForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('customName').value.trim();
+      const desc = document.getElementById('customDesc').value.trim();
+      if (!name || !desc) {
+        showCustomStatus('Fill out both fields to add.', 'error');
+        return;
+      }
+      const customs = JSON.parse(sessionStorage.getItem('operionCustomAgents') || '[]');
+      customs.push({ name, desc });
+      sessionStorage.setItem('operionCustomAgents', JSON.stringify(customs));
+      document.getElementById('customName').value = '';
+      document.getElementById('customDesc').value = '';
+      showCustomStatus('Custom agent added.', 'success');
+      renderCustomAgents();
+    });
+  </script>
+</body>
+</html>

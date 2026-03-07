@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operion · All Agents</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    .chat-cta { position: fixed; right: 2rem; bottom: 2rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; padding: 0.7rem 1.4rem; color: var(--text); text-decoration: none; background: rgba(124,107,255,0.25); backdrop-filter: blur(10px); box-shadow: 0 15px 40px rgba(0,0,0,0.4); z-index: 50; }
+    .chat-cta:hover { background: rgba(124,107,255,0.4); }
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #04060f;
+      --text: #f6f8ff;
+      --muted: #9badcf;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 20% 10%, rgba(124,107,255,0.25), transparent 60%), var(--bg); color: var(--text); padding: 3rem 2rem; }
+    .nav-top { z-index: 50; position: fixed; top: 1.2rem; left: 1.2rem; display: inline-flex; gap: 0.5rem; align-items: center; padding: 0.5rem 1rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(4,6,14,0.85); color: var(--text); text-decoration: none; font-weight: 500; }
+    .nav-top .icon { width: 1.1rem; height: 1.1rem; display: inline-flex; align-items: center; justify-content: center; }
+    .nav-top .icon svg { width: 100%; height: 100%; }
+    .wrap { max-width: 1100px; margin: 4rem auto 0; display: flex; flex-direction: column; gap: 1.5rem; }
+    h1 { margin: 0; }
+    .list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .agent-card { display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,0.03); color: inherit; text-decoration: none; transition: border-color 0.2s ease, background 0.2s ease; }
+    .agent-card:hover { border-color: rgba(124,107,255,0.7); background: rgba(124,107,255,0.15); }
+    .status { padding: 0.25rem 0.7rem; border-radius: 999px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.2); }
+    .status.free { border-color: rgba(82,255,189,0.5); color: #82ffbd; }
+    .status.busy { border-color: rgba(255,190,92,0.5); color: #ffdc96; }
+  </style>
+</head>
+<body>
+  <a href="dashboard.html" class="nav-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Back</span></a>
+  <div class="wrap">
+    <h1>All agents</h1>
+    <div class="list" id="agentGrid" data-link="/agent-detail.html"></div>
+  </div>
+  <a href="agent-live-chat.html" class="chat-cta">Agent's live chat</a>
+  <script>
+    const preset = JSON.parse(sessionStorage.getItem('operionAgents') || '[]');
+    const commons = JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]');
+    const customs = JSON.parse(sessionStorage.getItem('operionCustomAgents') || '[]');
+    const lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
+
+    const allAgents = Array.from(new Set([
+      ...preset,
+      ...commons,
+      ...customs.map(c => c.name)
+    ].filter(Boolean)));
+
+    const grid = document.getElementById('agentGrid');
+    const statuses = ['free','busy'];
+    grid.innerHTML = allAgents.length ? allAgents.map((name, idx) => {
+      const status = statuses[idx % statuses.length];
+      const label = status === 'free' ? 'Free' : 'Busy';
+      return `
+      <a class="agent-card" href="agent-detail.html?name=${encodeURIComponent(name)}">
+        <strong>${name}</strong>
+        <span class="status ${status}">${label}</span>
+      </a>
+      `;
+    }).join('') : 'No agents selected.';
+  </script>
+</body>
+</html>
