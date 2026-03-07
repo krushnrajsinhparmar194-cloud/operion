@@ -139,11 +139,21 @@
       const preset = JSON.parse(sessionStorage.getItem('operionAgents') || '[]');
       const customs = JSON.parse(sessionStorage.getItem('operionCustomAgents') || '[]');
       const commons = JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]');
-      const combined = [
+      let combined = [
         ...preset,
-        ...customs.map(c => c.name),
+        ...customs.map(c => c.name || c),
         ...commons
       ].filter(Boolean);
+
+      if (!combined.length) {
+        const legacy = JSON.parse(sessionStorage.getItem('operionCombinedAgents') || 'null');
+        if (legacy) {
+          combined = [
+            ...(legacy.preset || []),
+            ...((legacy.custom || []).map(c => c.name || c))
+          ].filter(Boolean);
+        }
+      }
 
       if (!combined.length) {
         chipsEl.textContent = 'No agents linked yet. Go back and pick at least one agent.';
