@@ -270,10 +270,10 @@
       color: #ff9f9f;
     }
   </style>
-  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="/auth.css" />
 </head>
 <body>
-  <div class="nav-top"><a href="industry.html" class="link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Back</a></div>
+  <div class="nav-top"><a href="/industry.html" class="link"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Back</a></div>
   <div class="wrap">
     <p class="label" style="letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Step 4</p>
     <h1>Pick the agents you need</h1>
@@ -471,7 +471,7 @@
       }
       sessionStorage.setItem('operionAgents', JSON.stringify(checked));
       sessionStorage.setItem('operionCombinedAgents', JSON.stringify({ preset: checked, custom: customs }));
-      window.location.href = 'common-agents.html';
+      window.location.href = '/common-agents.html';
     });
 
     document.getElementById('agentSkip').addEventListener('click', () => {

@@ -44,7 +44,7 @@
   </style>
 </head>
 <body>
-  <a href="user-name.html" class="nav-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Back</span></a>
+  <a href="/user-name.html" class="nav-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Back</span></a>
   <div class="wrap">
     <h1>Tell us about you</h1>
     <p>This helps your agent personalize dashboards, colors, and updates.</p>
@@ -83,7 +83,7 @@
         occupation: document.getElementById('occupation').value.trim()
       };
       sessionStorage.setItem('operionUserDetails', JSON.stringify(payload));
-      window.location.href = 'welcome.html';
+      window.location.href = '/welcome.html';
     });
   </script>
 </body>
