@@ -92,6 +92,7 @@
       <div class="card"><strong>Favorite color</strong><p id="profileColor">—</p></div>
       <div class="card"><strong>Favorite place</strong><p id="profilePlace">—</p></div>
       <div class="card"><strong>Occupation</strong><p id="profileOccupation">—</p></div>
+      <div class="card"><strong>Lead agent</strong><p id="leadName">—</p></div>
       <div class="card"><strong>Languages</strong><p id="profileLanguages">—</p></div>
     </div>
     <div class="modal" id="editModal" aria-hidden="true">
@@ -104,6 +105,7 @@
           <label>Favorite color<input id="modalColor" placeholder="e.g., Indigo" /></label>
           <label>Favorite place<input id="modalPlace" placeholder="e.g., Goa" /></label>
           <label>Occupation<input id="modalOccupation" placeholder="Role" /></label>
+          <label>Lead agent<input id="modalLead" placeholder="Agent name" /></label>
           <div class="language-field">
             <span class="field-label">Languages</span>
             <select id="languageSelect" class="language-select">
@@ -161,6 +163,7 @@
     const user = JSON.parse(sessionStorage.getItem('operionUserDetails') || '{}');
     let userName = sessionStorage.getItem('operionUserName') || '';
     let languages = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
+    let lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
     const languageOptions = ['English', 'Gujarati', 'Hindi', 'Spanish', 'French', 'German', 'Portuguese', 'Italian', 'Arabic', 'Bengali', 'Mandarin', 'Japanese', 'Korean', 'Russian', 'Dutch', 'Swedish', 'Norwegian', 'Danish', 'Turkish', 'Thai', 'Vietnamese', 'Indonesian', 'Malay', 'Punjabi', 'Marathi', 'Telugu', 'Tamil', 'Kannada', 'Malayalam', 'Filipino', 'Hebrew', 'Greek', 'Polish', 'Czech', 'Ukrainian', 'Romanian', 'Hungarian'];
 
     const summaryHeading = document.getElementById('profileHeading');
@@ -170,6 +173,7 @@
     const summaryPlace = document.getElementById('profilePlace');
     const summaryOccupation = document.getElementById('profileOccupation');
     const summaryLanguages = document.getElementById('profileLanguages');
+    const leadNameEl = document.getElementById('leadName');
 
     const statusEl = document.getElementById('photoStatus');
 
@@ -181,6 +185,7 @@
       summaryPlace.textContent = user.favoritePlace || '—';
       summaryOccupation.textContent = user.occupation || '—';
       summaryLanguages.textContent = languages.length ? languages.join(', ') : '—';
+      leadNameEl.textContent = lead.name || '—';
     };
 
     updateSummary();
@@ -191,6 +196,7 @@
     const modalColor = document.getElementById('modalColor');
     const modalPlace = document.getElementById('modalPlace');
     const modalOccupation = document.getElementById('modalOccupation');
+    const modalLead = document.getElementById('modalLead');
     const languageSelect = document.getElementById('languageSelect');
     const selectedStack = document.getElementById('selectedLanguages');
     const languageHint = document.getElementById('languageHint');
@@ -221,7 +227,9 @@
       languageHint.textContent = languages.length ? `${languages.length} selected` : 'Choose at least one language.';
     };
 
-    const hydrateSelect = () => {
+    const hydrateSelect
+
+    renderSelectedLanguages(); = () => {
       if (!languageSelect) return;
       languageSelect.innerHTML = '<option value="" selected disabled>Pick a language to add</option>' + languageOptions.map(lang => `<option value="${lang}">${lang}</option>`).join('');
       languageSelect.value = '';
@@ -234,6 +242,7 @@
       modalColor.value = user.favoriteColor || '';
       modalPlace.value = user.favoritePlace || '';
       modalOccupation.value = user.occupation || '';
+      modalLead.value = lead.name || '';
       hydrateSelect();
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
@@ -271,10 +280,12 @@
       user.favoritePlace = modalPlace.value.trim();
       user.occupation = modalOccupation.value.trim();
       userName = modalName.value.trim();
+      lead.name = modalLead.value.trim();
 
       sessionStorage.setItem('operionUserDetails', JSON.stringify(user));
       sessionStorage.setItem('operionUserName', userName);
       sessionStorage.setItem('operionAgentLanguage', JSON.stringify(languages));
+      sessionStorage.setItem('operionLeadAgent', JSON.stringify(lead));
 
       updateSummary();
       renderSelectedLanguages();
