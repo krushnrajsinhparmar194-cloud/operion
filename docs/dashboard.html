@@ -36,7 +36,9 @@
     header .muted { margin: 0; color: var(--muted); }
     .profile-chip { display: flex; align-items: center; gap: 0.8rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; padding: 0.6rem 1rem; background: rgba(255,255,255,0.05); }
     .profile-btn { border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; padding: 0.35rem 0.9rem; text-decoration: none; color: var(--text); background: rgba(124,107,255,0.2); font-size: 0.85rem; }
-    .profile-chip .avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
+    .profile-chip .avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+    .profile-chip .avatar.has-photo { border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.05); }
+    .profile-chip .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .summaries { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
     .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
     .card { border-radius: 1.35rem; border: 1px solid rgba(255,255,255,0.08); background: var(--card); padding: 1.4rem; }
@@ -68,7 +70,7 @@
       <h1 id="companyTitle">Operion Control Center</h1>
     </div>
     <div class="profile-chip">
-      <div class="avatar">👤</div>
+      <div class="avatar" id="profileAvatar" aria-hidden="true">👤</div>
       <div>
         <strong id="profileName">User</strong>
         <p class="muted" id="profileRole">Command operator</p>
@@ -101,6 +103,19 @@
     const userName = sessionStorage.getItem('operionUserName') || '';
     document.getElementById('profileName').textContent = userName || 'Operator';
     document.getElementById('profileRole').textContent = user.occupation || 'Ops lead';
+    const avatarEl = document.getElementById('profileAvatar');
+    const storedPhoto = sessionStorage.getItem('operionProfilePhoto');
+    if (avatarEl) {
+      if (storedPhoto) {
+        avatarEl.innerHTML = `<img src=\"${storedPhoto}\" alt=\"${userName || 'Profile photo'}\" />`;
+        avatarEl.classList.add('has-photo');
+        avatarEl.removeAttribute('aria-hidden');
+      } else {
+        avatarEl.textContent = '👤';
+        avatarEl.classList.remove('has-photo');
+        avatarEl.setAttribute('aria-hidden', 'true');
+      }
+    }
     const company = sessionStorage.getItem('operionCompanyName') || 'Operion workspace';
     const preset = JSON.parse(sessionStorage.getItem('operionAgents') || '[]');
     const commons = JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]');
