@@ -33,6 +33,18 @@
     .remove-btn { background: transparent; border: none; color: var(--muted); cursor: pointer; text-decoration: underline; padding: 0; font: inherit; width: fit-content; }
     .photo-status { font-size: 0.85rem; color: var(--muted); min-height: 1.2rem; }
     h1 { margin: 0; }
+    .modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; padding: 1.5rem; z-index: 20; }
+    .modal.open { display: flex; }
+    .modal-backdrop { position: absolute; inset: 0; background: rgba(3,6,16,0.8); backdrop-filter: blur(6px); }
+    .modal-panel { position: relative; width: min(480px, 92vw); border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(4,6,14,0.95); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .modal-panel h2 { margin: 0; }
+    .modal-form { display: flex; flex-direction: column; gap: 0.8rem; }
+    .modal-form label { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .modal-form input { border: none; border-radius: 0.8rem; background: rgba(255,255,255,0.08); color: var(--text); padding: 0.6rem 0.75rem; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 0.2rem; }
+    .modal-actions button { border-radius: 999px; padding: 0.7rem 1.4rem; border: none; cursor: pointer; font-weight: 600; }
+    .btn-secondary { background: rgba(255,255,255,0.08); color: var(--text); }
+    .btn-primary { background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; }
     .section-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
     .action-row { display: inline-flex; gap: 0.8rem; }
     .ghost-btn { border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: var(--text); padding: 0.6rem 1.1rem; cursor: pointer; font-weight: 500; }
@@ -76,34 +88,126 @@
       <div class="card"><strong>Occupation</strong><p id="profileOccupation">—</p></div>
       <div class="card"><strong>Languages</strong><p id="profileLanguages">—</p></div>
     </div>
+    <div class="modal" id="editModal" aria-hidden="true">
+      <div class="modal-backdrop" id="modalBackdrop"></div>
+      <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+        <h2 id="editTitle">Edit profile</h2>
+        <form class="modal-form" id="editForm">
+          <label>Full name<input id="modalName" placeholder="Your name" /></label>
+          <label>Age<input type="number" id="modalAge" min="1" max="120" placeholder="Age" /></label>
+          <label>Favorite color<input id="modalColor" placeholder="e.g., Indigo" /></label>
+          <label>Favorite place<input id="modalPlace" placeholder="e.g., Goa" /></label>
+          <label>Occupation<input id="modalOccupation" placeholder="Role" /></label>
+          <label>Languages<input id="modalLanguages" placeholder="Comma separated" /></label>
+        </form>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="cancelEdit">Cancel</button>
+          <button type="button" class="btn-primary" id="saveEdit">Save</button>
+        </div>
+      </div>
+    </div>
   </div>
-  <script>
+    <script>
     const user = JSON.parse(sessionStorage.getItem('operionUserDetails') || '{}');
-    const userName = sessionStorage.getItem('operionUserName') || '';
-    const languages = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
-    document.getElementById('profileHeading').textContent = userName || 'Profile';
-    document.getElementById('profileName').textContent = userName || '—';
-    document.getElementById('profileAge').textContent = user.age || '—';
-    document.getElementById('profileColor').textContent = user.favoriteColor || '—';
-    document.getElementById('profilePlace').textContent = user.favoritePlace || '—';
-    document.getElementById('profileOccupation').textContent = user.occupation || '—';
-    document.getElementById('profileLanguages').textContent = languages.length ? languages.join(', ') : '—';
+    let userName = sessionStorage.getItem('operionUserName') || '';
+    let languages = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
+
+    const summaryHeading = document.getElementById('profileHeading');
+    const summaryName = document.getElementById('profileName');
+    const summaryAge = document.getElementById('profileAge');
+    const summaryColor = document.getElementById('profileColor');
+    const summaryPlace = document.getElementById('profilePlace');
+    const summaryOccupation = document.getElementById('profileOccupation');
+    const summaryLanguages = document.getElementById('profileLanguages');
+
+    const statusEl = document.getElementById('photoStatus');
+
+    const updateSummary = () => {
+      summaryHeading.textContent = userName || 'Profile';
+      summaryName.textContent = userName || '—';
+      summaryAge.textContent = user.age || '—';
+      summaryColor.textContent = user.favoriteColor || '—';
+      summaryPlace.textContent = user.favoritePlace || '—';
+      summaryOccupation.textContent = user.occupation || '—';
+      summaryLanguages.textContent = languages.length ? languages.join(', ') : '—';
+    };
+
+    updateSummary();
+
+    const modal = document.getElementById('editModal');
+    const modalName = document.getElementById('modalName');
+    const modalAge = document.getElementById('modalAge');
+    const modalColor = document.getElementById('modalColor');
+    const modalPlace = document.getElementById('modalPlace');
+    const modalOccupation = document.getElementById('modalOccupation');
+    const modalLanguages = document.getElementById('modalLanguages');
+    const saveEdit = document.getElementById('saveEdit');
+    const cancelEdit = document.getElementById('cancelEdit');
     const editBtn = document.getElementById('editProfileBtn');
     const settingsBtn = document.getElementById('settingsBtn');
+
+    const hydrateModal = () => {
+      modalName.value = userName || '';
+      modalAge.value = user.age || '';
+      modalColor.value = user.favoriteColor || '';
+      modalPlace.value = user.favoritePlace || '';
+      modalOccupation.value = user.occupation || '';
+      modalLanguages.value = languages.join(', ');
+    };
+
+    const openModal = () => {
+      hydrateModal();
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    };
+
+    const closeModal = () => {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    };
+
     editBtn?.addEventListener('click', () => {
-      statusEl.textContent = 'Profile edit shortcut coming soon.';
-      setTimeout(() => statusEl.textContent = '', 2000);
+      statusEl.textContent = '';
+      openModal();
     });
+    cancelEdit?.addEventListener('click', closeModal);
+    document.getElementById('modalBackdrop')?.addEventListener('click', closeModal);
+
+    saveEdit?.addEventListener('click', () => {
+      user.age = modalAge.value.trim();
+      user.favoriteColor = modalColor.value.trim();
+      user.favoritePlace = modalPlace.value.trim();
+      user.occupation = modalOccupation.value.trim();
+      userName = modalName.value.trim();
+      languages = modalLanguages.value.split(',').map(v => v.trim()).filter(Boolean);
+
+      sessionStorage.setItem('operionUserDetails', JSON.stringify(user));
+      sessionStorage.setItem('operionUserName', userName);
+      sessionStorage.setItem('operionAgentLanguage', JSON.stringify(languages));
+
+      updateSummary();
+      statusEl.textContent = 'Profile saved.';
+      setTimeout(() => statusEl.textContent = '', 2000);
+      closeModal();
+    });
+
     settingsBtn?.addEventListener('click', () => {
       statusEl.textContent = 'Settings panel will open here.';
       setTimeout(() => statusEl.textContent = '', 2000);
     });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('open')) {
+        closeModal();
+      }
+    });
+
     const photoKey = 'operionProfilePhoto';
     const previewEl = document.getElementById('photoPreview');
     const imgEl = document.getElementById('profilePhotoImage');
-    const statusEl = document.getElementById('photoStatus');
     const uploadInput = document.getElementById('photoUpload');
     const removeBtn = document.getElementById('removePhoto');
+
     const setPhoto = (dataUrl) => {
       if (dataUrl) {
         imgEl.src = dataUrl;
@@ -113,7 +217,9 @@
         previewEl.classList.remove('has-photo');
       }
     };
+
     setPhoto(sessionStorage.getItem(photoKey));
+
     uploadInput?.addEventListener('change', (event) => {
       const file = event.target.files?.[0];
       if (!file) return;
@@ -132,6 +238,7 @@
       };
       reader.readAsDataURL(file);
     });
+
     removeBtn?.addEventListener('click', () => {
       sessionStorage.removeItem(photoKey);
       uploadInput.value = '';
