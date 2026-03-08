@@ -45,6 +45,11 @@
     .modal-actions button { border-radius: 999px; padding: 0.7rem 1.4rem; border: none; cursor: pointer; font-weight: 600; }
     .btn-secondary { background: rgba(255,255,255,0.08); color: var(--text); }
     .btn-primary { background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; }
+    .language-field { display: flex; flex-direction: column; gap: 0.5rem; }
+    .language-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.5rem; }
+    .lang-btn { border-radius: 0.9rem; border: 1px solid rgba(255,255,255,0.15); padding: 0.5rem 0.7rem; background: rgba(255,255,255,0.04); color: var(--text); font-size: 0.85rem; cursor: pointer; }
+    .lang-btn.active { border-color: rgba(124,107,255,0.8); background: rgba(124,107,255,0.2); }
+    .selected-hint { font-size: 0.8rem; color: var(--muted); margin: 0; }
     .section-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
     .action-row { display: inline-flex; gap: 0.8rem; }
     .ghost-btn { border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: var(--text); padding: 0.6rem 1.1rem; cursor: pointer; font-weight: 500; }
@@ -98,7 +103,11 @@
           <label>Favorite color<input id="modalColor" placeholder="e.g., Indigo" /></label>
           <label>Favorite place<input id="modalPlace" placeholder="e.g., Goa" /></label>
           <label>Occupation<input id="modalOccupation" placeholder="Role" /></label>
-          <label>Languages<input id="modalLanguages" placeholder="Comma separated" /></label>
+          <div class="language-field">
+          <span class="field-label">Languages</span>
+          <div class="language-grid" id="languageGrid"></div>
+          <p class="selected-hint" id="languageHint">Choose from the full list.</p>
+          </div>
         </form>
         <div class="modal-actions">
           <button type="button" class="btn-secondary" id="cancelEdit">Cancel</button>
@@ -107,10 +116,13 @@
       </div>
     </div>
   </div>
-    <script>
+      <script>
     const user = JSON.parse(sessionStorage.getItem('operionUserDetails') || '{}');
     let userName = sessionStorage.getItem('operionUserName') || '';
     let languages = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
+    const languageOptions = [
+      'English','Gujarati','Hindi','Spanish','French','German','Portuguese','Italian','Arabic','Bengali','Mandarin','Japanese','Korean','Russian','Dutch','Swedish','Norwegian','Danish','Turkish','Thai','Vietnamese','Indonesian','Malay','Punjabi','Marathi','Telugu','Tamil','Kannada','Malayalam','Filipino','Hebrew','Greek','Polish','Czech','Ukrainian','Romanian','Hungarian'
+    ];
 
     const summaryHeading = document.getElementById('profileHeading');
     const summaryName = document.getElementById('profileName');
@@ -140,11 +152,21 @@
     const modalColor = document.getElementById('modalColor');
     const modalPlace = document.getElementById('modalPlace');
     const modalOccupation = document.getElementById('modalOccupation');
-    const modalLanguages = document.getElementById('modalLanguages');
+    const languageGrid = document.getElementById('languageGrid');
+    const languageHint = document.getElementById('languageHint');
     const saveEdit = document.getElementById('saveEdit');
     const cancelEdit = document.getElementById('cancelEdit');
     const editBtn = document.getElementById('editProfileBtn');
     const settingsBtn = document.getElementById('settingsBtn');
+    let languageSelection = new Set(languages);
+
+    const renderLanguageGrid = () => {
+      languageGrid.innerHTML = languageOptions.map(lang => {
+        const active = languageSelection.has(lang) ? 'active' : '';
+        return `<button type="button" class="lang-btn ${active}" data-lang="${lang}">${lang}</button>`;
+      }).join('');
+      languageHint.textContent = languageSelection.size ? `${languageSelection.size} selected` : 'Choose at least one language.';
+    };
 
     const hydrateModal = () => {
       modalName.value = userName || '';
@@ -152,7 +174,8 @@
       modalColor.value = user.favoriteColor || '';
       modalPlace.value = user.favoritePlace || '';
       modalOccupation.value = user.occupation || '';
-      modalLanguages.value = languages.join(', ');
+      languageSelection = new Set(languages);
+      renderLanguageGrid();
     };
 
     const openModal = () => {
@@ -166,6 +189,18 @@
       modal.setAttribute('aria-hidden', 'true');
     };
 
+    languageGrid?.addEventListener('click', (event) => {
+      const btn = event.target.closest('button.lang-btn');
+      if (!btn) return;
+      const lang = btn.dataset.lang;
+      if (languageSelection.has(lang)) {
+        languageSelection.delete(lang);
+      } else {
+        languageSelection.add(lang);
+      }
+      renderLanguageGrid();
+    });
+
     editBtn?.addEventListener('click', () => {
       statusEl.textContent = '';
       openModal();
@@ -174,12 +209,16 @@
     document.getElementById('modalBackdrop')?.addEventListener('click', closeModal);
 
     saveEdit?.addEventListener('click', () => {
+      if (!languageSelection.size) {
+        languageHint.textContent = 'Pick at least one language before saving.';
+        return;
+      }
       user.age = modalAge.value.trim();
       user.favoriteColor = modalColor.value.trim();
       user.favoritePlace = modalPlace.value.trim();
       user.occupation = modalOccupation.value.trim();
       userName = modalName.value.trim();
-      languages = modalLanguages.value.split(',').map(v => v.trim()).filter(Boolean);
+      languages = Array.from(languageSelection);
 
       sessionStorage.setItem('operionUserDetails', JSON.stringify(user));
       sessionStorage.setItem('operionUserName', userName);
