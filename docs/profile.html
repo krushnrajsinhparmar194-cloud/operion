@@ -45,8 +45,11 @@
     .modal-actions button { border-radius: 999px; padding: 0.7rem 1.4rem; border: none; cursor: pointer; font-weight: 600; }
     .btn-secondary { background: rgba(255,255,255,0.08); color: var(--text); }
     .btn-primary { background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; }
-    .language-field { display: flex; flex-direction: column; gap: 0.4rem; }
-    .language-select { border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text); padding: 0.6rem; font-size: 0.95rem; min-height: 8rem; }
+    .language-field { display: flex; flex-direction: column; gap: 0.5rem; }
+    .language-select { border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text); padding: 0.6rem; font-size: 0.95rem; }
+    .selected-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .selected-stack .chip { border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); padding: 0.3rem 0.75rem; display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; background: rgba(255,255,255,0.05); }
+    .selected-stack button { border: none; background: transparent; color: var(--muted); cursor: pointer; font-size: 0.85rem; }
     .selected-hint { font-size: 0.8rem; color: var(--muted); margin: 0; }
     .section-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
     .action-row { display: inline-flex; gap: 0.8rem; }
@@ -103,7 +106,8 @@
           <label>Occupation<input id="modalOccupation" placeholder="Role" /></label>
           <div class="language-field">
             <span class="field-label">Languages</span>
-            <select id="languageSelect" class="language-select" multiple>
+            <select id="languageSelect" class="language-select">
+              <option value="" selected disabled>Pick a language to add</option>
               <option value="English">English</option>
               <option value="Gujarati">Gujarati</option>
               <option value="Hindi">Hindi</option>
@@ -142,6 +146,7 @@
               <option value="Romanian">Romanian</option>
               <option value="Hungarian">Hungarian</option>
             </select>
+            <div class="selected-stack" id="selectedLanguages"></div>
             <p class="selected-hint" id="languageHint">Choose languages from the list.</p>
           </div>
         </form>
@@ -152,10 +157,12 @@
       </div>
     </div>
   </div>
-      <script>
+        <script>
     const user = JSON.parse(sessionStorage.getItem('operionUserDetails') || '{}');
     let userName = sessionStorage.getItem('operionUserName') || '';
     let languages = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
+    const languageOptions = ['English', 'Gujarati', 'Hindi', 'Spanish', 'French', 'German', 'Portuguese', 'Italian', 'Arabic', 'Bengali', 'Mandarin', 'Japanese', 'Korean', 'Russian', 'Dutch', 'Swedish', 'Norwegian', 'Danish', 'Turkish', 'Thai', 'Vietnamese', 'Indonesian', 'Malay', 'Punjabi', 'Marathi', 'Telugu', 'Tamil', 'Kannada', 'Malayalam', 'Filipino', 'Hebrew', 'Greek', 'Polish', 'Czech', 'Ukrainian', 'Romanian', 'Hungarian'];
+
     const summaryHeading = document.getElementById('profileHeading');
     const summaryName = document.getElementById('profileName');
     const summaryAge = document.getElementById('profileAge');
@@ -185,39 +192,49 @@
     const modalPlace = document.getElementById('modalPlace');
     const modalOccupation = document.getElementById('modalOccupation');
     const languageSelect = document.getElementById('languageSelect');
+    const selectedStack = document.getElementById('selectedLanguages');
     const languageHint = document.getElementById('languageHint');
-    const hydrateSelect = () => {
-      if (!languageSelect) return;
-      Array.from(languageSelect.options).forEach(option => {
-        option.selected = languages.includes(option.value);
-      });
-      languageHint.textContent = languages.length ? `${languages.length} selected` : 'Choose at least one language.';
-    };
     const saveEdit = document.getElementById('saveEdit');
     const cancelEdit = document.getElementById('cancelEdit');
     const editBtn = document.getElementById('editProfileBtn');
     const settingsBtn = document.getElementById('settingsBtn');
-    let languageSelection = new Set(languages);
 
-    const renderLanguageGrid = () => {
-      languageGrid.innerHTML = languageOptions.map(lang => {
-        const active = languageSelection.has(lang) ? 'active' : '';
-        return `<button type="button" class="lang-btn ${active}" data-lang="${lang}">${lang}</button>`;
-      }).join('');
-      languageHint.textContent = languageSelection.size ? `${languageSelection.size} selected` : 'Choose at least one language.';
+    const renderSelectedLanguages = () => {
+      if (!selectedStack) return;
+      if (!languages.length) {
+        selectedStack.innerHTML = '<span class="selected-hint">No languages selected yet.</span>';
+      } else {
+        selectedStack.innerHTML = languages.map(lang => `
+          <span class="chip">
+            ${lang}
+            <button type="button" data-lang="${lang}">×</button>
+          </span>
+        `).join('');
+        selectedStack.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            languages = languages.filter(item => item !== btn.dataset.lang);
+            renderSelectedLanguages();
+            languageHint.textContent = languages.length ? `${languages.length} selected` : 'Choose at least one language.';
+          });
+        });
+      }
+      languageHint.textContent = languages.length ? `${languages.length} selected` : 'Choose at least one language.';
     };
 
-    const hydrateModal = () => {
+    const hydrateSelect = () => {
+      if (!languageSelect) return;
+      languageSelect.innerHTML = '<option value="" selected disabled>Pick a language to add</option>' + languageOptions.map(lang => `<option value="${lang}">${lang}</option>`).join('');
+      languageSelect.value = '';
+      renderSelectedLanguages();
+    };
+
+    const openModal = () => {
       modalName.value = userName || '';
       modalAge.value = user.age || '';
       modalColor.value = user.favoriteColor || '';
       modalPlace.value = user.favoritePlace || '';
       modalOccupation.value = user.occupation || '';
       hydrateSelect();
-    };
-
-    const openModal = () => {
-      hydrateModal();
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
     };
@@ -228,8 +245,13 @@
     };
 
     languageSelect?.addEventListener('change', () => {
-      languages = Array.from(languageSelect.selectedOptions).map(option => option.value);
-      languageHint.textContent = languages.length ? `${languages.length} selected` : "Choose at least one language.";
+      const chosen = languageSelect.value;
+      if (!chosen) return;
+      if (!languages.includes(chosen)) {
+        languages.push(chosen);
+        renderSelectedLanguages();
+      }
+      languageSelect.value = '';
     });
 
     editBtn?.addEventListener('click', () => {
@@ -240,7 +262,7 @@
     document.getElementById('modalBackdrop')?.addEventListener('click', closeModal);
 
     saveEdit?.addEventListener('click', () => {
-      if (!languageSelection.size) {
+      if (!languages.length) {
         languageHint.textContent = 'Pick at least one language before saving.';
         return;
       }
@@ -249,11 +271,13 @@
       user.favoritePlace = modalPlace.value.trim();
       user.occupation = modalOccupation.value.trim();
       userName = modalName.value.trim();
+
       sessionStorage.setItem('operionUserDetails', JSON.stringify(user));
       sessionStorage.setItem('operionUserName', userName);
       sessionStorage.setItem('operionAgentLanguage', JSON.stringify(languages));
 
       updateSummary();
+      renderSelectedLanguages();
       statusEl.textContent = 'Profile saved.';
       setTimeout(() => statusEl.textContent = '', 2000);
       closeModal();
