@@ -45,10 +45,8 @@
     .modal-actions button { border-radius: 999px; padding: 0.7rem 1.4rem; border: none; cursor: pointer; font-weight: 600; }
     .btn-secondary { background: rgba(255,255,255,0.08); color: var(--text); }
     .btn-primary { background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; }
-    .language-field { display: flex; flex-direction: column; gap: 0.5rem; }
-    .language-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.5rem; }
-    .lang-btn { border-radius: 0.9rem; border: 1px solid rgba(255,255,255,0.15); padding: 0.5rem 0.7rem; background: rgba(255,255,255,0.04); color: var(--text); font-size: 0.85rem; cursor: pointer; }
-    .lang-btn.active { border-color: rgba(124,107,255,0.8); background: rgba(124,107,255,0.2); }
+    .language-field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .language-select { border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text); padding: 0.6rem; font-size: 0.95rem; min-height: 8rem; }
     .selected-hint { font-size: 0.8rem; color: var(--muted); margin: 0; }
     .section-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
     .action-row { display: inline-flex; gap: 0.8rem; }
@@ -104,9 +102,47 @@
           <label>Favorite place<input id="modalPlace" placeholder="e.g., Goa" /></label>
           <label>Occupation<input id="modalOccupation" placeholder="Role" /></label>
           <div class="language-field">
-          <span class="field-label">Languages</span>
-          <div class="language-grid" id="languageGrid"></div>
-          <p class="selected-hint" id="languageHint">Choose from the full list.</p>
+            <span class="field-label">Languages</span>
+            <select id="languageSelect" class="language-select" multiple>
+              <option value="English">English</option>
+              <option value="Gujarati">Gujarati</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Spanish">Spanish</option>
+              <option value="French">French</option>
+              <option value="German">German</option>
+              <option value="Portuguese">Portuguese</option>
+              <option value="Italian">Italian</option>
+              <option value="Arabic">Arabic</option>
+              <option value="Bengali">Bengali</option>
+              <option value="Mandarin">Mandarin</option>
+              <option value="Japanese">Japanese</option>
+              <option value="Korean">Korean</option>
+              <option value="Russian">Russian</option>
+              <option value="Dutch">Dutch</option>
+              <option value="Swedish">Swedish</option>
+              <option value="Norwegian">Norwegian</option>
+              <option value="Danish">Danish</option>
+              <option value="Turkish">Turkish</option>
+              <option value="Thai">Thai</option>
+              <option value="Vietnamese">Vietnamese</option>
+              <option value="Indonesian">Indonesian</option>
+              <option value="Malay">Malay</option>
+              <option value="Punjabi">Punjabi</option>
+              <option value="Marathi">Marathi</option>
+              <option value="Telugu">Telugu</option>
+              <option value="Tamil">Tamil</option>
+              <option value="Kannada">Kannada</option>
+              <option value="Malayalam">Malayalam</option>
+              <option value="Filipino">Filipino</option>
+              <option value="Hebrew">Hebrew</option>
+              <option value="Greek">Greek</option>
+              <option value="Polish">Polish</option>
+              <option value="Czech">Czech</option>
+              <option value="Ukrainian">Ukrainian</option>
+              <option value="Romanian">Romanian</option>
+              <option value="Hungarian">Hungarian</option>
+            </select>
+            <p class="selected-hint" id="languageHint">Choose languages from the list.</p>
           </div>
         </form>
         <div class="modal-actions">
@@ -120,10 +156,6 @@
     const user = JSON.parse(sessionStorage.getItem('operionUserDetails') || '{}');
     let userName = sessionStorage.getItem('operionUserName') || '';
     let languages = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
-    const languageOptions = [
-      'English','Gujarati','Hindi','Spanish','French','German','Portuguese','Italian','Arabic','Bengali','Mandarin','Japanese','Korean','Russian','Dutch','Swedish','Norwegian','Danish','Turkish','Thai','Vietnamese','Indonesian','Malay','Punjabi','Marathi','Telugu','Tamil','Kannada','Malayalam','Filipino','Hebrew','Greek','Polish','Czech','Ukrainian','Romanian','Hungarian'
-    ];
-
     const summaryHeading = document.getElementById('profileHeading');
     const summaryName = document.getElementById('profileName');
     const summaryAge = document.getElementById('profileAge');
@@ -152,8 +184,15 @@
     const modalColor = document.getElementById('modalColor');
     const modalPlace = document.getElementById('modalPlace');
     const modalOccupation = document.getElementById('modalOccupation');
-    const languageGrid = document.getElementById('languageGrid');
+    const languageSelect = document.getElementById('languageSelect');
     const languageHint = document.getElementById('languageHint');
+    const hydrateSelect = () => {
+      if (!languageSelect) return;
+      Array.from(languageSelect.options).forEach(option => {
+        option.selected = languages.includes(option.value);
+      });
+      languageHint.textContent = languages.length ? `${languages.length} selected` : 'Choose at least one language.';
+    };
     const saveEdit = document.getElementById('saveEdit');
     const cancelEdit = document.getElementById('cancelEdit');
     const editBtn = document.getElementById('editProfileBtn');
@@ -174,8 +213,7 @@
       modalColor.value = user.favoriteColor || '';
       modalPlace.value = user.favoritePlace || '';
       modalOccupation.value = user.occupation || '';
-      languageSelection = new Set(languages);
-      renderLanguageGrid();
+      hydrateSelect();
     };
 
     const openModal = () => {
@@ -189,16 +227,9 @@
       modal.setAttribute('aria-hidden', 'true');
     };
 
-    languageGrid?.addEventListener('click', (event) => {
-      const btn = event.target.closest('button.lang-btn');
-      if (!btn) return;
-      const lang = btn.dataset.lang;
-      if (languageSelection.has(lang)) {
-        languageSelection.delete(lang);
-      } else {
-        languageSelection.add(lang);
-      }
-      renderLanguageGrid();
+    languageSelect?.addEventListener('change', () => {
+      languages = Array.from(languageSelect.selectedOptions).map(option => option.value);
+      languageHint.textContent = languages.length ? `${languages.length} selected` : "Choose at least one language.";
     });
 
     editBtn?.addEventListener('click', () => {
@@ -218,8 +249,6 @@
       user.favoritePlace = modalPlace.value.trim();
       user.occupation = modalOccupation.value.trim();
       userName = modalName.value.trim();
-      languages = Array.from(languageSelection);
-
       sessionStorage.setItem('operionUserDetails', JSON.stringify(user));
       sessionStorage.setItem('operionUserName', userName);
       sessionStorage.setItem('operionAgentLanguage', JSON.stringify(languages));
