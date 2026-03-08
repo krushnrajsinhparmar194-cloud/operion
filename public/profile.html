@@ -34,13 +34,7 @@
     .photo-status { font-size: 0.85rem; color: var(--muted); min-height: 1.2rem; }
     h1 { margin: 0; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
-    .card { border: 1px solid rgba(255,255,255,0.1); border-radius: 1.2rem; padding: 1rem; background: rgba(255,255,255,0.04); display: flex; flex-direction: column; gap: 0.4rem; }
-    .card strong { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
-    .card input { border: none; border-radius: 0.8rem; background: rgba(255,255,255,0.08); color: var(--text); padding: 0.6rem 0.75rem; font-size: 1rem; }
-    .card input:focus { outline: 2px solid rgba(124,107,255,0.5); }
-    .save-btn { align-self: flex-end; border: none; border-radius: 999px; padding: 0.8rem 1.5rem; font-size: 1rem; font-weight: 600; color: #041021; background: linear-gradient(120deg, #4da8ff, #7c6bff); cursor: pointer; margin-top: 0.5rem; }
-    .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    .save-status { font-size: 0.85rem; color: var(--muted); }
+    .card { border: 1px solid rgba(255,255,255,0.1); border-radius: 1.2rem; padding: 1rem; background: rgba(255,255,255,0.04); }
   </style>
 </head>
 <body>
@@ -64,33 +58,14 @@
         <div class="photo-status" id="photoStatus"></div>
       </div>
     </div>
-    <div class="grid" id="profileForm">
-      <label class="card">
-        <strong for="inputName">Full name</strong>
-        <input id="inputName" name="name" placeholder="Your name" />
-      </label>
-      <label class="card">
-        <strong for="inputAge">Age</strong>
-        <input type="number" id="inputAge" name="age" min="1" max="120" placeholder="Age" />
-      </label>
-      <label class="card">
-        <strong for="inputColor">Favorite color</strong>
-        <input id="inputColor" name="favoriteColor" placeholder="e.g., Indigo" />
-      </label>
-      <label class="card">
-        <strong for="inputPlace">Favorite place</strong>
-        <input id="inputPlace" name="favoritePlace" placeholder="e.g., Goa" />
-      </label>
-      <label class="card">
-        <strong for="inputOccupation">Occupation</strong>
-        <input id="inputOccupation" name="occupation" placeholder="Role" />
-      </label>
-      <label class="card">
-        <strong for="inputLanguages">Languages</strong>
-        <input id="inputLanguages" name="languages" placeholder="Comma separated" />
-      </label>
+    <div class="grid">
+      <div class="card"><strong>Full name</strong><p id="profileName">—</p></div>
+      <div class="card"><strong>Age</strong><p id="profileAge">—</p></div>
+      <div class="card"><strong>Favorite color</strong><p id="profileColor">—</p></div>
+      <div class="card"><strong>Favorite place</strong><p id="profilePlace">—</p></div>
+      <div class="card"><strong>Occupation</strong><p id="profileOccupation">—</p></div>
+      <div class="card"><strong>Languages</strong><p id="profileLanguages">—</p></div>
     </div>
-    <button type="button" class="save-btn" id="saveProfile">Save details</button>
   </div>
   <script>
     const user = JSON.parse(sessionStorage.getItem('operionUserDetails') || '{}');
@@ -102,58 +77,6 @@
     document.getElementById('profileColor').textContent = user.favoriteColor || '—';
     document.getElementById('profilePlace').textContent = user.favoritePlace || '—';
     document.getElementById('profileOccupation').textContent = user.occupation || '—';
-    const displayName = document.getElementById('profileHeading');
-    const nameField = document.getElementById('inputName');
-    const ageField = document.getElementById('inputAge');
-    const colorField = document.getElementById('inputColor');
-    const placeField = document.getElementById('inputPlace');
-    const occupationField = document.getElementById('inputOccupation');
-    const languageField = document.getElementById('inputLanguages');
-    const saveBtn = document.getElementById('saveProfile');
-    const formEl = document.getElementById('profileForm');
-
-    const updateSummary = () => {
-      displayName.textContent = nameField.value || 'Profile';
-    };
-
-    const hydrateForm = () => {
-      nameField.value = userName || '';
-      ageField.value = user.age || '';
-      colorField.value = user.favoriteColor || '';
-      placeField.value = user.favoritePlace || '';
-      occupationField.value = user.occupation || '';
-      languageField.value = languages.join(', ');
-      updateSummary();
-    };
-
-    hydrateForm();
-    formEl?.addEventListener('input', () => {
-      saveBtn.disabled = false;
-    });
-
-    saveBtn?.addEventListener('click', () => {
-      const data = {
-        age: ageField.value.trim(),
-        favoriteColor: colorField.value.trim(),
-        favoritePlace: placeField.value.trim(),
-        occupation: occupationField.value.trim()
-      };
-      const updatedName = nameField.value.trim() || userName || '';
-      document.getElementById('profileName').textContent = updatedName || '—';
-      document.getElementById('profileHeading').textContent = updatedName || 'Profile';
-      document.getElementById('profileAge').textContent = data.age || '—';
-      document.getElementById('profileColor').textContent = data.favoriteColor || '—';
-      document.getElementById('profilePlace').textContent = data.favoritePlace || '—';
-      document.getElementById('profileOccupation').textContent = data.occupation || '—';
-      sessionStorage.setItem('operionUserDetails', JSON.stringify(data));
-      sessionStorage.setItem('operionUserName', nameField.value.trim());
-      const langs = languageField.value.split(',').map(v => v.trim()).filter(Boolean);
-      sessionStorage.setItem('operionAgentLanguage', JSON.stringify(langs));
-      saveBtn.disabled = true;
-      statusEl.textContent = 'Profile saved. Dashboard will reflect this.';
-      setTimeout(() => statusEl.textContent = '', 2500);
-    });
-
     document.getElementById('profileLanguages').textContent = languages.length ? languages.join(', ') : '—';
     const photoKey = 'operionProfilePhoto';
     const previewEl = document.getElementById('photoPreview');
