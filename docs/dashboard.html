@@ -392,10 +392,26 @@
     </form>
   </section>
   <script>
-    const lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
-    const langs = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
-    const user = JSON.parse(sessionStorage.getItem('operionUserDetails') || '{}');
+    let lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
+    let langs = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
+    let user = JSON.parse(sessionStorage.getItem('operionUserDetails') || '{}');
     const userName = sessionStorage.getItem('operionUserName') || '';
+    if (!lead.name) {
+      lead = { name: 'Command bridge', role: 'Ops orchestrator' };
+    }
+    if (!langs.length) {
+      langs = ['English','Hindi'];
+    }
+    if (!Object.keys(user).length) {
+      user = {
+        occupation: 'Ops lead',
+        hours: '9 AM – 6 PM',
+        timezone: 'Asia/Kolkata',
+        age: '28',
+        favoriteColor: 'Indigo',
+        favoritePlace: 'Lisbon'
+      };
+    }
     document.getElementById('profileName').textContent = userName || 'Operator';
     document.getElementById('profileRole').textContent = user.occupation || 'Ops lead';
     const avatarEl = document.getElementById('profileAvatar');
