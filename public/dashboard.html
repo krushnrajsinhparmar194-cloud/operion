@@ -80,8 +80,9 @@
     .main-content { display: flex; flex-direction: column; gap: 2rem; }
     @media (max-width: 960px) { .dashboard-layout { grid-template-columns: 1fr; } .sidebar { flex-direction: row; overflow-x: auto; } }
     .profile-chip { display: flex; align-items: center; gap: 0.8rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; padding: 0.6rem 1rem; background: rgba(255,255,255,0.05); }
+    .profile-chip.compact { border-radius: 1rem; padding: 0.45rem 0.9rem; }
     .profile-btn { border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; padding: 0.35rem 0.9rem; text-decoration: none; color: var(--text); background: rgba(124,107,255,0.2); font-size: 0.85rem; }
-    .profile-chip .avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
+    .profile-chip .avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
     .summaries { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
     .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
     .metric-card { border-radius: 1.4rem; border: 1px solid rgba(255,255,255,0.12); padding: 1.2rem; background: rgba(255,255,255,0.04); display: flex; flex-direction: column; gap: 0.3rem; }
@@ -242,7 +243,7 @@
       </div>
       <button class="icon-btn has-tooltip" id="notifBtn" data-tooltip="Notifications">🔔<span class="notif-count" id="notifCount">0</span></button>
       <button class="action-btn primary">+ New action</button>
-      <div class="profile-chip">
+      <div class="profile-chip compact">
         <div class="avatar" id="profileAvatar" aria-hidden="true">👤</div>
         <div>
           <strong id="profileName">User</strong>
