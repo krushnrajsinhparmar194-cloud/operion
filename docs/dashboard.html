@@ -127,6 +127,14 @@
     .status-offline { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); }
     .work-tabs { display: flex; gap: 0.6rem; margin-bottom: 1rem; }
     .work-tab { border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: var(--text); padding: 0.45rem 1rem; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease; }
+    .skeleton-block { border-radius: 1rem; background: rgba(255,255,255,0.05); position: relative; overflow: hidden; }
+    .skeleton-block::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.12), rgba(255,255,255,0)); transform: translateX(-100%); animation: shimmer 1.4s infinite; }
+    .skeleton-line { height: 14px; margin: 0.4rem 0; border-radius: 999px; background: rgba(255,255,255,0.08); position: relative; overflow: hidden; }
+    .skeleton-line::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.25), rgba(255,255,255,0)); transform: translateX(-100%); animation: shimmer 1.4s infinite; }
+    @keyframes shimmer { 100% { transform: translateX(100%); } }
+    .has-tooltip { position: relative; }
+    .has-tooltip::after { content: attr(data-tooltip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: rgba(15,23,42,0.95); color: #fff; font-size: 0.72rem; padding: 0.3rem 0.6rem; border-radius: 0.4rem; opacity: 0; pointer-events: none; transition: opacity 0.1s ease; white-space: nowrap; }
+    .has-tooltip:hover::after { opacity: 1; }
     .work-tab.active { background: rgba(124,107,255,0.25); border-color: transparent; }
     .work-tab:hover { border-color: rgba(255,255,255,0.4); }
     .work-list { display: flex; flex-direction: column; gap: 0.9rem; max-height: 320px; overflow-y: auto; }
@@ -179,7 +187,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-top">
         <div class="sidebar-logo">Operion</div>
-        <button class="collapse-btn" id="collapseSidebar">⇤</button>
+        <button class="collapse-btn has-tooltip" id="collapseSidebar" data-tooltip="Collapse sidebar">⇤</button>
       </div>
       <nav>
         <a href="dashboard.html" class="sidebar-link active"><span>📊</span><span>Dashboard</span></a>
@@ -204,7 +212,7 @@
         <span>🔍</span>
         <input type="search" placeholder="Search agents, tasks..." />
       </div>
-      <button class="icon-btn" id="notifBtn">🔔<span class="notif-count" id="notifCount">0</span></button>
+      <button class="icon-btn has-tooltip" id="notifBtn" data-tooltip="Notifications">🔔<span class="notif-count" id="notifCount">0</span></button>
       <button class="action-btn primary">+ New action</button>
       <div class="profile-chip">
         <div class="avatar" id="profileAvatar" aria-hidden="true">👤</div>
@@ -216,13 +224,36 @@
     </div>
   </header>
   <section class="metrics" id="metricsCards">
-    <div class="metric-card"><span>Loading metrics…</span></div>
+    <div class="metric-card skeleton-block">
+      <div class="skeleton-line" style="width:60%"></div>
+      <div class="skeleton-line" style="height:32px;width:40%"></div>
+      <div class="skeleton-line" style="width:80%"></div>
+    </div>
+    <div class="metric-card skeleton-block">
+      <div class="skeleton-line" style="width:55%"></div>
+      <div class="skeleton-line" style="height:32px;width:42%"></div>
+      <div class="skeleton-line" style="width:68%"></div>
+    </div>
+    <div class="metric-card skeleton-block">
+      <div class="skeleton-line" style="width:48%"></div>
+      <div class="skeleton-line" style="height:32px;width:35%"></div>
+      <div class="skeleton-line" style="width:70%"></div>
+    </div>
+    <div class="metric-card skeleton-block">
+      <div class="skeleton-line" style="width:62%"></div>
+      <div class="skeleton-line" style="height:32px;width:50%"></div>
+      <div class="skeleton-line" style="width:75%"></div>
+    </div>
   </section>
   <section class="panel-row activity-row">
     <div class="card">
       <h3>Agents selected</h3>
       <button class="add-agent-btn" id="openAgentModal">+ Add agent</button>
-      <div class="agent-list" id="agentList">Loading…</div>
+      <div class="agent-list" id="agentList">
+        <div class="skeleton-block" style="height:72px;"></div>
+        <div class="skeleton-block" style="height:72px;"></div>
+        <div class="skeleton-block" style="height:72px;"></div>
+      </div>
       <div class="see-all"><a href="agents-full.html">See all</a></div>
     </div>
     <div class="card">
@@ -232,7 +263,10 @@
         <button class="work-tab" data-tab="progress">In progress</button>
         <button class="work-tab" data-tab="done">Done</button>
       </div>
-      <div class="work-list" id="workList">Preparing tasks…</div>
+      <div class="work-list" id="workList">
+        <div class="skeleton-block" style="height:110px;"></div>
+        <div class="skeleton-block" style="height:110px;"></div>
+      </div>
     </div>
     <aside class="activity-feed-card">
       <h3>Live activity</h3>
@@ -483,10 +517,10 @@ const scheduleCard = document.querySelector('.schedule-card');
               <span class="work-tag">${item.status === 'done' ? 'Completed' : item.status === 'progress' ? 'Running' : 'Queued'}</span>
             </div>
             <div class="work-actions">
-              <button class="work-action-btn" data-action="done" title="Mark done">✔</button>
-              <button class="work-action-btn" data-action="reassign" title="Reassign">↺</button>
-              <button class="work-action-btn" data-action="edit" title="Edit">✎</button>
-              <button class="work-action-btn" data-action="delete" title="Delete">✕</button>
+              <button class="work-action-btn has-tooltip" data-action="done" data-tooltip="Mark done">✔</button>
+              <button class="work-action-btn has-tooltip" data-action="reassign" data-tooltip="Reassign">↺</button>
+              <button class="work-action-btn has-tooltip" data-action="edit" data-tooltip="Edit task">✎</button>
+              <button class="work-action-btn has-tooltip" data-action="delete" data-tooltip="Delete task">✕</button>
             </div>
           </div>
           <p>${item.work}</p>
