@@ -227,9 +227,9 @@
       languageHint.textContent = languages.length ? `${languages.length} selected` : 'Choose at least one language.';
     };
 
-    const hydrateSelect
+    renderSelectedLanguages();
 
-    renderSelectedLanguages(); = () => {
+    const hydrateSelect = () => {
       if (!languageSelect) return;
       languageSelect.innerHTML = '<option value="" selected disabled>Pick a language to add</option>' + languageOptions.map(lang => `<option value="${lang}">${lang}</option>`).join('');
       languageSelect.value = '';
