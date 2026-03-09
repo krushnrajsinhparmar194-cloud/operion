@@ -3,36 +3,270 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Operion · Agents</title>
+  <title>Operion · Recommended Agents</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: 'Inter', sans-serif; margin: 0; min-height: 100vh; background: #03050b; color: #eef2ff; padding: 2.5rem; }
-    h1 { margin-bottom: 1rem; }
-    .agents-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
-    .agent-card { border-radius: 1.2rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); padding: 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
-    .agent-card span { font-size: 0.85rem; color: #9badcf; }
-    .status-badge { align-self: flex-start; border-radius: 999px; padding: 0.2rem 0.7rem; font-size: 0.8rem; }
-    .status-online { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-    .status-offline { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-    .availability-badge { border-radius: 999px; padding: 0.2rem 0.6rem; font-size: 0.75rem; background: rgba(124,107,255,0.2); color: #eef2ff; margin-left: 0.4rem; }
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #050814;
+      --card: rgba(255,255,255,0.04);
+      --text: #eef2ff;
+      --muted: #9badcf;
+      --accent: #7c6bff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(124,107,255,0.35), transparent 60%),
+        radial-gradient(circle at 80% 8%, rgba(71,169,255,0.28), transparent 55%),
+        var(--bg);
+      color: var(--text);
+      padding: clamp(1.5rem, 2vw, 2.8rem);
+    }
+    a.back-link {
+      display: inline-flex;
+      gap: 0.4rem;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 999px;
+      padding: 0.4rem 0.9rem;
+      background: rgba(4,6,14,0.8);
+    }
+    h1 { margin: 1.2rem 0 0.4rem; font-size: clamp(2rem, 4vw, 2.6rem); }
+    p.lede { margin: 0 0 1.5rem; color: var(--muted); max-width: 540px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+    .agent-card {
+      border-radius: 1.2rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--card);
+      padding: 1rem;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.2s ease, transform 0.15s ease;
+    }
+    .agent-card:hover { border-color: rgba(124,107,255,0.5); transform: translateY(-2px); }
+    .agent-card.selected { border-color: rgba(124,107,255,0.9); background: rgba(124,107,255,0.15); }
+    .agent-card strong { font-size: 1rem; }
+    .agent-card p { margin: 0.4rem 0 0; font-size: 0.9rem; color: var(--muted); }
+    .agent-card span.badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      border-radius: 999px;
+      padding: 0.25rem 0.7rem;
+      font-size: 0.75rem;
+      background: rgba(255,255,255,0.08);
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .section-head h2 { margin: 0; font-size: 1.2rem; }
+    .search-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 0.35rem 0.85rem;
+      background: rgba(255,255,255,0.04);
+    }
+    .search-box input {
+      border: none;
+      background: transparent;
+      color: var(--text);
+      width: 200px;
+    }
+    .search-box input:focus { outline: none; }
+    .footer-actions {
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+    button.primary {
+      border: none;
+      border-radius: 1rem;
+      padding: 0.9rem 1.3rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #4da8ff, #7c6bff);
+      color: #041021;
+      cursor: pointer;
+    }
+    button.secondary {
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: transparent;
+      color: var(--text);
+      padding: 0.85rem 1.2rem;
+      cursor: pointer;
+    }
+    .selected-pill {
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 999px;
+      padding: 0.25rem 0.8rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
   </style>
 </head>
 <body>
-  <h1>Agents</h1>
-  <div id="agentsGrid" class="agents-grid">Loading…</div>
+  <a href="industry.html" class="back-link">← Back</a>
+  <h1 id="agentsTitle">Recommended agents</h1>
+  <p class="lede" id="agentsSubtitle">Choose at least one starter agent pack to fast-track your workspace setup.</p>
+
+  <div class="section-head">
+    <h2 id="recommendedLabel">Top picks</h2>
+    <span class="selected-pill" id="selectedCount">0 selected</span>
+  </div>
+  <div class="grid" id="recommendedGrid">Loading…</div>
+
+  <div class="section-head">
+    <h2>Browse all templates</h2>
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="search" id="searchInput" placeholder="Search agents" />
+    </div>
+  </div>
+  <div class="grid" id="allGrid"></div>
+
+  <div class="footer-actions">
+    <button class="primary" id="continueBtn">Continue</button>
+    <button class="secondary" id="skipBtn">Skip for now</button>
+  </div>
+
   <script>
-    fetch('agent-list.json')
-      .then(resp => resp.json())
-      .then(agents => {
-        document.getElementById('agentsGrid').innerHTML = agents.map(agent => `
-          <div class="agent-card">
-            <strong>${agent.name}</strong>
-            <span>Status: <span class="status-badge ${agent.status === 'online' ? 'status-online' : agent.status === 'standby' ? 'status-paused' : 'status-offline'}">${agent.status}</span>
-              <span class="availability-badge">${agent.status === 'online' ? 'Free' : 'Busy'}</span></span>
-            <span>Last active: ${new Date(agent.last_active).toLocaleString()}</span>
-          </div>
-        `).join('');
+    const recommendedGrid = document.getElementById('recommendedGrid');
+    const allGrid = document.getElementById('allGrid');
+    const searchInput = document.getElementById('searchInput');
+    const selectedCount = document.getElementById('selectedCount');
+    const continueBtn = document.getElementById('continueBtn');
+    const skipBtn = document.getElementById('skipBtn');
+    const titleEl = document.getElementById('agentsTitle');
+    const subtitleEl = document.getElementById('agentsSubtitle');
+    const recommendedLabel = document.getElementById('recommendedLabel');
+
+    const industry = sessionStorage.getItem('operionIndustry') || 'General operations';
+    titleEl.textContent = `Recommended agents for ${industry}`;
+    subtitleEl.textContent = 'Choose the agents that match your workflows. We pre-selected ones based on your industry.';
+    recommendedLabel.textContent = `Top picks for ${industry}`;
+
+    const recommendedMap = {
+      'Software & SaaS': [
+        { title: 'Release Pilot', desc: 'Monitors deploy windows + release notes.' },
+        { title: 'Incident Triage', desc: 'Sorts alerts, drafts comms automatically.' },
+        { title: 'Product QA', desc: 'Runs smoke checks on nightly builds.' },
+        { title: 'Customer Success Copilot', desc: 'Summaries for high-touch accounts.' }
+      ],
+      'Fintech / Banking': [
+        { title: 'Risk Analyst', desc: 'Flags anomalous spend + risk queues.' },
+        { title: 'Compliance Desk', desc: 'Keeps audit trails tidy.' },
+        { title: 'Billing Desk', desc: 'Watches invoices + payouts.' },
+        { title: 'Treasury Desk', desc: 'Reminds about liquidity thresholds.' }
+      ],
+      'E-commerce & Retail': [
+        { title: 'Ops Analyst', desc: 'Tracks fulfillment SLAs.' },
+        { title: 'Promo Calendar', desc: 'Plans drops + discount runs.' },
+        { title: 'Inventory Pilot', desc: 'Warns on low-stock SKUs.' },
+        { title: 'Support Inbox Copilot', desc: 'Drafts responses for VIP buyers.' }
+      ]
+    };
+
+    const defaultAgents = [
+      { title: 'Ops Analyst', desc: 'Keeps KPIs + alerts in one place.' },
+      { title: 'Billing Desk', desc: 'Reconciles payments and invoices.' },
+      { title: 'Compliance Desk', desc: 'Audit-ready snapshots.' },
+      { title: 'Customer Success Copilot', desc: 'Daily health signals.' },
+      { title: 'Incident Triage', desc: 'Escalation + paging rules.' },
+      { title: 'Release Pilot', desc: 'Deploy timeline companion.' },
+      { title: 'Risk Analyst', desc: 'Surface anomalies instantly.' },
+      { title: 'Promo Calendar', desc: 'Campaign reminders + drafts.' }
+    ];
+
+    const recommendedList = recommendedMap[industry] || defaultAgents.slice(0, 4);
+    const allAgents = Array.from(new Set([...defaultAgents, ...recommendedList]));
+    const selected = new Set(JSON.parse(sessionStorage.getItem('operionAgents') || '[]'));
+
+    const renderCard = (agent, container) => {
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'agent-card';
+      card.innerHTML = `<strong>${agent.title}</strong><p>${agent.desc || ''}</p>`;
+      if (selected.has(agent.title)) card.classList.add('selected');
+      card.addEventListener('click', () => {
+        if (selected.has(agent.title)) {
+          selected.delete(agent.title);
+        } else {
+          selected.add(agent.title);
+        }
+        card.classList.toggle('selected');
+        updateSelectedCount();
       });
+      container.appendChild(card);
+    };
+
+    const renderRecommended = () => {
+      recommendedGrid.innerHTML = '';
+      recommendedList.forEach(agent => renderCard(agent, recommendedGrid));
+    };
+
+    const renderAll = (filter = '') => {
+      allGrid.innerHTML = '';
+      const list = allAgents.filter(agent => agent.title.toLowerCase().includes(filter.toLowerCase()));
+      (list.length ? list : [{ title: 'No agents match that search.', desc: '' }]).forEach(agent => {
+        if (agent.desc === '' && agent.title.startsWith('No agents')) {
+          const empty = document.createElement('div');
+          empty.style.color = 'var(--muted)';
+          empty.textContent = agent.title;
+          allGrid.appendChild(empty);
+        } else {
+          renderCard(agent, allGrid);
+        }
+      });
+    };
+
+    const updateSelectedCount = () => {
+      selectedCount.textContent = `${selected.size} selected`;
+      sessionStorage.setItem('operionAgents', JSON.stringify(Array.from(selected)));
+    };
+
+    continueBtn.addEventListener('click', () => {
+      if (!selected.size) {
+        alert('Pick at least one agent to continue.');
+        return;
+      }
+      window.location.href = 'common-agents.html';
+    });
+
+    skipBtn.addEventListener('click', () => {
+      sessionStorage.setItem('operionAgents', JSON.stringify(Array.from(selected)));
+      window.location.href = 'common-agents.html';
+    });
+
+    searchInput.addEventListener('input', e => {
+      renderAll(e.target.value.trim());
+    });
+
+    renderRecommended();
+    renderAll();
+    updateSelectedCount();
   </script>
 </body>
 </html>
