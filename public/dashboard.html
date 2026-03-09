@@ -116,6 +116,21 @@
     .task-action { border: none; border-radius: 999px; background: rgba(255,255,255,0.1); color: var(--text); width: 28px; height: 28px; cursor: pointer; }
     .task-chip strong { display: block; }
     .task-chip span { font-size: 0.85rem; color: var(--muted); }
+    .ai-grid { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 1rem; }
+    .ai-card h3 { margin-top: 0; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-size: 0.95rem; }
+    .ai-task { border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 0.9rem; margin-bottom: 0.7rem; background: rgba(255,255,255,0.03); display: flex; justify-content: space-between; gap: 0.6rem; }
+    .ai-task strong { display: block; }
+    .ai-task small { color: var(--muted); }
+    .ai-reason { font-size: 0.85rem; color: var(--muted); margin: 0.2rem 0 0; }
+    .ai-task button { border: none; border-radius: 999px; padding: 0.35rem 0.9rem; background: rgba(124,107,255,0.25); color: var(--text); cursor: pointer; }
+    .alert-list { display: flex; flex-direction: column; gap: 0.8rem; }
+    .alert-item { border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 0.8rem 1rem; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); }
+    .alert-item strong { font-size: 0.95rem; }
+    .alert-meta { font-size: 0.8rem; color: var(--muted); }
+    .alert-badge { border-radius: 999px; padding: 0.25rem 0.8rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .alert-critical { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); }
+    .alert-info { background: rgba(59,130,246,0.2); color: #3b82f6; border: 1px solid rgba(59,130,246,0.4); }
+    @media (max-width: 960px) { .ai-grid { grid-template-columns: 1fr; } }
     .schedule-item span { font-size: 0.85rem; color: var(--muted); }
     .schedule-item p { margin: 0.1rem 0 0; font-size: 1rem; }
     .agent-meta { margin: 0; font-size: 0.85rem; color: var(--muted); }
@@ -291,6 +306,16 @@
     <button class="action-btn">🤝 Invite teammate</button>
   </section>
 
+  <section class="ai-grid">
+    <div class="card ai-card">
+      <h3>AI task suggestions</h3>
+      <div id="aiTaskList"></div>
+    </div>
+    <div class="card ai-card">
+      <h3>Smart alerts</h3>
+      <div class="alert-list" id="smartAlertList"></div>
+    </div>
+  </section>
   <div class="task-modal" id="taskModal" aria-hidden="true">
     <div class="task-modal-backdrop"></div>
     <div class="task-modal-panel">
@@ -332,6 +357,17 @@
       { text: 'Deployment window starts in 30 min', at: 'Today · 3:30 PM', read: false },
       { text: 'Billing Desk paused for review', at: 'Today · 1:05 PM', read: true },
       { text: 'Escalation cleared: API latency', at: 'Yesterday · 9:10 PM', read: true }
+    ];
+
+    const aiSuggestions = [
+      { title: 'Spin up claims QA sweep', reason: '92% of backlog tagged “claims” for >6h', action: 'Launch QA pack' },
+      { title: 'Send proactive client digest', reason: '4 VIP clients haven’t received updates today', action: 'Draft digest' },
+      { title: 'Review risk mitigation tasks', reason: '2 escalations unresolved after handoff', action: 'Open queue' }
+    ];
+
+    const smartAlerts = [
+      { title: 'Ops Analyst slowed', status: 'critical', detail: 'Throughput down 18% vs baseline' },
+      { title: 'Incident queue calm', status: 'info', detail: 'No new tickets in 45 minutes' }
     ];
 
         const collapseBtn = document.getElementById('collapseSidebar');
@@ -460,7 +496,37 @@ const scheduleCard = document.querySelector('.schedule-card');
     const userEl = document.getElementById('userSummary');
     if (userEl) userEl.textContent = `Age ${user.age || '—'} · Fav color ${user.favoriteColor || '—'} · Fav place ${user.favoritePlace || '—'} · Role ${user.occupation || '—'}`;
 
+    const aiTaskList = document.getElementById('aiTaskList');
+    const smartAlertList = document.getElementById('smartAlertList');
+
+    const renderAiPanels = () => {
+      if (aiTaskList) {
+        aiTaskList.innerHTML = aiSuggestions.map(suggestion => `
+          <div class="ai-task">
+            <div>
+              <strong>${suggestion.title}</strong>
+              <p class="ai-reason">${suggestion.reason}</p>
+            </div>
+            <button type="button">${suggestion.action}</button>
+          </div>
+        `).join('');
+      }
+      if (smartAlertList) {
+        smartAlertList.innerHTML = smartAlerts.map(alert => `
+          <div class="alert-item">
+            <div>
+              <strong>${alert.title}</strong>
+              <p class="alert-meta">${alert.detail}</p>
+            </div>
+            <span class="alert-badge ${alert.status === 'critical' ? 'alert-critical' : 'alert-info'}">${alert.status}</span>
+          </div>
+        `).join('');
+      }
+    };
+
     const agentListEl = document.getElementById('agentList');
+    renderAiPanels();
+
     fetch('agent-list.json')
       .then(resp => resp.json())
       .then(agentData => {
