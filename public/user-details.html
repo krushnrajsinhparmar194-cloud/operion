@@ -76,11 +76,34 @@
         </div>
         <div>
           <label for="timezone">Timezone</label>
-          <input type="text" id="timezone" placeholder="Asia/Kolkata" />
+          <select id="timezone">
+            <option value="" disabled selected>Pick your timezone</option>
+            <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+            <option value="Asia/Dubai">Asia/Dubai (GST)</option>
+            <option value="Asia/Singapore">Asia/Singapore (SGT)</option>
+            <option value="Europe/London">Europe/London (GMT/BST)</option>
+            <option value="Europe/Berlin">Europe/Berlin (CET/CEST)</option>
+            <option value="Africa/Nairobi">Africa/Nairobi (EAT)</option>
+            <option value="America/New_York">America/New_York (ET)</option>
+            <option value="America/Los_Angeles">America/Los_Angeles (PT)</option>
+            <option value="America/Sao_Paulo">America/Sao_Paulo (BRT)</option>
+            <option value="Australia/Sydney">Australia/Sydney (AEST)</option>
+            <option value="UTC">UTC</option>
+          </select>
         </div>
         <div>
           <label for="hours">Typical working hours</label>
-          <input type="text" id="hours" placeholder="9 AM – 6 PM IST" />
+          <select id="hours">
+            <option value="" disabled selected>Select hours</option>
+            <option value="7 AM – 4 PM">7 AM – 4 PM</option>
+            <option value="8 AM – 5 PM">8 AM – 5 PM</option>
+            <option value="9 AM – 6 PM">9 AM – 6 PM</option>
+            <option value="10 AM – 7 PM">10 AM – 7 PM</option>
+            <option value="11 AM – 8 PM">11 AM – 8 PM</option>
+            <option value="Noon – 9 PM">Noon – 9 PM</option>
+            <option value="Night shift">Night shift</option>
+            <option value="Flexible / On call">Flexible / On call</option>
+          </select>
         </div>
       </div>
       <button type="submit">Save details</button>

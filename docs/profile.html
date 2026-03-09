@@ -42,6 +42,7 @@
     .modal-form { display: flex; flex-direction: column; gap: 0.8rem; }
     .modal-form label { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
     .modal-form input { border: none; border-radius: 0.8rem; background: rgba(255,255,255,0.08); color: var(--text); padding: 0.6rem 0.75rem; }
+    .modal-form select { border: none; border-radius: 0.8rem; background: rgba(255,255,255,0.08); color: var(--text); padding: 0.6rem 0.75rem; }
     .modal-actions { display: flex; justify-content: flex-end; gap: 0.8rem; margin-top: 0.2rem; }
     .modal-actions button { border-radius: 999px; padding: 0.7rem 1.4rem; border: none; cursor: pointer; font-weight: 600; }
     .btn-secondary { background: rgba(255,255,255,0.08); color: var(--text); }
@@ -66,7 +67,7 @@
     .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
     .contact-item { border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); }
     .contact-item small { display: block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; }
-    .contact-item p { margin: 0; font-size: 1rem; color: var(--text); }
+    .contact-item p { margin: 0; font-size: 0.95rem; color: var(--text); word-break: break-word; }
     .pref-card { border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 1.5rem; background: rgba(255,255,255,0.03); display: flex; flex-direction: column; gap: 1.2rem; }
     .pref-card h2 { margin: 0; }
     .pref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
@@ -209,8 +210,35 @@
           <label>Lead agent<input id="modalLead" placeholder="Agent name" /></label>
           <label>Work email<input type="email" id="modalEmail" placeholder="you@operion.ai" /></label>
           <label>Phone / WhatsApp<input id="modalPhone" placeholder="+91 90000 00000" /></label>
-          <label>Timezone<input id="modalTimezone" placeholder="Asia/Kolkata" /></label>
-          <label>Working hours<input id="modalHours" placeholder="9 AM – 6 PM IST" /></label>
+          <label>Timezone
+            <select id="modalTimezone">
+              <option value="" disabled selected>Pick your timezone</option>
+              <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+              <option value="Asia/Dubai">Asia/Dubai (GST)</option>
+              <option value="Asia/Singapore">Asia/Singapore (SGT)</option>
+              <option value="Europe/London">Europe/London (GMT/BST)</option>
+              <option value="Europe/Berlin">Europe/Berlin (CET/CEST)</option>
+              <option value="Africa/Nairobi">Africa/Nairobi (EAT)</option>
+              <option value="America/New_York">America/New_York (ET)</option>
+              <option value="America/Los_Angeles">America/Los_Angeles (PT)</option>
+              <option value="America/Sao_Paulo">America/Sao_Paulo (BRT)</option>
+              <option value="Australia/Sydney">Australia/Sydney (AEST)</option>
+              <option value="UTC">UTC</option>
+            </select>
+          </label>
+          <label>Working hours
+            <select id="modalHours">
+              <option value="" disabled selected>Select hours</option>
+              <option value="7 AM – 4 PM">7 AM – 4 PM</option>
+              <option value="8 AM – 5 PM">8 AM – 5 PM</option>
+              <option value="9 AM – 6 PM">9 AM – 6 PM</option>
+              <option value="10 AM – 7 PM">10 AM – 7 PM</option>
+              <option value="11 AM – 8 PM">11 AM – 8 PM</option>
+              <option value="Noon – 9 PM">Noon – 9 PM</option>
+              <option value="Night shift">Night shift</option>
+              <option value="Flexible / On call">Flexible / On call</option>
+            </select>
+          </label>
           <div class="modal-pref">
             <span class="field-label" style="margin-bottom:0.4rem;">Notifications</span>
             <label class="toggle-inline"><span>Email updates</span><input type="checkbox" id="modalPrefEmail"></label>
