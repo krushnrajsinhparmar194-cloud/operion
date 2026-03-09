@@ -34,6 +34,10 @@
     header { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
     header h1 { margin: 0; font-size: 1.9rem; }
     .top-bar { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
+    .notif-dropdown { position: absolute; top: 60px; right: 120px; width: 260px; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(3,6,14,0.96); box-shadow: 0 20px 45px rgba(0,0,0,0.5); padding: 1rem; display: none; }
+    .notif-dropdown.open { display: block; }
+    .notif-item { margin-bottom: 0.8rem; }
+    .notif-item span { display: block; font-size: 0.8rem; color: var(--muted); }
     .top-bar-actions { display: flex; align-items: center; gap: 0.8rem; }
     .search-box { display: inline-flex; align-items: center; gap: 0.4rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); padding: 0.35rem 0.9rem; background: rgba(255,255,255,0.05); }
     .search-box input { border: none; background: transparent; color: var(--text); width: 200px; }
@@ -142,6 +146,7 @@
     </aside>
     <main class="main-content">
     <header class="top-bar">
+    <div class="notif-dropdown" id="notifDropdown" aria-hidden="true"></div>
     <div>
       <p class="muted" id="dashboardGreeting">Welcome back</p>
       <h1 id="companyTitle">Operion Control Center</h1>
@@ -425,7 +430,28 @@
     }
     addMessage(lead.name || "Command agent", "Welcome to your dashboard. Ask me to run a playbook or summarize today's work.");
 
-    const actionStatus = document.getElementById('actionStatus');
+        const notifBtn = document.getElementById('notifBtn');
+    const notifDropdown = document.getElementById('notifDropdown');
+    const renderNotifications = () => {
+      if (!notifDropdown) return;
+      notifDropdown.innerHTML = notifications.map(n => `
+        <div class="notif-item">
+          <strong>${n.text}</strong>
+          <span>${n.at}</span>
+        </div>
+      `).join('');
+    };
+    renderNotifications();
+
+    notifBtn?.addEventListener('click', () => {
+      notifDropdown?.classList.toggle('open');
+    });
+    document.addEventListener('click', event => {
+      if (!notifDropdown) return;
+      if (event.target.closest('#notifBtn') || event.target.closest('#notifDropdown')) return;
+      notifDropdown.classList.remove('open');
+    });
+const actionStatus = document.getElementById('actionStatus');
     const launchBtn = document.querySelector('.action-btn.primary');
     const pauseBtn = document.querySelectorAll('.action-btn')[1];
     const inviteBtn = document.querySelectorAll('.action-btn')[2];
