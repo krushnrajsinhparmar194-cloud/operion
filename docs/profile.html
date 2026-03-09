@@ -56,6 +56,8 @@
     .section-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
     .action-row { display: inline-flex; gap: 0.8rem; }
     .ghost-btn { border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: var(--text); padding: 0.6rem 1.1rem; cursor: pointer; font-weight: 500; }
+    .action-float { position: fixed; top: 1rem; right: 1.5rem; display: inline-flex; gap: 0.6rem; z-index: 60; }
+    @media (max-width: 640px) { .action-float { position: static; margin-bottom: 1rem; justify-content: flex-end; } }
     .ghost-btn:hover { border-color: rgba(255,255,255,0.3); }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
     .card { border: 1px solid rgba(255,255,255,0.1); border-radius: 1.2rem; padding: 1rem; background: rgba(255,255,255,0.04); }
@@ -89,13 +91,14 @@
 </head>
 <body>
   <a href="/dashboard.html" class="nav-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Back</span></a>
+  <div class="action-float">
+    <button type="button" class="ghost-btn" id="editProfileBtn">Edit profile</button>
+    <button type="button" class="ghost-btn" id="settingsBtn">Settings</button>
+  </div>
+
   <div class="wrap">
     <div class="section-head">
       <h1 id="profileHeading">Profile</h1>
-      <div class="action-row">
-        <button type="button" class="ghost-btn" id="editProfileBtn">Edit profile</button>
-        <button type="button" class="ghost-btn" id="settingsBtn">Settings</button>
-      </div>
     </div>
     <div class="photo-card">
       <div class="photo-preview" id="photoPreview">
