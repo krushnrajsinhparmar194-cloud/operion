@@ -34,6 +34,14 @@
     header { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
     header h1 { margin: 0; font-size: 1.9rem; }
     header .muted { margin: 0; color: var(--muted); }
+    .dashboard-layout { display: grid; grid-template-columns: 220px 1fr; gap: 2rem; min-height: 100vh; }
+    .sidebar { border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 1.5rem; background: rgba(0,0,0,0.25); display: flex; flex-direction: column; gap: 1.5rem; }
+    .sidebar-logo { font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .sidebar-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.9rem; border-radius: 0.9rem; color: var(--text); text-decoration: none; border: 1px solid transparent; }
+    .sidebar-link:hover { border-color: rgba(255,255,255,0.2); }
+    .sidebar-link.active { background: rgba(124,107,255,0.2); border-color: transparent; }
+    .main-content { display: flex; flex-direction: column; gap: 2rem; }
+    @media (max-width: 960px) { .dashboard-layout { grid-template-columns: 1fr; } .sidebar { flex-direction: row; overflow-x: auto; } }
     .profile-chip { display: flex; align-items: center; gap: 0.8rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; padding: 0.6rem 1rem; background: rgba(255,255,255,0.05); }
     .profile-btn { border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; padding: 0.35rem 0.9rem; text-decoration: none; color: var(--text); background: rgba(124,107,255,0.2); font-size: 0.85rem; }
     .profile-chip .avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
@@ -115,6 +123,18 @@
   </style>
 </head>
 <body>
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">Operion</div>
+      <nav>
+        <a href="dashboard.html" class="sidebar-link active">📊 Dashboard</a>
+        <a href="agents.html" class="sidebar-link">🤖 Agents</a>
+        <a href="#work" class="sidebar-link">📋 Work board</a>
+        <a href="#activity" class="sidebar-link">📡 Activity</a>
+        <a href="#settings" class="sidebar-link">⚙️ Settings</a>
+      </nav>
+    </aside>
+    <main class="main-content">
   <header>
     <div>
       <p class="muted" id="dashboardGreeting">Welcome back</p>
@@ -152,17 +172,6 @@
       <h3>Live activity</h3>
       <div id="activityFeed" class="activity-feed">Loading…</div>
     </aside>
-  </section>
-
-    <div class="card">
-      <h3>Agents selected</h3>
-      <div class="agent-list" id="agentList">Loading…</div>
-      <div class="see-all"><a href="agents-full.html">See all</a></div>
-    </div>
-    <div class="card">
-      <h3>Work board</h3>
-      <div class="work-list" id="workList">Preparing tasks…</div>
-    </div>
   </section>
   <div id="actionStatus" class="action-status">Ready</div>
   <section class="quick-actions">
@@ -395,5 +404,7 @@
       input.value = '';
     });
   </script></script>
+    </main>
+  </div>
 </body>
 </html>
