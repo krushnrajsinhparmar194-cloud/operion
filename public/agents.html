@@ -26,8 +26,8 @@
         document.getElementById('agentsGrid').innerHTML = agents.map(agent => `
           <div class="agent-card">
             <strong>${agent.name}</strong>
-            <span>Last active ${new Date(agent.last_active).toLocaleString()}</span>
-            <span class="status-badge ${agent.status === 'online' ? 'status-online' : 'status-offline'}">${agent.status}</span>
+            <span>Status: <span class="status-badge ${agent.status === 'online' ? 'status-online' : 'status-offline'}">${agent.status}</span></span>
+            <span>Last active: ${new Date(agent.last_active).toLocaleString()}</span>
           </div>
         `).join('');
       });
