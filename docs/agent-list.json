@@ -1,83 +1,488 @@
 [
-  "Release Pilot",
-  "Incident Triage",
-  "Product QA",
-  "Customer Success Copilot",
-  "Billing Desk",
-  "Ops Analyst",
-  "Compliance Desk",
-  "Risk Analyst",
-  "Claims Ops",
-  "Treasury Desk",
-  "Customer Trust Copilot",
-  "Inventory Pilot",
-  "Merch Ops",
-  "Support Inbox Copilot",
-  "Logistics Tracker",
-  "Promo Calendar",
-  "Route Optimizer",
-  "Fleet Ops",
-  "Dispatch Desk",
-  "Vendor Liaison",
-  "Compliance Tracker",
-  "Intake Specialist",
-  "Clinical Ops Monitor",
-  "Regulatory Writer",
-  "Billing Navigator",
-  "People Ops Buddy",
-  "Production Planner",
-  "Quality Sentinel",
-  "Maintenance Scheduler",
-  "Procurement Ops",
-  "Inventory Analyst",
-  "Content Calendar",
-  "Rights Tracker",
-  "Campaign Editor",
-  "Partnership Desk",
-  "Community Producer",
-  "Curriculum Ops",
-  "Admissions Copilot",
-  "Learner Success",
-  "Faculty Scheduler",
-  "Compliance Desk",
-  "Campaign Pilot",
-  "Insights Analyst",
-  "Client Desk",
-  "Asset Librarian",
-  "Finance Tracker",
-  "Deal Desk",
-  "Portfolio Ops",
-  "Marketing Concierge",
-  "Tenant Support",
-  "Field Maintenance Desk",
-  "Grid Monitor",
-  "Reg Compliance",
-  "Field Dispatch",
-  "Asset Planner",
-  "Finance Reporting",
-  "Guest Ops Copilot",
-  "Revenue Ops",
-  "Experience Desk",
-  "Vendor Concierge",
-  "Support Inbox Copilot",
-  "Network Watch",
-  "Provisioning Agent",
-  "Customer Success Ops",
-  "Field Dispatch",
-  "Billing Desk",
-  "Grant Tracker",
-  "Civic Support",
-  "Procurement Copilot",
-  "Public Comms Desk",
-  "Compliance Auditor",
-  "Donor Desk",
-  "Program Ops",
-  "Volunteer Coordinator",
-  "Grant Writer",
-  "Finance Steward",
-  "Ops Generalist",
-  "Documentation Scribe",
-  "Inbox Copilot",
-  "Data Entry Desk",
-  "Automation Builder"
+  {
+    "id": "agent-001",
+    "name": "Release Pilot",
+    "status": "online",
+    "last_active": "2026-03-09T06:11:37.579326Z"
+  },
+  {
+    "id": "agent-002",
+    "name": "Incident Triage",
+    "status": "offline",
+    "last_active": "2026-03-09T08:06:37.579326Z"
+  },
+  {
+    "id": "agent-003",
+    "name": "Product QA",
+    "status": "standby",
+    "last_active": "2026-03-09T04:40:37.579326Z"
+  },
+  {
+    "id": "agent-004",
+    "name": "Customer Success Copilot",
+    "status": "online",
+    "last_active": "2026-03-09T10:57:37.579326Z"
+  },
+  {
+    "id": "agent-005",
+    "name": "Billing Desk",
+    "status": "offline",
+    "last_active": "2026-03-09T08:09:37.579326Z"
+  },
+  {
+    "id": "agent-006",
+    "name": "Ops Analyst",
+    "status": "standby",
+    "last_active": "2026-03-09T11:58:37.579326Z"
+  },
+  {
+    "id": "agent-007",
+    "name": "Compliance Desk",
+    "status": "online",
+    "last_active": "2026-03-09T05:46:37.579326Z"
+  },
+  {
+    "id": "agent-008",
+    "name": "Risk Analyst",
+    "status": "online",
+    "last_active": "2026-03-09T11:22:37.579326Z"
+  },
+  {
+    "id": "agent-009",
+    "name": "Claims Ops",
+    "status": "standby",
+    "last_active": "2026-03-09T09:45:37.579326Z"
+  },
+  {
+    "id": "agent-010",
+    "name": "Treasury Desk",
+    "status": "standby",
+    "last_active": "2026-03-09T06:29:37.579326Z"
+  },
+  {
+    "id": "agent-011",
+    "name": "Customer Trust Copilot",
+    "status": "standby",
+    "last_active": "2026-03-09T10:58:37.579326Z"
+  },
+  {
+    "id": "agent-012",
+    "name": "Inventory Pilot",
+    "status": "standby",
+    "last_active": "2026-03-09T05:29:37.579326Z"
+  },
+  {
+    "id": "agent-013",
+    "name": "Merch Ops",
+    "status": "online",
+    "last_active": "2026-03-09T10:06:37.579326Z"
+  },
+  {
+    "id": "agent-014",
+    "name": "Support Inbox Copilot",
+    "status": "standby",
+    "last_active": "2026-03-09T08:38:37.579326Z"
+  },
+  {
+    "id": "agent-015",
+    "name": "Logistics Tracker",
+    "status": "offline",
+    "last_active": "2026-03-09T09:12:37.579326Z"
+  },
+  {
+    "id": "agent-016",
+    "name": "Promo Calendar",
+    "status": "online",
+    "last_active": "2026-03-09T06:01:37.579326Z"
+  },
+  {
+    "id": "agent-017",
+    "name": "Route Optimizer",
+    "status": "standby",
+    "last_active": "2026-03-09T05:32:37.579326Z"
+  },
+  {
+    "id": "agent-018",
+    "name": "Fleet Ops",
+    "status": "offline",
+    "last_active": "2026-03-09T08:27:37.579326Z"
+  },
+  {
+    "id": "agent-019",
+    "name": "Dispatch Desk",
+    "status": "offline",
+    "last_active": "2026-03-09T11:35:37.579326Z"
+  },
+  {
+    "id": "agent-020",
+    "name": "Vendor Liaison",
+    "status": "online",
+    "last_active": "2026-03-09T06:17:37.579326Z"
+  },
+  {
+    "id": "agent-021",
+    "name": "Compliance Tracker",
+    "status": "online",
+    "last_active": "2026-03-09T12:19:37.579326Z"
+  },
+  {
+    "id": "agent-022",
+    "name": "Intake Specialist",
+    "status": "online",
+    "last_active": "2026-03-09T08:50:37.579326Z"
+  },
+  {
+    "id": "agent-023",
+    "name": "Clinical Ops Monitor",
+    "status": "online",
+    "last_active": "2026-03-09T10:02:37.579326Z"
+  },
+  {
+    "id": "agent-024",
+    "name": "Regulatory Writer",
+    "status": "offline",
+    "last_active": "2026-03-09T05:07:37.579326Z"
+  },
+  {
+    "id": "agent-025",
+    "name": "Billing Navigator",
+    "status": "online",
+    "last_active": "2026-03-09T09:02:37.579326Z"
+  },
+  {
+    "id": "agent-026",
+    "name": "People Ops Buddy",
+    "status": "online",
+    "last_active": "2026-03-09T11:06:37.579326Z"
+  },
+  {
+    "id": "agent-027",
+    "name": "Production Planner",
+    "status": "online",
+    "last_active": "2026-03-09T05:50:37.579326Z"
+  },
+  {
+    "id": "agent-028",
+    "name": "Quality Sentinel",
+    "status": "standby",
+    "last_active": "2026-03-09T10:59:37.579326Z"
+  },
+  {
+    "id": "agent-029",
+    "name": "Maintenance Scheduler",
+    "status": "offline",
+    "last_active": "2026-03-09T08:40:37.579326Z"
+  },
+  {
+    "id": "agent-030",
+    "name": "Procurement Ops",
+    "status": "offline",
+    "last_active": "2026-03-09T07:20:37.579326Z"
+  },
+  {
+    "id": "agent-031",
+    "name": "Inventory Analyst",
+    "status": "offline",
+    "last_active": "2026-03-09T09:32:37.579326Z"
+  },
+  {
+    "id": "agent-032",
+    "name": "Content Calendar",
+    "status": "standby",
+    "last_active": "2026-03-09T11:03:37.579326Z"
+  },
+  {
+    "id": "agent-033",
+    "name": "Rights Tracker",
+    "status": "online",
+    "last_active": "2026-03-09T08:01:37.579326Z"
+  },
+  {
+    "id": "agent-034",
+    "name": "Campaign Editor",
+    "status": "online",
+    "last_active": "2026-03-09T04:53:37.579326Z"
+  },
+  {
+    "id": "agent-035",
+    "name": "Partnership Desk",
+    "status": "offline",
+    "last_active": "2026-03-09T07:12:37.579326Z"
+  },
+  {
+    "id": "agent-036",
+    "name": "Community Producer",
+    "status": "standby",
+    "last_active": "2026-03-09T08:56:37.579326Z"
+  },
+  {
+    "id": "agent-037",
+    "name": "Curriculum Ops",
+    "status": "online",
+    "last_active": "2026-03-09T12:12:37.579326Z"
+  },
+  {
+    "id": "agent-038",
+    "name": "Admissions Copilot",
+    "status": "offline",
+    "last_active": "2026-03-09T10:29:37.579326Z"
+  },
+  {
+    "id": "agent-039",
+    "name": "Learner Success",
+    "status": "online",
+    "last_active": "2026-03-09T10:28:37.579326Z"
+  },
+  {
+    "id": "agent-040",
+    "name": "Faculty Scheduler",
+    "status": "standby",
+    "last_active": "2026-03-09T08:37:37.579326Z"
+  },
+  {
+    "id": "agent-041",
+    "name": "Compliance Desk",
+    "status": "offline",
+    "last_active": "2026-03-09T07:25:37.579326Z"
+  },
+  {
+    "id": "agent-042",
+    "name": "Campaign Pilot",
+    "status": "standby",
+    "last_active": "2026-03-09T10:43:37.579326Z"
+  },
+  {
+    "id": "agent-043",
+    "name": "Insights Analyst",
+    "status": "offline",
+    "last_active": "2026-03-09T05:57:37.579326Z"
+  },
+  {
+    "id": "agent-044",
+    "name": "Client Desk",
+    "status": "standby",
+    "last_active": "2026-03-09T12:15:37.579326Z"
+  },
+  {
+    "id": "agent-045",
+    "name": "Asset Librarian",
+    "status": "standby",
+    "last_active": "2026-03-09T08:59:37.579326Z"
+  },
+  {
+    "id": "agent-046",
+    "name": "Finance Tracker",
+    "status": "standby",
+    "last_active": "2026-03-09T12:07:37.579326Z"
+  },
+  {
+    "id": "agent-047",
+    "name": "Deal Desk",
+    "status": "standby",
+    "last_active": "2026-03-09T05:56:37.579326Z"
+  },
+  {
+    "id": "agent-048",
+    "name": "Portfolio Ops",
+    "status": "standby",
+    "last_active": "2026-03-09T07:42:37.579326Z"
+  },
+  {
+    "id": "agent-049",
+    "name": "Marketing Concierge",
+    "status": "online",
+    "last_active": "2026-03-09T07:19:37.579326Z"
+  },
+  {
+    "id": "agent-050",
+    "name": "Tenant Support",
+    "status": "standby",
+    "last_active": "2026-03-09T04:52:37.579326Z"
+  },
+  {
+    "id": "agent-051",
+    "name": "Field Maintenance Desk",
+    "status": "online",
+    "last_active": "2026-03-09T06:31:37.579326Z"
+  },
+  {
+    "id": "agent-052",
+    "name": "Grid Monitor",
+    "status": "offline",
+    "last_active": "2026-03-09T10:39:37.579326Z"
+  },
+  {
+    "id": "agent-053",
+    "name": "Reg Compliance",
+    "status": "offline",
+    "last_active": "2026-03-09T09:32:37.579326Z"
+  },
+  {
+    "id": "agent-054",
+    "name": "Field Dispatch",
+    "status": "offline",
+    "last_active": "2026-03-09T07:31:37.579326Z"
+  },
+  {
+    "id": "agent-055",
+    "name": "Asset Planner",
+    "status": "offline",
+    "last_active": "2026-03-09T05:39:37.579326Z"
+  },
+  {
+    "id": "agent-056",
+    "name": "Finance Reporting",
+    "status": "offline",
+    "last_active": "2026-03-09T10:19:37.579326Z"
+  },
+  {
+    "id": "agent-057",
+    "name": "Guest Ops Copilot",
+    "status": "online",
+    "last_active": "2026-03-09T05:57:37.579326Z"
+  },
+  {
+    "id": "agent-058",
+    "name": "Revenue Ops",
+    "status": "offline",
+    "last_active": "2026-03-09T06:01:37.579326Z"
+  },
+  {
+    "id": "agent-059",
+    "name": "Experience Desk",
+    "status": "online",
+    "last_active": "2026-03-09T07:17:37.579326Z"
+  },
+  {
+    "id": "agent-060",
+    "name": "Vendor Concierge",
+    "status": "standby",
+    "last_active": "2026-03-09T11:54:37.579326Z"
+  },
+  {
+    "id": "agent-061",
+    "name": "Support Inbox Copilot",
+    "status": "online",
+    "last_active": "2026-03-09T04:46:37.579326Z"
+  },
+  {
+    "id": "agent-062",
+    "name": "Network Watch",
+    "status": "offline",
+    "last_active": "2026-03-09T11:34:37.579326Z"
+  },
+  {
+    "id": "agent-063",
+    "name": "Provisioning Agent",
+    "status": "offline",
+    "last_active": "2026-03-09T10:21:37.579326Z"
+  },
+  {
+    "id": "agent-064",
+    "name": "Customer Success Ops",
+    "status": "offline",
+    "last_active": "2026-03-09T11:05:37.579326Z"
+  },
+  {
+    "id": "agent-065",
+    "name": "Field Dispatch",
+    "status": "standby",
+    "last_active": "2026-03-09T06:03:37.579326Z"
+  },
+  {
+    "id": "agent-066",
+    "name": "Billing Desk",
+    "status": "online",
+    "last_active": "2026-03-09T07:13:37.579326Z"
+  },
+  {
+    "id": "agent-067",
+    "name": "Grant Tracker",
+    "status": "offline",
+    "last_active": "2026-03-09T06:12:37.579326Z"
+  },
+  {
+    "id": "agent-068",
+    "name": "Civic Support",
+    "status": "offline",
+    "last_active": "2026-03-09T07:06:37.579326Z"
+  },
+  {
+    "id": "agent-069",
+    "name": "Procurement Copilot",
+    "status": "online",
+    "last_active": "2026-03-09T08:10:37.579326Z"
+  },
+  {
+    "id": "agent-070",
+    "name": "Public Comms Desk",
+    "status": "online",
+    "last_active": "2026-03-09T07:08:37.579326Z"
+  },
+  {
+    "id": "agent-071",
+    "name": "Compliance Auditor",
+    "status": "offline",
+    "last_active": "2026-03-09T09:20:37.579326Z"
+  },
+  {
+    "id": "agent-072",
+    "name": "Donor Desk",
+    "status": "online",
+    "last_active": "2026-03-09T08:23:37.579326Z"
+  },
+  {
+    "id": "agent-073",
+    "name": "Program Ops",
+    "status": "offline",
+    "last_active": "2026-03-09T05:22:37.579326Z"
+  },
+  {
+    "id": "agent-074",
+    "name": "Volunteer Coordinator",
+    "status": "standby",
+    "last_active": "2026-03-09T10:59:37.579326Z"
+  },
+  {
+    "id": "agent-075",
+    "name": "Grant Writer",
+    "status": "online",
+    "last_active": "2026-03-09T09:56:37.579326Z"
+  },
+  {
+    "id": "agent-076",
+    "name": "Finance Steward",
+    "status": "offline",
+    "last_active": "2026-03-09T06:51:37.579326Z"
+  },
+  {
+    "id": "agent-077",
+    "name": "Ops Generalist",
+    "status": "offline",
+    "last_active": "2026-03-09T10:23:37.579326Z"
+  },
+  {
+    "id": "agent-078",
+    "name": "Documentation Scribe",
+    "status": "online",
+    "last_active": "2026-03-09T08:43:37.579326Z"
+  },
+  {
+    "id": "agent-079",
+    "name": "Inbox Copilot",
+    "status": "online",
+    "last_active": "2026-03-09T11:25:37.579326Z"
+  },
+  {
+    "id": "agent-080",
+    "name": "Data Entry Desk",
+    "status": "offline",
+    "last_active": "2026-03-09T06:01:37.579326Z"
+  },
+  {
+    "id": "agent-081",
+    "name": "Automation Builder",
+    "status": "standby",
+    "last_active": "2026-03-09T04:33:37.579326Z"
+  }
 ]
