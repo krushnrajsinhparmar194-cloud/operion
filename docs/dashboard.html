@@ -146,6 +146,9 @@
 
 
     const agentWork = selectedAgents.map((name, idx) => ({
+      name,
+      work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}`
+    }));
 
     const metricsEl = document.getElementById('metricsCards');
     const runMetrics = () => {
@@ -164,9 +167,6 @@
         `).join('');
       }
     };
-      name,
-      work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}`
-    }));
 
     const greetEl = document.getElementById('dashboardGreeting');
     if (greetEl) greetEl.textContent = `Hi ${userName || 'operator'}, ${lead.name || 'your command agent'} is online.`;
