@@ -71,6 +71,8 @@
     .contact-item small { display: block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; }
     .contact-item p { margin: 0; font-size: 0.95rem; color: var(--text); word-break: break-word; }
     .pref-card { border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 1.5rem; background: rgba(255,255,255,0.03); display: flex; flex-direction: column; gap: 1.2rem; }
+    .notif-summary { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+    .notif-chip { border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); padding: 0.35rem 0.9rem; font-size: 0.85rem; background: rgba(255,255,255,0.02); color: var(--text); }
     .team-pref { border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; background: rgba(255,255,255,0.02); }
     .pref-card h2 { margin: 0; }
     .pref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
@@ -383,10 +385,22 @@
     const prefDashToggle = document.getElementById('prefDashToggle');
     const prefCadenceSelect = document.getElementById('prefCadence');
     const prefStatus = document.getElementById('prefStatus');
+    const notifSummaryEl = document.getElementById('notifSummary');
 
     const statusEl = document.getElementById('photoStatus');
     const activityFeed = document.getElementById('activityFeed');
     const clearActivityBtn = document.getElementById('clearActivity');
+
+    const renderNotifSummary = () => {
+      if (!notifSummaryEl) return;
+      const channels = [];
+      if (notificationPrefs.email) channels.push('Email');
+      if (notificationPrefs.sms) channels.push('SMS/WhatsApp');
+      if (notificationPrefs.dashboard) channels.push('Dashboard');
+      const cadence = notificationPrefs.cadence || 'Instant';
+      const summary = channels.length ? `${channels.join(' · ')} · ${cadence}` : `Muted · ${cadence}`;
+      notifSummaryEl.innerHTML = `<span class="notif-chip">${summary}</span>`;
+    };
 
     const renderActivity = () => {
       if (!activityFeed) return;
@@ -417,6 +431,7 @@
       prefDashToggle.checked = !!notificationPrefs.dashboard;
       if (prefCadenceSelect) prefCadenceSelect.value = notificationPrefs.cadence || 'Instant';
       setPrefStatus();
+      renderNotifSummary();
     };
 
     const updateSummary = () => {
@@ -440,6 +455,7 @@
 
     updateSummary();
     renderActivity();
+    renderNotifSummary();
     updatePrefToggles();
 
     const modal = document.getElementById('editModal');
@@ -602,6 +618,7 @@
       updatePrefToggles();
       logActivity('Profile updated');
       renderSelectedLanguages();
+      renderNotifSummary();
       statusEl.textContent = 'Profile saved.';
       setTimeout(() => statusEl.textContent = '', 2000);
       closeModal();
