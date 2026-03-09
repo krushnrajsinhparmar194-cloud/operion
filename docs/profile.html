@@ -264,9 +264,17 @@
           </label>
           <div class="team-pref">
             <span class="field-label" style="margin-bottom:0.4rem;">Team</span>
-            <label>Primary approver<input id="modalTeamPrimaryName" placeholder="Name" /></label>
+            <label>Primary approver
+              <select id="modalTeamPrimarySelect">
+                <option value="" data-role="">Select approver</option>
+              </select>
+            </label>
             <label>Primary role<input id="modalTeamPrimaryRole" placeholder="e.g. VP Ops" /></label>
-            <label>Backup owner<input id="modalTeamBackupName" placeholder="Name" /></label>
+            <label>Backup owner
+              <select id="modalTeamBackupSelect">
+                <option value="" data-role="">Select backup</option>
+              </select>
+            </label>
             <label>Backup role<input id="modalTeamBackupRole" placeholder="e.g. Ops Lead" /></label>
           </div>
           <div class="language-field">
@@ -331,6 +339,14 @@
     let teamBackup = JSON.parse(sessionStorage.getItem('operionTeamBackup') || '{}');
     const prefDefaults = { email: true, sms: false, dashboard: true, cadence: 'Instant' };
     let notificationPrefs = { ...prefDefaults, ...JSON.parse(sessionStorage.getItem('operionNotificationPrefs') || '{}') };
+    const teamDirectory = [
+      { name: 'Krushnaraj Parmar', role: 'Founder' },
+      { name: 'Ops Desk', role: 'Operations Lead' },
+      { name: 'Finance Review', role: 'Finance Controller' },
+      { name: 'Product Council', role: 'Product Director' },
+      { name: 'QA Sentinel', role: 'QA Lead' }
+    ];
+
     const languageOptions = ['English','Gujarati','Hindi','Spanish','French','German','Portuguese','Italian','Arabic','Bengali','Mandarin','Japanese','Korean','Russian','Dutch','Swedish','Norwegian','Danish','Turkish','Thai','Vietnamese','Indonesian','Malay','Punjabi','Marathi','Telugu','Tamil','Kannada','Malayalam','Filipino','Hebrew','Greek','Polish','Czech','Ukrainian','Romanian','Hungarian'];
 
     const summaryHeading = document.getElementById('profileHeading');
@@ -410,9 +426,9 @@
     const modalPhone = document.getElementById('modalPhone');
     const modalTimezone = document.getElementById('modalTimezone');
     const modalHours = document.getElementById('modalHours');
-    const modalTeamPrimaryName = document.getElementById('modalTeamPrimaryName');
+    const modalTeamPrimarySelect = document.getElementById('modalTeamPrimarySelect');
     const modalTeamPrimaryRole = document.getElementById('modalTeamPrimaryRole');
-    const modalTeamBackupName = document.getElementById('modalTeamBackupName');
+    const modalTeamBackupSelect = document.getElementById('modalTeamBackupSelect');
     const modalTeamBackupRole = document.getElementById('modalTeamBackupRole');
     const modalPrefEmail = document.getElementById('modalPrefEmail');
     const modalPrefSms = document.getElementById('modalPrefSms');
@@ -450,11 +466,21 @@
 
     renderSelectedLanguages();
 
+    const hydrateTeamSelects = () => {
+      if (modalTeamPrimarySelect) {
+        modalTeamPrimarySelect.innerHTML = '<option value="" data-role="">Select approver</option>' + teamDirectory.map(entry => `<option value="${entry.name}" data-role="${entry.role}">${entry.name}</option>`).join('');
+      }
+      if (modalTeamBackupSelect) {
+        modalTeamBackupSelect.innerHTML = '<option value="" data-role="">Select backup</option>' + teamDirectory.map(entry => `<option value="${entry.name}" data-role="${entry.role}">${entry.name}</option>`).join('');
+      }
+    };
+
     const hydrateSelect = () => {
       if (!languageSelect) return;
       languageSelect.innerHTML = '<option value="" selected disabled>Pick a language to add</option>' + languageOptions.map(lang => `<option value="${lang}">${lang}</option>`).join('');
       languageSelect.value = '';
       renderSelectedLanguages();
+      hydrateTeamSelects();
     };
 
     const openModal = () => {
@@ -468,9 +494,19 @@
       modalPhone.value = user.phone || '';
       modalTimezone.value = user.timezone || '';
       modalHours.value = user.hours || '';
-      if (modalTeamPrimaryName) modalTeamPrimaryName.value = teamPrimary.name || '';
+      if (modalTeamPrimarySelect) {
+        modalTeamPrimarySelect.value = teamPrimary.name || '';
+        if (!teamDirectory.some(entry => entry.name === teamPrimary.name)) {
+          modalTeamPrimarySelect.value = '';
+        }
+      }
       if (modalTeamPrimaryRole) modalTeamPrimaryRole.value = teamPrimary.role || '';
-      if (modalTeamBackupName) modalTeamBackupName.value = teamBackup.name || '';
+      if (modalTeamBackupSelect) {
+        modalTeamBackupSelect.value = teamBackup.name || '';
+        if (!teamDirectory.some(entry => entry.name === teamBackup.name)) {
+          modalTeamBackupSelect.value = '';
+        }
+      }
       if (modalTeamBackupRole) modalTeamBackupRole.value = teamBackup.role || '';
       if (modalPrefEmail) modalPrefEmail.checked = !!notificationPrefs.email;
       if (modalPrefSms) modalPrefSms.checked = !!notificationPrefs.sms;
@@ -518,9 +554,9 @@
       user.hours = modalHours.value.trim();
       userName = modalName.value.trim();
       lead.name = modalLead.value.trim();
-      teamPrimary.name = modalTeamPrimaryName?.value.trim() || '';
+      teamPrimary.name = modalTeamPrimarySelect?.value || '';
       teamPrimary.role = modalTeamPrimaryRole?.value.trim() || '';
-      teamBackup.name = modalTeamBackupName?.value.trim() || '';
+      teamBackup.name = modalTeamBackupSelect?.value || '';
       teamBackup.role = modalTeamBackupRole?.value.trim() || '';
       notificationPrefs.email = modalPrefEmail?.checked ?? notificationPrefs.email;
       notificationPrefs.sms = modalPrefSms?.checked ?? notificationPrefs.sms;
@@ -591,6 +627,18 @@
       reader.readAsDataURL(file);
     });
 
+    modalTeamPrimarySelect?.addEventListener('change', () => {
+      const entry = teamDirectory.find(item => item.name === modalTeamPrimarySelect.value);
+      if (entry && modalTeamPrimaryRole) {
+        modalTeamPrimaryRole.value = entry.role;
+      }
+    });
+    modalTeamBackupSelect?.addEventListener('change', () => {
+      const entry = teamDirectory.find(item => item.name === modalTeamBackupSelect.value);
+      if (entry && modalTeamBackupRole) {
+        modalTeamBackupRole.value = entry.role;
+      }
+    });
     prefEmailToggle?.addEventListener('change', () => {
       notificationPrefs.email = prefEmailToggle.checked;
       sessionStorage.setItem('operionNotificationPrefs', JSON.stringify(notificationPrefs));
