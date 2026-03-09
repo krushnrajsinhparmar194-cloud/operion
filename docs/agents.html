@@ -4,279 +4,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Operion · Agents</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      font-family: 'Inter', system-ui, sans-serif;
-      color-scheme: dark;
-      --bg: #050814;
-      --card: rgba(255,255,255,0.03);
-      --text: #eef2ff;
-      --muted: #9badcf;
-      --accent: #7c6bff;
-    }
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 10% 10%, rgba(124,107,255,0.35), transparent 60%), linear-gradient(180deg, #03050b, #050814); color: var(--text); padding: clamp(1.5rem, 2vw, 2.8rem); }
-    .page { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; }
-    .page-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: flex-start; }
-    .eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.75rem; margin: 0 0 0.2rem; color: var(--muted); }
-    h1 { margin: 0; font-size: clamp(1.8rem, 3vw, 2.4rem); }
-    .muted { color: var(--muted); margin: 0.4rem 0 0; max-width: 520px; }
-    .head-actions { display: flex; gap: 0.6rem; }
-    .btn { border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: var(--text); padding: 0.55rem 1.2rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; }
-    .btn:hover { border-color: rgba(255,255,255,0.45); transform: translateY(-1px); }
-    .btn.primary { background: linear-gradient(120deg, #4da8ff, #7c6bff); border-color: transparent; color: #041021; }
-    .btn.ghost { background: rgba(255,255,255,0.05); }
-    .agents-toolbar { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; justify-content: space-between; }
-    .search-box { display: inline-flex; align-items: center; gap: 0.4rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); padding: 0.35rem 0.9rem; background: rgba(255,255,255,0.05); }
-    .search-box input { border: none; background: transparent; color: var(--text); width: 180px; }
-    .search-box input:focus { outline: none; }
-    .filters { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .chip { border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); padding: 0.35rem 0.9rem; background: transparent; color: var(--text); font-size: 0.85rem; cursor: pointer; }
-    .chip.active { background: rgba(124,107,255,0.25); border-color: transparent; }
+    body { font-family: 'Inter', sans-serif; margin: 0; min-height: 100vh; background: #03050b; color: #eef2ff; padding: 2.5rem; }
+    h1 { margin-bottom: 1rem; }
     .agents-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
-    .agent-card { border-radius: 1.2rem; border: 1px solid rgba(255,255,255,0.08); background: var(--card); padding: 1rem; display: flex; flex-direction: column; gap: 0.7rem; cursor: pointer; transition: border-color 0.2s ease, transform 0.2s ease; }
-    .agent-card:hover { border-color: rgba(124,107,255,0.5); transform: translateY(-2px); }
-    .agent-head { display: flex; align-items: center; gap: 0.8rem; }
-    .avatar { width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; }
-    .agent-meta { display: flex; flex-direction: column; gap: 0.25rem; }
-    .status-badge { border-radius: 999px; padding: 0.2rem 0.6rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; align-self: flex-start; }
-    .status-online { background: rgba(16,185,129,0.18); color: #10b981; border: 1px solid rgba(16,185,129,0.4); }
-    .status-standby { background: rgba(251,191,36,0.18); color: #fbbf24; border: 1px solid rgba(251,191,36,0.4); }
-    .status-offline { background: rgba(239,68,68,0.18); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); }
-    .agent-bottom { display: flex; justify-content: space-between; align-items: center; gap: 0.4rem; }
-    .agent-actions { display: flex; gap: 0.4rem; }
-    .agent-action { border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: var(--text); padding: 0.35rem 0.8rem; font-size: 0.8rem; cursor: pointer; }
-    .agent-action.primary { background: rgba(124,107,255,0.25); border-color: transparent; }
-    .action-status { font-size: 0.9rem; color: var(--muted); }
-    .agent-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 60; }
-    .agent-modal.open { display: flex; }
-    .agent-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
-    .agent-modal-panel { position: relative; width: min(480px, 92vw); border-radius: 1.4rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(6,9,21,0.97); padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
-    .agent-modal-close { position: absolute; top: 1rem; right: 1rem; border: none; background: transparent; color: var(--text); font-size: 1.3rem; cursor: pointer; }
-    .modal-head { display: flex; gap: 1rem; align-items: center; }
-    .modal-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.8rem; }
-    .modal-meta p { margin: 0; font-size: 0.9rem; color: var(--muted); }
-    .modal-meta span { display: block; font-size: 1rem; color: var(--text); margin-top: 0.2rem; }
-    .modal-actions { display: flex; gap: 0.6rem; justify-content: flex-end; }
-    @media (max-width: 640px) { .agent-bottom { flex-direction: column; align-items: flex-start; } }
+    .agent-card { border-radius: 1.2rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); padding: 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .agent-card span { font-size: 0.85rem; color: #9badcf; }
+    .status-badge { align-self: flex-start; border-radius: 999px; padding: 0.2rem 0.7rem; font-size: 0.8rem; }
+    .status-online { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+    .status-offline { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    .availability-badge { border-radius: 999px; padding: 0.2rem 0.6rem; font-size: 0.75rem; background: rgba(124,107,255,0.2); color: #eef2ff; margin-left: 0.4rem; }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header class="page-head">
-      <div>
-        <p class="eyebrow">Agents</p>
-        <h1>Command roster</h1>
-        <p class="muted">Review every Operion agent, check their status, and launch or pause automations with one tap.</p>
-      </div>
-      <div class="head-actions">
-        <button class="btn ghost" id="refreshAgents">↻ Refresh</button>
-        <a class="btn" href="dashboard.html">← Back to dashboard</a>
-      </div>
-    </header>
-    <div class="agents-toolbar">
-      <div class="search-box">
-        <span>🔍</span>
-        <input type="search" id="agentSearch" placeholder="Search agents..." />
-      </div>
-      <div class="filters" id="agentFilters">
-        <button class="chip active" data-filter="all">All</button>
-        <button class="chip" data-filter="online">Online</button>
-        <button class="chip" data-filter="standby">Standby</button>
-        <button class="chip" data-filter="offline">Offline</button>
-      </div>
-    </div>
-    <div id="agentActionStatus" class="action-status">Select an agent to view details.</div>
-    <div id="agentsGrid" class="agents-grid">Loading…</div>
-  </div>
-
-  <div class="agent-modal" id="agentDetailModal" aria-hidden="true">
-    <div class="agent-modal-backdrop"></div>
-    <div class="agent-modal-panel">
-      <button class="agent-modal-close" id="closeAgentDetail">×</button>
-      <div class="modal-head">
-        <div class="avatar" id="modalAvatar"></div>
-        <div>
-          <h3 id="modalName">Agent</h3>
-          <p class="status-badge" id="modalStatus">—</p>
-        </div>
-      </div>
-      <div class="modal-meta">
-        <p>Last active<span id="modalLastActive">—</span></p>
-        <p>Identifier<span id="modalIdentifier">—</span></p>
-      </div>
-      <p class="muted" id="modalSummary">Agent summary will populate soon.</p>
-      <div class="modal-actions">
-        <button class="btn primary" id="modalLaunch">Launch</button>
-        <button class="btn ghost" id="modalPause">Pause</button>
-      </div>
-    </div>
-  </div>
-
+  <h1>Agents</h1>
+  <div id="agentsGrid" class="agents-grid">Loading…</div>
   <script>
-    const agentsGrid = document.getElementById('agentsGrid');
-    const actionStatus = document.getElementById('agentActionStatus');
-    const searchInput = document.getElementById('agentSearch');
-    const filters = document.getElementById('agentFilters');
-    const refreshBtn = document.getElementById('refreshAgents');
-
-    const modal = document.getElementById('agentDetailModal');
-    const closeModalBtn = document.getElementById('closeAgentDetail');
-    const modalAvatar = document.getElementById('modalAvatar');
-    const modalName = document.getElementById('modalName');
-    const modalStatus = document.getElementById('modalStatus');
-    const modalLastActive = document.getElementById('modalLastActive');
-    const modalIdentifier = document.getElementById('modalIdentifier');
-    const modalSummary = document.getElementById('modalSummary');
-    const modalLaunch = document.getElementById('modalLaunch');
-    const modalPause = document.getElementById('modalPause');
-
-    let agentsStore = [];
-    let activeFilter = 'all';
-
-    const formatTime = (iso) => new Date(iso).toLocaleString('en-IN', {
-      hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short'
-    });
-
-    const avatarFromName = (name = '') => name.split(' ').map(part => part[0] || '').join('').slice(0, 2).toUpperCase() || 'AI';
-
-    const statusClass = (status = '') => `status-${status.toLowerCase()}`;
-
-    const renderAgents = (list) => {
-      if (!agentsGrid) return;
-      if (!list.length) {
-        agentsGrid.innerHTML = '<p>No agents match that filter.</p>';
-        return;
-      }
-      agentsGrid.innerHTML = list.map(agent => `
-        <div class="agent-card" data-agent-id="${agent.id}">
-          <div class="agent-head">
-            <div class="avatar">${avatarFromName(agent.name)}</div>
-            <div class="agent-meta">
-              <strong>${agent.name}</strong>
-              <span class="status-badge ${statusClass(agent.status)}">${agent.status}</span>
-            </div>
+    fetch('agent-list.json')
+      .then(resp => resp.json())
+      .then(agents => {
+        document.getElementById('agentsGrid').innerHTML = agents.map(agent => `
+          <div class="agent-card">
+            <strong>${agent.name}</strong>
+            <span>Status: <span class="status-badge ${agent.status === 'online' ? 'status-online' : agent.status === 'standby' ? 'status-paused' : 'status-offline'}">${agent.status}</span>
+              <span class="availability-badge">${agent.status === 'online' ? 'Free' : 'Busy'}</span></span>
+            <span>Last active: ${new Date(agent.last_active).toLocaleString()}</span>
           </div>
-          <div class="agent-bottom">
-            <div>
-              <small class="muted">Last active</small>
-              <p style="margin:0; font-size:0.95rem;">${formatTime(agent.last_active)}</p>
-            </div>
-            <div class="agent-actions">
-              <button class="agent-action primary" data-action="launch">Launch</button>
-              <button class="agent-action" data-action="pause">Pause</button>
-            </div>
-          </div>
-        </div>
-      `).join('');
-    };
-
-    const applyFilters = () => {
-      const term = (searchInput.value || '').toLowerCase();
-      const filtered = agentsStore.filter(agent => {
-        const matchesStatus = activeFilter === 'all' || agent.status.toLowerCase() === activeFilter;
-        const matchesTerm = agent.name.toLowerCase().includes(term);
-        return matchesStatus && matchesTerm;
+        `).join('');
       });
-      renderAgents(filtered);
-    };
-
-    const handleActionStatus = (text) => {
-      if (!actionStatus) return;
-      actionStatus.textContent = text;
-      setTimeout(() => actionStatus.textContent = 'Select an agent to view details.', 2500);
-    };
-
-    const openAgentModal = (agentId) => {
-      const agent = agentsStore.find(item => item.id === agentId);
-      if (!agent) return;
-      modalAvatar.textContent = avatarFromName(agent.name);
-      modalName.textContent = agent.name;
-      modalStatus.textContent = agent.status;
-      modalStatus.className = `status-badge ${statusClass(agent.status)}`;
-      modalLastActive.textContent = formatTime(agent.last_active);
-      modalIdentifier.textContent = agentId;
-      modalSummary.textContent = `${agent.name} handles ${agent.name.split(' ')[0] || 'core'} workflows. Launch to spin up a fresh run or pause to stop intake.`;
-      modalLaunch.dataset.agentId = agentId;
-      modalPause.dataset.agentId = agentId;
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
-    };
-
-    const closeModal = () => {
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden', 'true');
-    };
-
-    const handleCardAction = (agentId, action) => {
-      if (action === 'launch') {
-        handleActionStatus(`Launching ${agentId}…`);
-      } else {
-        handleActionStatus(`Pausing ${agentId}…`);
-      }
-    };
-
-    agentsGrid?.addEventListener('click', (event) => {
-      const actionBtn = event.target.closest('.agent-action');
-      const card = event.target.closest('.agent-card');
-      if (!card) return;
-      const agentId = card.dataset.agentId;
-      if (actionBtn) {
-        event.stopPropagation();
-        handleCardAction(agentId, actionBtn.dataset.action);
-        return;
-      }
-      openAgentModal(agentId);
-    });
-
-    modalLaunch?.addEventListener('click', () => {
-      handleActionStatus(`Launching ${modalLaunch.dataset.agentId}…`);
-      closeModal();
-    });
-    modalPause?.addEventListener('click', () => {
-      handleActionStatus(`Pausing ${modalPause.dataset.agentId}…`);
-      closeModal();
-    });
-    closeModalBtn?.addEventListener('click', closeModal);
-    modal?.addEventListener('click', event => {
-      if (event.target.classList.contains('agent-modal-backdrop')) closeModal();
-    });
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') closeModal();
-    });
-
-    searchInput?.addEventListener('input', applyFilters);
-    filters?.addEventListener('click', event => {
-      const btn = event.target.closest('.chip');
-      if (!btn) return;
-      filters.querySelectorAll('.chip').forEach(chip => chip.classList.remove('active'));
-      btn.classList.add('active');
-      activeFilter = btn.dataset.filter;
-      applyFilters();
-    });
-    refreshBtn?.addEventListener('click', () => {
-      handleActionStatus('Refreshing agent list…');
-      loadAgents();
-    });
-
-    const loadAgents = () => {
-      fetch('agent-list.json')
-        .then(resp => resp.json())
-        .then(list => {
-          agentsStore = list;
-          applyFilters();
-          handleActionStatus('Agents synced.');
-        })
-        .catch(() => {
-          agentsGrid.innerHTML = '<p>Unable to load agents.</p>';
-          handleActionStatus('Failed to load agents.');
-        });
-    };
-
-    loadAgents();
   </script>
 </body>
 </html>
