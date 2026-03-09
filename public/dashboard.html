@@ -231,6 +231,12 @@
     document.getElementById('profileName').textContent = userName || 'Operator';
     document.getElementById('profileRole').textContent = user.occupation || 'Ops lead';
     const company = sessionStorage.getItem('operionCompanyName') || 'Operion workspace';
+    const notifications = [
+      { text: 'Deployment window starts in 30 min', at: 'Today · 3:30 PM', read: false },
+      { text: 'Billing Desk paused for review', at: 'Today · 1:05 PM', read: true },
+      { text: 'Escalation cleared: API latency', at: 'Yesterday · 9:10 PM', read: true }
+    ];
+
     const scheduleCard = document.querySelector('.schedule-card');
     const workingHours = user.hours || '9 AM – 6 PM';
     const timezone = user.timezone || 'Asia/Kolkata';
