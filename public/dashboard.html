@@ -128,6 +128,21 @@
     .alert-item strong { font-size: 0.95rem; }
     .alert-meta { font-size: 0.8rem; color: var(--muted); }
     .alert-badge { border-radius: 999px; padding: 0.25rem 0.8rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .monitor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .monitor-card { border-radius: 1.2rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); padding: 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .monitor-card h4 { margin: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .uptime-value { font-size: 2rem; font-weight: 600; }
+    .log-viewer { border-radius: 1rem; border: 1px solid rgba(255,255,255,0.08); max-height: 200px; overflow-y: auto; padding: 0.8rem 1rem; background: rgba(255,255,255,0.02); display: flex; flex-direction: column; gap: 0.8rem; }
+    .log-entry { display: flex; justify-content: space-between; gap: 1rem; }
+    .log-entry strong { font-size: 0.9rem; }
+    .log-meta { font-size: 0.8rem; color: var(--muted); }
+    .log-badge { border-radius: 999px; padding: 0.2rem 0.7rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .log-critical { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); }
+    .log-warn { background: rgba(251,191,36,0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.4); }
+    .analytics-card { border-radius: 1.2rem; border: 1px solid rgba(255,255,255,0.08); padding: 1rem; background: rgba(255,255,255,0.03); }
+    .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+    .sparkline { height: 60px; border-radius: 0.8rem; background: linear-gradient(120deg, rgba(77,168,255,0.2), rgba(124,107,255,0.2)); position: relative; overflow: hidden; }
+    .sparkline::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); animation: shimmer 4s infinite; }
     .alert-critical { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); }
     .alert-info { background: rgba(59,130,246,0.2); color: #3b82f6; border: 1px solid rgba(59,130,246,0.4); }
     @media (max-width: 960px) { .ai-grid { grid-template-columns: 1fr; } }
@@ -316,6 +331,48 @@
       <div class="alert-list" id="smartAlertList"></div>
     </div>
   </section>
+
+  <section class="monitor-grid">
+    <div class="monitor-card">
+      <h4>System uptime</h4>
+      <div class="uptime-value" id="uptimeValue">99.98%</div>
+      <p class="muted" id="uptimeMeta">Last restart —</p>
+    </div>
+    <div class="monitor-card">
+      <h4>Performance load</h4>
+      <p id="perfLoad">Balanced</p>
+      <small class="muted" id="perfHint">Monitoring resources…</small>
+    </div>
+    <div class="monitor-card">
+      <h4>Agent throughput</h4>
+      <p id="agentThroughput">— tasks/min</p>
+      <small class="muted" id="throughputHint">Trail metrics loading…</small>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Error log</h3>
+    <div class="log-viewer" id="logViewer">Loading logs…</div>
+  </section>
+
+  <section class="analytics-card">
+    <h3>Agent analytics</h3>
+    <div class="analytics-grid">
+      <div>
+        <strong id="agentActiveCount">—</strong>
+        <p class="muted">Agents active</p>
+      </div>
+      <div>
+        <strong id="tasksResolved">—</strong>
+        <p class="muted">Tasks resolved today</p>
+      </div>
+      <div>
+        <strong id="avgHandle">—</strong>
+        <p class="muted">Avg. handle time</p>
+      </div>
+    </div>
+    <div class="sparkline" aria-hidden="true"></div>
+  </section>
   <div class="task-modal" id="taskModal" aria-hidden="true">
     <div class="task-modal-backdrop"></div>
     <div class="task-modal-panel">
@@ -496,6 +553,49 @@ const scheduleCard = document.querySelector('.schedule-card');
     const userEl = document.getElementById('userSummary');
     if (userEl) userEl.textContent = `Age ${user.age || '—'} · Fav color ${user.favoriteColor || '—'} · Fav place ${user.favoritePlace || '—'} · Role ${user.occupation || '—'}`;
 
+    const logViewer = document.getElementById('logViewer');
+    const uptimeValue = document.getElementById('uptimeValue');
+    const uptimeMeta = document.getElementById('uptimeMeta');
+    const perfLoad = document.getElementById('perfLoad');
+    const perfHint = document.getElementById('perfHint');
+    const agentThroughput = document.getElementById('agentThroughput');
+    const throughputHint = document.getElementById('throughputHint');
+    const agentActiveCount = document.getElementById('agentActiveCount');
+    const tasksResolved = document.getElementById('tasksResolved');
+    const avgHandle = document.getElementById('avgHandle');
+
+    const mockLogs = [
+      { message: 'Ops Analyst queue spike handled', severity: 'info', at: '20:44' },
+      { message: 'Fleet Ops API latency warning', severity: 'warn', at: '20:41' },
+      { message: 'Compliance Desk retried contract sync', severity: 'info', at: '20:38' },
+      { message: 'Risk Analyst job stalled >90s', severity: 'critical', at: '20:35' }
+    ];
+
+    const renderLogs = () => {
+      if (!logViewer) return;
+      logViewer.innerHTML = mockLogs.map(entry => `
+        <div class="log-entry">
+          <div>
+            <strong>${entry.message}</strong>
+            <p class="log-meta">${entry.at}</p>
+          </div>
+          <span class="log-badge ${entry.severity === 'critical' ? 'log-critical' : entry.severity === 'warn' ? 'log-warn' : 'alert-info'}">${entry.severity}</span>
+        </div>
+      `).join('');
+    };
+
+    const hydrateMonitoring = () => {
+      uptimeValue.textContent = '99.98%';
+      uptimeMeta.textContent = 'Last restart 02:17 AM IST';
+      perfLoad.textContent = 'Balanced';
+      perfHint.textContent = 'Load steady for the last hour';
+      agentThroughput.textContent = '11 tasks/min';
+      throughputHint.textContent = '↑ 2 vs. yesterday';
+      agentActiveCount.textContent = '18';
+      tasksResolved.textContent = '312';
+      avgHandle.textContent = '4m 12s';
+    };
+
     const aiTaskList = document.getElementById('aiTaskList');
     const smartAlertList = document.getElementById('smartAlertList');
 
@@ -523,6 +623,9 @@ const scheduleCard = document.querySelector('.schedule-card');
         `).join('');
       }
     };
+
+    renderLogs();
+    hydrateMonitoring();
 
     const agentListEl = document.getElementById('agentList');
     renderAiPanels();
