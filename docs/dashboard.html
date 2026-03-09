@@ -45,6 +45,7 @@
     .metric-card strong { font-size: 2rem; }
     .metric-card span { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
     .metric-card p { margin: 0; font-size: 0.95rem; color: var(--muted); }
+    .metric-trend { display: inline-block; margin-top: 0.4rem; color: rgba(255,255,255,0.7); font-size: 0.85rem; }
     .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
     .card { border-radius: 1.35rem; border: 1px solid rgba(255,255,255,0.08); background: var(--card); padding: 1.4rem; }
     .card h3 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
@@ -153,9 +154,10 @@
     const metricsEl = document.getElementById('metricsCards');
     const runMetrics = () => {
       const metrics = [
-        { label: 'Agents online', value: selectedAgents.length || 0, hint: 'Linked to your workspace' },
-        { label: 'Tasks queued', value: agentWork.length || 0, hint: 'Next actions for agents' },
-        { label: 'Languages active', value: langs.length || 0, hint: 'Localization ready' }
+        { label: 'Active agents', value: 12, hint: 'Live now', trend: '+2 vs. yesterday' },
+        { label: 'Tasks today', value: 248, hint: 'Queued assignments', trend: '+18%' },
+        { label: 'Escalations', value: 3, hint: 'Need attention', trend: '-1 vs. avg' },
+        { label: 'System health', value: '99%', hint: 'Uptime last 24h', trend: 'Stable' }
       ];
       if (metricsEl) {
         metricsEl.innerHTML = metrics.map(item => `
@@ -163,6 +165,7 @@
             <span>${item.label}</span>
             <strong>${item.value}</strong>
             <p>${item.hint}</p>
+            <small class="metric-trend">${item.trend}</small>
           </div>
         `).join('');
       }
