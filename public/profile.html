@@ -89,6 +89,11 @@
     .team-item { border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); }
     .team-item strong { display: block; font-size: 1.05rem; }
     .team-item span { color: var(--muted); font-size: 0.9rem; }
+    .activity-card { border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 1.5rem; background: rgba(255,255,255,0.03); display: flex; flex-direction: column; gap: 1rem; }
+    .activity-feed { display: flex; flex-direction: column; gap: 0.8rem; }
+    .activity-item { border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 0.9rem 1rem; background: rgba(255,255,255,0.02); display: flex; justify-content: space-between; gap: 0.8rem; }
+    .activity-item span { color: var(--muted); font-size: 0.85rem; }
+    .activity-empty { color: var(--muted); font-size: 0.9rem; }
   </style>
 </head>
 <body>
@@ -380,6 +385,20 @@
     const prefStatus = document.getElementById('prefStatus');
 
     const statusEl = document.getElementById('photoStatus');
+    const activityFeed = document.getElementById('activityFeed');
+    const clearActivityBtn = document.getElementById('clearActivity');
+
+    const renderActivity = () => {
+      if (!activityFeed) return;
+      if (!activityLog.length) {
+        activityFeed.innerHTML = '<div class="activity-empty">No updates logged yet.</div>';
+        return;
+      }
+      activityFeed.innerHTML = activityLog.map(entry => {
+        const time = new Date(entry.at).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' });
+        return `<div class="activity-item"><div>${entry.label}</div><span>${time}</span></div>`;
+      }).join('');
+    };
 
     const setPrefStatus = () => {
       if (!prefStatus) return;
@@ -420,6 +439,7 @@
     };
 
     updateSummary();
+    renderActivity();
     updatePrefToggles();
 
     const modal = document.getElementById('editModal');
@@ -580,6 +600,7 @@
 
       updateSummary();
       updatePrefToggles();
+      logActivity('Profile updated');
       renderSelectedLanguages();
       statusEl.textContent = 'Profile saved.';
       setTimeout(() => statusEl.textContent = '', 2000);
@@ -646,6 +667,12 @@
         modalTeamBackupRole.value = entry.role;
       }
     });
+    clearActivityBtn?.addEventListener('click', () => {
+      activityLog = [];
+      sessionStorage.setItem('operionActivityLog', JSON.stringify(activityLog));
+      renderActivity();
+    });
+
     prefEmailToggle?.addEventListener('change', () => {
       notificationPrefs.email = prefEmailToggle.checked;
       sessionStorage.setItem('operionNotificationPrefs', JSON.stringify(notificationPrefs));
