@@ -434,8 +434,9 @@
     const notifDropdown = document.getElementById('notifDropdown');
     const renderNotifications = () => {
       if (!notifDropdown) return;
-      notifDropdown.innerHTML = notifications.map(n => `
-        <div class="notif-item">
+      const latest = notifications.slice(0, 5);
+      notifDropdown.innerHTML = latest.map(n => `
+        <div class="notif-item ${n.read ? '' : 'unread'}">
           <strong>${n.text}</strong>
           <span>${n.at}</span>
         </div>
