@@ -147,7 +147,6 @@
     <div class="section-card">
       <div class="section-head">
         <h2 id="recommendedLabel">Top picks</h2>
-        <span class="selected-pill" id="selectedCount">0 selected</span>
       </div>
       <div class="grid" id="recommendedGrid">Loading…</div>
     </div>
@@ -270,7 +269,7 @@
     };
 
     const updateSelectedCount = () => {
-      selectedCount.textContent = `${selected.size} selected`;
+      if (selectedCount) selectedCount.textContent = `${selected.size} selected`;
       sessionStorage.setItem('operionAgents', JSON.stringify(Array.from(selected)));
     };
 
