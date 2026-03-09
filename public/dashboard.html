@@ -66,7 +66,13 @@
     .notif-count { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; border-radius: 999px; background: #ef4444; color: #fff; font-size: 0.7rem; display: inline-flex; align-items: center; justify-content: center; padding: 0 5px; }
     header .muted { margin: 0; color: var(--muted); }
     .dashboard-layout { display: grid; grid-template-columns: 220px 1fr; gap: 2rem; min-height: 100vh; }
-    .sidebar { border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 1.5rem; background: rgba(0,0,0,0.25); display: flex; flex-direction: column; gap: 1.5rem; }
+    .sidebar { border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 1.5rem; background: rgba(0,0,0,0.25); display: flex; flex-direction: column; gap: 1.5rem; transition: width 0.25s ease, padding 0.25s ease; }
+    .sidebar.collapsed { width: 72px; padding: 1.5rem 0.5rem; }
+    .sidebar.collapsed .sidebar-link span { display: none; }
+    .sidebar.collapsed .sidebar-logo { display: none; }
+    .sidebar.collapsed .collapse-btn { transform: rotate(180deg); }
+    .sidebar-top { display: flex; justify-content: space-between; align-items: center; }
+    .collapse-btn { border: none; background: rgba(255,255,255,0.1); color: var(--text); border-radius: 999px; width: 30px; height: 30px; cursor: pointer; }
     .sidebar-logo { font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
     .sidebar-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.9rem; border-radius: 0.9rem; color: var(--text); text-decoration: none; border: 1px solid transparent; }
     .sidebar-link:hover { border-color: rgba(255,255,255,0.2); }
@@ -155,14 +161,17 @@
 </head>
 <body>
   <div class="dashboard-layout">
-    <aside class="sidebar">
-      <div class="sidebar-logo">Operion</div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-logo">Operion</div>
+        <button class="collapse-btn" id="collapseSidebar">⇤</button>
+      </div>
       <nav>
-        <a href="dashboard.html" class="sidebar-link active">📊 Dashboard</a>
-        <a href="agents.html" class="sidebar-link">🤖 Agents</a>
-        <a href="#work" class="sidebar-link">📋 Work board</a>
-        <a href="#activity" class="sidebar-link">📡 Activity</a>
-        <a href="#settings" class="sidebar-link">⚙️ Settings</a>
+        <a href="dashboard.html" class="sidebar-link active"><span>📊</span><span>Dashboard</span></a>
+        <a href="agents.html" class="sidebar-link"><span>🤖</span><span>Agents</span></a>
+        <a href="#work" class="sidebar-link"><span>📋</span><span>Work board</span></a>
+        <a href="#activity" class="sidebar-link"><span>📡</span><span>Activity</span></a>
+        <a href="#settings" class="sidebar-link"><span>⚙️</span><span>Settings</span></a>
       </nav>
     </aside>
     <main class="main-content">
@@ -266,7 +275,13 @@
       { text: 'Escalation cleared: API latency', at: 'Yesterday · 9:10 PM', read: true }
     ];
 
-        const notifBtn = document.getElementById('notifBtn');
+        const collapseBtn = document.getElementById('collapseSidebar');
+    const sidebarEl = document.getElementById('sidebar');
+    collapseBtn?.addEventListener('click', () => {
+      sidebarEl?.classList.toggle('collapsed');
+    });
+
+    const notifBtn = document.getElementById('notifBtn');
     const notifDropdown = document.getElementById('notifDropdown');
     const notifList = document.getElementById('notifList');
     const markAllReadBtn = document.getElementById('markAllRead');
@@ -497,7 +512,13 @@ const scheduleCard = document.querySelector('.schedule-card');
     }
     addMessage(lead.name || "Command agent", "Welcome to your dashboard. Ask me to run a playbook or summarize today's work.");
 
-        const notifBtn = document.getElementById('notifBtn');
+        const collapseBtn = document.getElementById('collapseSidebar');
+    const sidebarEl = document.getElementById('sidebar');
+    collapseBtn?.addEventListener('click', () => {
+      sidebarEl?.classList.toggle('collapsed');
+    });
+
+    const notifBtn = document.getElementById('notifBtn');
     const notifDropdown = document.getElementById('notifDropdown');
     const renderNotifications = () => {
       if (!notifDropdown) return;
@@ -763,7 +784,13 @@ const actionStatus = document.getElementById('actionStatus');
     document.getElementById('profileName').textContent = userName || 'Operator';
     document.getElementById('profileRole').textContent = user.occupation || 'Ops lead';
     const company = sessionStorage.getItem('operionCompanyName') || 'Operion workspace';
-        const notifBtn = document.getElementById('notifBtn');
+        const collapseBtn = document.getElementById('collapseSidebar');
+    const sidebarEl = document.getElementById('sidebar');
+    collapseBtn?.addEventListener('click', () => {
+      sidebarEl?.classList.toggle('collapsed');
+    });
+
+    const notifBtn = document.getElementById('notifBtn');
     const notifDropdown = document.getElementById('notifDropdown');
     const notifList = document.getElementById('notifList');
     const markAllReadBtn = document.getElementById('markAllRead');
