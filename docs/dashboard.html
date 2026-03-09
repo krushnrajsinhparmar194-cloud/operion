@@ -68,8 +68,13 @@
     .status-online { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.4); }
     .status-paused { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.4); }
     .status-offline { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); }
+    .work-tabs { display: flex; gap: 0.6rem; margin-bottom: 1rem; }
+    .work-tab { border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: var(--text); padding: 0.45rem 1rem; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease; }
+    .work-tab.active { background: rgba(124,107,255,0.25); border-color: transparent; }
+    .work-tab:hover { border-color: rgba(255,255,255,0.4); }
     .work-list { display: flex; flex-direction: column; gap: 0.9rem; max-height: 320px; overflow-y: auto; }
-    .work-item { border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 0.9rem; background: rgba(255,255,255,0.03); }
+    .work-item { border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 0.9rem; background: rgba(255,255,255,0.03); opacity: 0; transform: translateY(10px); animation: fadeIn 0.2s forwards; }
+    @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
     .action-status { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.4rem; }
     .quick-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
     .action-btn { border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text); padding: 0.8rem 1.2rem; font-weight: 500; cursor: pointer; transition: border-color 0.2s ease, transform 0.15s ease; }
@@ -113,6 +118,11 @@
     </div>
     <div class="card">
       <h3>Work board</h3>
+      <div class="work-tabs">
+        <button class="work-tab active" data-tab="backlog">Backlog</button>
+        <button class="work-tab" data-tab="progress">In progress</button>
+        <button class="work-tab" data-tab="done">Done</button>
+      </div>
       <div class="work-list" id="workList">Preparing tasks…</div>
     </div>
     <aside class="activity-feed-card">
@@ -252,14 +262,32 @@
         agentListEl.innerHTML = 'Unable to load agents.';
       });
 
+    const workTabs = document.querySelectorAll('.work-tab');
     const workListEl = document.getElementById('workList');
+    const groupedWork = {
+      backlog: agentWork.slice(0, 3),
+      progress: agentWork.slice(3, 5),
+      done: agentWork.slice(5, 7)
+    };
+    const renderWork = (group = 'backlog') => {
+      const items = groupedWork[group] || [];
+      workListEl.innerHTML = items.length ? items.map(item => `
+        <div class="work-item">
+          <strong>${item.name}</strong>
+          <p>${item.work}</p>
+        </div>
+      `).join('') : '<p>No tasks in this column.</p>';
+    };
+    workTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        workTabs.forEach(btn => btn.classList.remove('active'));
+        tab.classList.add('active');
+        renderWork(tab.dataset.tab);
+      });
+    });
+    renderWork();
+
     runMetrics();
-    workListEl.innerHTML = agentWork.length ? agentWork.map(item => `
-      <div class="work-item">
-        <strong>${item.name}</strong>
-        <p>${item.work}</p>
-      </div>
-    `).join('') : '<p>No agent work queued yet.</p>';
 
     const activityFeedEl = document.getElementById('activityFeed');
     const renderDashboardActivity = () => {
