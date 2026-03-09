@@ -281,9 +281,10 @@
     }
 
 
-    const agentWork = selectedAgents.map((name, idx) => ({
+    let agentWork = selectedAgents.map((name, idx) => ({
       name,
-      work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}`
+      work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}` ,
+      status: ['backlog','progress','done'][idx % 3]
     }));
 
     const metricsEl = document.getElementById('metricsCards');
@@ -349,28 +350,50 @@
 
     const workTabs = document.querySelectorAll('.work-tab');
     const workListEl = document.getElementById('workList');
-    const groupedWork = {
-      backlog: agentWork.filter((_, idx) => idx % 3 === 0),
-      progress: agentWork.filter((_, idx) => idx % 3 === 1),
-      done: agentWork.filter((_, idx) => idx % 3 === 2)
-    };
-    const renderWork = (group = 'backlog') => {
-      const items = groupedWork[group] || [];
+    const getGroupedWork = () => ({
+      backlog: agentWork.filter(item => item.status === 'backlog'),
+      progress: agentWork.filter(item => item.status === 'progress'),
+      done: agentWork.filter(item => item.status === 'done')
+    });
+    let currentGroup = 'backlog';
+    const renderWork = () => {
+      const groupedWork = getGroupedWork();
+      const items = groupedWork[currentGroup] || [];
       workListEl.innerHTML = items.length ? items.map(item => `
-        <div class="work-item">
+        <div class="work-item" draggable="true" data-task-name="${item.name}">
           <div class="work-item-head">
             <strong>${item.name}</strong>
-            <span class="work-tag">${group === 'done' ? 'Completed' : group === 'progress' ? 'Running' : 'Queued'}</span>
+            <span class="work-tag">${item.status === 'done' ? 'Completed' : item.status === 'progress' ? 'Running' : 'Queued'}</span>
           </div>
           <p>${item.work}</p>
         </div>
       `).join('') : '<p>No tasks in this column.</p>';
+      attachDragHandlers();
     };
+
+    let draggedTaskName = null;
+    const attachDragHandlers = () => {
+      document.querySelectorAll('.work-item').forEach(item => {
+        item.addEventListener('dragstart', () => draggedTaskName = item.dataset.taskName);
+      });
+    };
+
     workTabs.forEach(tab => {
       tab.addEventListener('click', () => {
         workTabs.forEach(btn => btn.classList.remove('active'));
         tab.classList.add('active');
-        renderWork(tab.dataset.tab);
+        currentGroup = tab.dataset.tab;
+        renderWork();
+      });
+      tab.addEventListener('dragover', event => event.preventDefault());
+      tab.addEventListener('drop', () => {
+        if (!draggedTaskName) return;
+        const target = agentWork.find(task => task.name === draggedTaskName);
+        if (!target) return;
+        target.status = tab.dataset.tab;
+        currentGroup = tab.dataset.tab;
+        renderWork();
+        draggedTaskName = null;
       });
     });
     renderWork();
@@ -778,26 +801,50 @@
       progress: agentWork.filter((_, idx) => idx % 3 === 1),
       done: agentWork.filter((_, idx) => idx % 3 === 2)
     };
-    const renderWork = (group = 'backlog') => {
-      const items = groupedWork[group] || [];
+    const renderWork = () => {
+      const groupedWork = getGroupedWork();
+      const items = groupedWork[currentGroup] || [];
       workListEl.innerHTML = items.length ? items.map(item => `
-        <div class="work-item">
+        <div class="work-item" draggable="true" data-task-name="${item.name}">
           <div class="work-item-head">
             <strong>${item.name}</strong>
-            <span class="work-tag">${group === 'done' ? 'Completed' : group === 'progress' ? 'Running' : 'Queued'}</span>
+            <span class="work-tag">${item.status === 'done' ? 'Completed' : item.status === 'progress' ? 'Running' : 'Queued'}</span>
           </div>
           <p>${item.work}</p>
         </div>
       `).join('') : '<p>No tasks in this column.</p>';
+      attachDragHandlers();
     };
+
     workTabs.forEach(tab => {
       tab.addEventListener('click', () => {
         workTabs.forEach(btn => btn.classList.remove('active'));
         tab.classList.add('active');
-        renderWork(tab.dataset.tab);
+        currentGroup = tab.dataset.tab;
+        renderWork();
       });
     });
     renderWork();
+
+    const attachDragHandlers = () => {
+      document.querySelectorAll('.work-item').forEach(item => {
+        item.addEventListener('dragstart', () => draggedTaskName = item.dataset.taskName);
+      });
+    };
+    let draggedTaskName = null;
+    workTabs.forEach(tab => {
+      tab.addEventListener('dragover', event => event.preventDefault());
+      tab.addEventListener('drop', () => {
+        if (!draggedTaskName) return;
+        const target = agentWork.find(task => task.name === draggedTaskName);
+        if (!target) return;
+        target.status = tab.dataset.tab;
+        currentGroup = tab.dataset.tab;
+        renderWork();
+        draggedTaskName = null;
+        logActivity?.(`Moved ${target.name} to ${tab.textContent}`);
+      });
+    });
 
     runMetrics();
 
