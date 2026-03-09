@@ -72,6 +72,7 @@
     .contact-item small { display: block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; }
     .contact-item p { margin: 0; font-size: 0.95rem; color: var(--text); word-break: break-word; }
     .pref-card { border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 1.5rem; background: rgba(255,255,255,0.03); display: flex; flex-direction: column; gap: 1.2rem; }
+    .team-pref { border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; background: rgba(255,255,255,0.02); }
     .pref-card h2 { margin: 0; }
     .pref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
     .toggle-field { border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: rgba(255,255,255,0.02); }
@@ -84,6 +85,11 @@
     .switch input:checked + .slider::before { transform: translateX(18px); }
     .pref-cadence { border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); }
     .pref-cadence select { width: 100%; margin-top: 0.4rem; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); color: var(--text); padding: 0.6rem; }
+    .team-card { border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 1.5rem; background: rgba(255,255,255,0.03); display: flex; flex-direction: column; gap: 1.1rem; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1rem; }
+    .team-item { border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); }
+    .team-item strong { display: block; font-size: 1.05rem; }
+    .team-item span { color: var(--muted); font-size: 0.9rem; }
   </style>
 </head>
 <body>
@@ -147,6 +153,24 @@
         <div class="contact-item">
           <small>Working hours</small>
           <p id="profileHours">—</p>
+        </div>
+      </div>
+    </section>
+    <section class="team-card">
+      <div>
+        <h2>Team & owners</h2>
+        <p style="color:var(--muted);margin:0.3rem 0 0;">Let agents know who approves or backs up your work.</p>
+      </div>
+      <div class="team-grid">
+        <div class="team-item">
+          <small style="letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Primary approver</small>
+          <strong id="teamPrimaryName">—</strong>
+          <span id="teamPrimaryRole">Add role</span>
+        </div>
+        <div class="team-item">
+          <small style="letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Backup owner</small>
+          <strong id="teamBackupName">—</strong>
+          <span id="teamBackupRole">Add role</span>
         </div>
       </div>
     </section>
@@ -239,6 +263,13 @@
               <option value="Flexible / On call">Flexible / On call</option>
             </select>
           </label>
+          <div class="team-pref">
+            <span class="field-label" style="margin-bottom:0.4rem;">Team</span>
+            <label>Primary approver<input id="modalTeamPrimaryName" placeholder="Name" /></label>
+            <label>Primary role<input id="modalTeamPrimaryRole" placeholder="e.g. VP Ops" /></label>
+            <label>Backup owner<input id="modalTeamBackupName" placeholder="Name" /></label>
+            <label>Backup role<input id="modalTeamBackupRole" placeholder="e.g. Ops Lead" /></label>
+          </div>
           <div class="language-field">
             <span class="field-label">Languages</span>
             <select id="languageSelect" class="language-select">
@@ -297,6 +328,8 @@
     let userName = sessionStorage.getItem('operionUserName') || '';
     let languages = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
     let lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
+    let teamPrimary = JSON.parse(sessionStorage.getItem('operionTeamPrimary') || '{}');
+    let teamBackup = JSON.parse(sessionStorage.getItem('operionTeamBackup') || '{}');
     const prefDefaults = { email: true, sms: false, dashboard: true, cadence: 'Instant' };
     let notificationPrefs = { ...prefDefaults, ...JSON.parse(sessionStorage.getItem('operionNotificationPrefs') || '{}') };
     const languageOptions = ['English','Gujarati','Hindi','Spanish','French','German','Portuguese','Italian','Arabic','Bengali','Mandarin','Japanese','Korean','Russian','Dutch','Swedish','Norwegian','Danish','Turkish','Thai','Vietnamese','Indonesian','Malay','Punjabi','Marathi','Telugu','Tamil','Kannada','Malayalam','Filipino','Hebrew','Greek','Polish','Czech','Ukrainian','Romanian','Hungarian'];
@@ -313,6 +346,10 @@
     const summaryTimezone = document.getElementById('profileTimezone');
     const summaryHours = document.getElementById('profileHours');
     const leadNameEl = document.getElementById('leadName');
+    const teamPrimaryNameEl = document.getElementById('teamPrimaryName');
+    const teamPrimaryRoleEl = document.getElementById('teamPrimaryRole');
+    const teamBackupNameEl = document.getElementById('teamBackupName');
+    const teamBackupRoleEl = document.getElementById('teamBackupRole');
 
     const prefEmailToggle = document.getElementById('prefEmailToggle');
     const prefSmsToggle = document.getElementById('prefSmsToggle');
@@ -354,6 +391,10 @@
       summaryHours.textContent = user.hours || '—';
       summaryLanguages.textContent = languages.length ? languages.join(', ') : '—';
       leadNameEl.textContent = lead.name || '—';
+      teamPrimaryNameEl.textContent = teamPrimary.name || '—';
+      teamPrimaryRoleEl.textContent = teamPrimary.role || 'Add role';
+      teamBackupNameEl.textContent = teamBackup.name || '—';
+      teamBackupRoleEl.textContent = teamBackup.role || 'Add role';
     };
 
     updateSummary();
@@ -370,6 +411,10 @@
     const modalPhone = document.getElementById('modalPhone');
     const modalTimezone = document.getElementById('modalTimezone');
     const modalHours = document.getElementById('modalHours');
+    const modalTeamPrimaryName = document.getElementById('modalTeamPrimaryName');
+    const modalTeamPrimaryRole = document.getElementById('modalTeamPrimaryRole');
+    const modalTeamBackupName = document.getElementById('modalTeamBackupName');
+    const modalTeamBackupRole = document.getElementById('modalTeamBackupRole');
     const modalPrefEmail = document.getElementById('modalPrefEmail');
     const modalPrefSms = document.getElementById('modalPrefSms');
     const modalPrefDash = document.getElementById('modalPrefDash');
@@ -425,6 +470,10 @@
       modalPhone.value = user.phone || '';
       modalTimezone.value = user.timezone || '';
       modalHours.value = user.hours || '';
+      if (modalTeamPrimaryName) modalTeamPrimaryName.value = teamPrimary.name || '';
+      if (modalTeamPrimaryRole) modalTeamPrimaryRole.value = teamPrimary.role || '';
+      if (modalTeamBackupName) modalTeamBackupName.value = teamBackup.name || '';
+      if (modalTeamBackupRole) modalTeamBackupRole.value = teamBackup.role || '';
       if (modalPrefEmail) modalPrefEmail.checked = !!notificationPrefs.email;
       if (modalPrefSms) modalPrefSms.checked = !!notificationPrefs.sms;
       if (modalPrefDash) modalPrefDash.checked = !!notificationPrefs.dashboard;
@@ -472,6 +521,10 @@
       user.hours = modalHours.value.trim();
       userName = modalName.value.trim();
       lead.name = modalLead.value.trim();
+      teamPrimary.name = modalTeamPrimaryName?.value.trim() || '';
+      teamPrimary.role = modalTeamPrimaryRole?.value.trim() || '';
+      teamBackup.name = modalTeamBackupName?.value.trim() || '';
+      teamBackup.role = modalTeamBackupRole?.value.trim() || '';
       notificationPrefs.email = modalPrefEmail?.checked ?? notificationPrefs.email;
       notificationPrefs.sms = modalPrefSms?.checked ?? notificationPrefs.sms;
       notificationPrefs.dashboard = modalPrefDash?.checked ?? notificationPrefs.dashboard;
@@ -479,6 +532,8 @@
 
       sessionStorage.setItem('operionUserDetails', JSON.stringify(user));
       sessionStorage.setItem('operionNotificationPrefs', JSON.stringify(notificationPrefs));
+      sessionStorage.setItem('operionTeamPrimary', JSON.stringify(teamPrimary));
+      sessionStorage.setItem('operionTeamBackup', JSON.stringify(teamBackup));
       sessionStorage.setItem('operionUserName', userName);
       sessionStorage.setItem('operionAgentLanguage', JSON.stringify(languages));
       sessionStorage.setItem('operionLeadAgent', JSON.stringify(lead));
