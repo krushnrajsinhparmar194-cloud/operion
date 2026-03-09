@@ -58,6 +58,15 @@
     .ghost-btn:hover { border-color: rgba(255,255,255,0.3); }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
     .card { border: 1px solid rgba(255,255,255,0.1); border-radius: 1.2rem; padding: 1rem; background: rgba(255,255,255,0.04); }
+    .contact-card { border: 1px solid rgba(255,255,255,0.1); border-radius: 1.5rem; padding: 1.6rem; background: rgba(255,255,255,0.04); display: flex; flex-direction: column; gap: 1.2rem; }
+    .contact-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+    .contact-head h2 { margin: 0; font-size: 1.2rem; }
+    .contact-head p { margin: 0.2rem 0 0; color: var(--muted); }
+    .contact-pill { border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); padding: 0.35rem 0.9rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text); background: rgba(255,255,255,0.05); }
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .contact-item { border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); }
+    .contact-item small { display: block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; }
+    .contact-item p { margin: 0; font-size: 1rem; color: var(--text); }
   </style>
 </head>
 <body>
@@ -96,6 +105,33 @@
       <div class="card"><strong>Lead agent</strong><p id="leadName">—</p></div>
       <div class="card"><strong>Languages</strong><p id="profileLanguages">—</p></div>
     </div>
+    <section class="contact-card">
+      <div class="contact-head">
+        <div>
+          <h2>Contact & schedule</h2>
+          <p>Share how Operion and your team can best reach you.</p>
+        </div>
+        <span class="contact-pill">Live</span>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <small>Email</small>
+          <p id="profileEmail">—</p>
+        </div>
+        <div class="contact-item">
+          <small>Phone / WhatsApp</small>
+          <p id="profilePhone">—</p>
+        </div>
+        <div class="contact-item">
+          <small>Timezone</small>
+          <p id="profileTimezone">—</p>
+        </div>
+        <div class="contact-item">
+          <small>Working hours</small>
+          <p id="profileHours">—</p>
+        </div>
+      </div>
+    </section>
     <div class="modal" id="editModal" aria-hidden="true">
       <div class="modal-backdrop" id="modalBackdrop"></div>
       <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="editTitle">
@@ -107,6 +143,10 @@
           <label>Favorite place<input id="modalPlace" placeholder="e.g., Goa" /></label>
           <label>Occupation<input id="modalOccupation" placeholder="Role" /></label>
           <label>Lead agent<input id="modalLead" placeholder="Agent name" /></label>
+          <label>Work email<input type="email" id="modalEmail" placeholder="you@operion.ai" /></label>
+          <label>Phone / WhatsApp<input id="modalPhone" placeholder="+91 90000 00000" /></label>
+          <label>Timezone<input id="modalTimezone" placeholder="Asia/Kolkata" /></label>
+          <label>Working hours<input id="modalHours" placeholder="9 AM – 6 PM IST" /></label>
           <div class="language-field">
             <span class="field-label">Languages</span>
             <select id="languageSelect" class="language-select">
@@ -174,6 +214,10 @@
     const summaryPlace = document.getElementById('profilePlace');
     const summaryOccupation = document.getElementById('profileOccupation');
     const summaryLanguages = document.getElementById('profileLanguages');
+    const summaryEmail = document.getElementById('profileEmail');
+    const summaryPhone = document.getElementById('profilePhone');
+    const summaryTimezone = document.getElementById('profileTimezone');
+    const summaryHours = document.getElementById('profileHours');
     const leadNameEl = document.getElementById('leadName');
 
     const statusEl = document.getElementById('photoStatus');
@@ -185,6 +229,10 @@
       summaryColor.textContent = user.favoriteColor || '—';
       summaryPlace.textContent = user.favoritePlace || '—';
       summaryOccupation.textContent = user.occupation || '—';
+      summaryEmail.textContent = user.email || '—';
+      summaryPhone.textContent = user.phone || '—';
+      summaryTimezone.textContent = user.timezone || '—';
+      summaryHours.textContent = user.hours || '—';
       summaryLanguages.textContent = languages.length ? languages.join(', ') : '—';
       leadNameEl.textContent = lead.name || '—';
     };
@@ -198,6 +246,10 @@
     const modalPlace = document.getElementById('modalPlace');
     const modalOccupation = document.getElementById('modalOccupation');
     const modalLead = document.getElementById('modalLead');
+    const modalEmail = document.getElementById('modalEmail');
+    const modalPhone = document.getElementById('modalPhone');
+    const modalTimezone = document.getElementById('modalTimezone');
+    const modalHours = document.getElementById('modalHours');
     const languageSelect = document.getElementById('languageSelect');
     const selectedStack = document.getElementById('selectedLanguages');
     const languageHint = document.getElementById('languageHint');
@@ -244,6 +296,10 @@
       modalPlace.value = user.favoritePlace || '';
       modalOccupation.value = user.occupation || '';
       modalLead.value = lead.name || '';
+      modalEmail.value = user.email || '';
+      modalPhone.value = user.phone || '';
+      modalTimezone.value = user.timezone || '';
+      modalHours.value = user.hours || '';
       hydrateSelect();
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
@@ -280,6 +336,10 @@
       user.favoriteColor = modalColor.value.trim();
       user.favoritePlace = modalPlace.value.trim();
       user.occupation = modalOccupation.value.trim();
+      user.email = modalEmail.value.trim();
+      user.phone = modalPhone.value.trim();
+      user.timezone = modalTimezone.value.trim();
+      user.hours = modalHours.value.trim();
       userName = modalName.value.trim();
       lead.name = modalLead.value.trim();
 

@@ -66,6 +66,22 @@
           <label for="occupation">What do you work on?</label>
           <input type="text" id="occupation" placeholder="e.g. Product designer" />
         </div>
+        <div>
+          <label for="email">Work email</label>
+          <input type="email" id="email" placeholder="you@operion.ai" />
+        </div>
+        <div>
+          <label for="phone">Phone / WhatsApp</label>
+          <input type="tel" id="phone" placeholder="+91 90000 00000" />
+        </div>
+        <div>
+          <label for="timezone">Timezone</label>
+          <input type="text" id="timezone" placeholder="Asia/Kolkata" />
+        </div>
+        <div>
+          <label for="hours">Typical working hours</label>
+          <input type="text" id="hours" placeholder="9 AM – 6 PM IST" />
+        </div>
       </div>
       <button type="submit">Save details</button>
       <div class="note" id="status"></div>
@@ -80,7 +96,11 @@
         age: document.getElementById('age').value,
         favoriteColor: document.getElementById('favoriteColor').value.trim(),
         favoritePlace: document.getElementById('favoritePlace').value.trim(),
-        occupation: document.getElementById('occupation').value.trim()
+        occupation: document.getElementById('occupation').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        timezone: document.getElementById('timezone').value.trim(),
+        hours: document.getElementById('hours').value.trim()
       };
       sessionStorage.setItem('operionUserDetails', JSON.stringify(payload));
       window.location.href = '/welcome.html';
