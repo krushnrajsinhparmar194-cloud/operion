@@ -67,6 +67,23 @@
     .contact-item { border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); }
     .contact-item small { display: block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; }
     .contact-item p { margin: 0; font-size: 1rem; color: var(--text); }
+    .pref-card { border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 1.5rem; background: rgba(255,255,255,0.03); display: flex; flex-direction: column; gap: 1.2rem; }
+    .pref-card h2 { margin: 0; }
+    .pref-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .toggle-field { border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: rgba(255,255,255,0.02); }
+    .toggle-field small { display: block; font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+    .switch { position: relative; width: 42px; height: 24px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background: rgba(255,255,255,0.2); border-radius: 999px; transition: 0.2s; }
+    .slider::before { position: absolute; content: ''; height: 18px; width: 18px; left: 3px; top: 3px; background: #041021; border-radius: 50%; transition: 0.2s; }
+    .switch input:checked + .slider { background: linear-gradient(120deg, #4da8ff, #7c6bff); }
+    .switch input:checked + .slider::before { transform: translateX(18px); }
+    .pref-cadence { border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); }
+    .pref-cadence select { width: 100%; margin-top: 0.4rem; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); color: var(--text); padding: 0.6rem; }
+    .modal-pref { border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; background: rgba(255,255,255,0.02); }
+    .toggle-inline { display: inline-flex; justify-content: space-between; align-items: center; gap: 0.6rem; font-size: 0.95rem; }
+    .toggle-inline input[type="checkbox"] { width: 1rem; height: 1rem; }
+    .modal-pref select { width: 100%; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); color: var(--text); padding: 0.6rem; }
   </style>
 </head>
 <body>
@@ -132,6 +149,53 @@
         </div>
       </div>
     </section>
+    <section class="pref-card">
+      <div>
+        <h2>Agent notification preferences</h2>
+        <p style="color: var(--muted); margin: 0.3rem 0 0;">Control how Operion keeps you in the loop.</p>
+      </div>
+      <div class="pref-grid">
+        <div class="toggle-field">
+          <div>
+            <strong>Email updates</strong>
+            <small>Daily briefs + escalations</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="prefEmailToggle" />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="toggle-field">
+          <div>
+            <strong>SMS / WhatsApp</strong>
+            <small>Urgent tickets + live alerts</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="prefSmsToggle" />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="toggle-field">
+          <div>
+            <strong>Dashboard pings</strong>
+            <small>In-app nudges and reminders</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="prefDashToggle" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="pref-cadence">
+        <label for="prefCadence" style="font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted);">Update cadence</label>
+        <select id="prefCadence">
+          <option value="Instant">Instant alerts</option>
+          <option value="Hourly">Hourly bundles</option>
+          <option value="Daily">Daily digest</option>
+        </select>
+      </div>
+      <p style="margin:0; color:var(--muted); font-size:0.85rem;" id="prefStatus"></p>
+    </section>
     <div class="modal" id="editModal" aria-hidden="true">
       <div class="modal-backdrop" id="modalBackdrop"></div>
       <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="editTitle">
@@ -147,6 +211,20 @@
           <label>Phone / WhatsApp<input id="modalPhone" placeholder="+91 90000 00000" /></label>
           <label>Timezone<input id="modalTimezone" placeholder="Asia/Kolkata" /></label>
           <label>Working hours<input id="modalHours" placeholder="9 AM – 6 PM IST" /></label>
+          <div class="modal-pref">
+            <span class="field-label" style="margin-bottom:0.4rem;">Notifications</span>
+            <label class="toggle-inline"><span>Email updates</span><input type="checkbox" id="modalPrefEmail"></label>
+            <label class="toggle-inline"><span>SMS / WhatsApp</span><input type="checkbox" id="modalPrefSms"></label>
+            <label class="toggle-inline"><span>Dashboard pings</span><input type="checkbox" id="modalPrefDash"></label>
+            <label class="toggle-inline" style="flex-direction:column; align-items:flex-start; gap:0.4rem;">
+              <span>Update cadence</span>
+              <select id="modalPrefCadence">
+                <option value="Instant">Instant alerts</option>
+                <option value="Hourly">Hourly bundles</option>
+                <option value="Daily">Daily digest</option>
+              </select>
+            </label>
+          </div>
           <div class="language-field">
             <span class="field-label">Languages</span>
             <select id="languageSelect" class="language-select">
@@ -205,6 +283,8 @@
     let userName = sessionStorage.getItem('operionUserName') || '';
     let languages = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
     let lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
+    const prefDefaults = { email: true, sms: false, dashboard: true, cadence: 'Instant' };
+    let notificationPrefs = { ...prefDefaults, ...JSON.parse(sessionStorage.getItem('operionNotificationPrefs') || '{}') };
     const languageOptions = ['English','Gujarati','Hindi','Spanish','French','German','Portuguese','Italian','Arabic','Bengali','Mandarin','Japanese','Korean','Russian','Dutch','Swedish','Norwegian','Danish','Turkish','Thai','Vietnamese','Indonesian','Malay','Punjabi','Marathi','Telugu','Tamil','Kannada','Malayalam','Filipino','Hebrew','Greek','Polish','Czech','Ukrainian','Romanian','Hungarian'];
 
     const summaryHeading = document.getElementById('profileHeading');
@@ -220,7 +300,32 @@
     const summaryHours = document.getElementById('profileHours');
     const leadNameEl = document.getElementById('leadName');
 
+    const prefEmailToggle = document.getElementById('prefEmailToggle');
+    const prefSmsToggle = document.getElementById('prefSmsToggle');
+    const prefDashToggle = document.getElementById('prefDashToggle');
+    const prefCadenceSelect = document.getElementById('prefCadence');
+    const prefStatus = document.getElementById('prefStatus');
+
     const statusEl = document.getElementById('photoStatus');
+
+    const setPrefStatus = () => {
+      if (!prefStatus) return;
+      const channels = [
+        notificationPrefs.email ? 'Email' : null,
+        notificationPrefs.sms ? 'SMS/WhatsApp' : null,
+        notificationPrefs.dashboard ? 'Dashboard' : null
+      ].filter(Boolean);
+      prefStatus.textContent = channels.length ? `${channels.join(' · ')} · ${notificationPrefs.cadence}` : `Notifications muted (${notificationPrefs.cadence})`;
+    };
+
+    const updatePrefToggles = () => {
+      if (!prefEmailToggle) return;
+      prefEmailToggle.checked = !!notificationPrefs.email;
+      prefSmsToggle.checked = !!notificationPrefs.sms;
+      prefDashToggle.checked = !!notificationPrefs.dashboard;
+      if (prefCadenceSelect) prefCadenceSelect.value = notificationPrefs.cadence || 'Instant';
+      setPrefStatus();
+    };
 
     const updateSummary = () => {
       summaryHeading.textContent = userName || 'Profile';
@@ -238,6 +343,7 @@
     };
 
     updateSummary();
+    updatePrefToggles();
 
     const modal = document.getElementById('editModal');
     const modalName = document.getElementById('modalName');
@@ -250,6 +356,10 @@
     const modalPhone = document.getElementById('modalPhone');
     const modalTimezone = document.getElementById('modalTimezone');
     const modalHours = document.getElementById('modalHours');
+    const modalPrefEmail = document.getElementById('modalPrefEmail');
+    const modalPrefSms = document.getElementById('modalPrefSms');
+    const modalPrefDash = document.getElementById('modalPrefDash');
+    const modalPrefCadence = document.getElementById('modalPrefCadence');
     const languageSelect = document.getElementById('languageSelect');
     const selectedStack = document.getElementById('selectedLanguages');
     const languageHint = document.getElementById('languageHint');
@@ -300,6 +410,10 @@
       modalPhone.value = user.phone || '';
       modalTimezone.value = user.timezone || '';
       modalHours.value = user.hours || '';
+      if (modalPrefEmail) modalPrefEmail.checked = !!notificationPrefs.email;
+      if (modalPrefSms) modalPrefSms.checked = !!notificationPrefs.sms;
+      if (modalPrefDash) modalPrefDash.checked = !!notificationPrefs.dashboard;
+      if (modalPrefCadence) modalPrefCadence.value = notificationPrefs.cadence || 'Instant';
       hydrateSelect();
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
@@ -342,13 +456,19 @@
       user.hours = modalHours.value.trim();
       userName = modalName.value.trim();
       lead.name = modalLead.value.trim();
+      notificationPrefs.email = modalPrefEmail?.checked ?? notificationPrefs.email;
+      notificationPrefs.sms = modalPrefSms?.checked ?? notificationPrefs.sms;
+      notificationPrefs.dashboard = modalPrefDash?.checked ?? notificationPrefs.dashboard;
+      notificationPrefs.cadence = modalPrefCadence?.value || notificationPrefs.cadence;
 
       sessionStorage.setItem('operionUserDetails', JSON.stringify(user));
+      sessionStorage.setItem('operionNotificationPrefs', JSON.stringify(notificationPrefs));
       sessionStorage.setItem('operionUserName', userName);
       sessionStorage.setItem('operionAgentLanguage', JSON.stringify(languages));
       sessionStorage.setItem('operionLeadAgent', JSON.stringify(lead));
 
       updateSummary();
+      updatePrefToggles();
       renderSelectedLanguages();
       statusEl.textContent = 'Profile saved.';
       setTimeout(() => statusEl.textContent = '', 2000);
@@ -403,6 +523,26 @@
       reader.readAsDataURL(file);
     });
 
+    prefEmailToggle?.addEventListener('change', () => {
+      notificationPrefs.email = prefEmailToggle.checked;
+      sessionStorage.setItem('operionNotificationPrefs', JSON.stringify(notificationPrefs));
+      setPrefStatus();
+    });
+    prefSmsToggle?.addEventListener('change', () => {
+      notificationPrefs.sms = prefSmsToggle.checked;
+      sessionStorage.setItem('operionNotificationPrefs', JSON.stringify(notificationPrefs));
+      setPrefStatus();
+    });
+    prefDashToggle?.addEventListener('change', () => {
+      notificationPrefs.dashboard = prefDashToggle.checked;
+      sessionStorage.setItem('operionNotificationPrefs', JSON.stringify(notificationPrefs));
+      setPrefStatus();
+    });
+    prefCadenceSelect?.addEventListener('change', () => {
+      notificationPrefs.cadence = prefCadenceSelect.value;
+      sessionStorage.setItem('operionNotificationPrefs', JSON.stringify(notificationPrefs));
+      setPrefStatus();
+    });
     removeBtn?.addEventListener('click', () => {
       sessionStorage.removeItem(photoKey);
       uploadInput.value = '';
