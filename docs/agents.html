@@ -14,6 +14,7 @@
     .status-badge { align-self: flex-start; border-radius: 999px; padding: 0.2rem 0.7rem; font-size: 0.8rem; }
     .status-online { background: rgba(16, 185, 129, 0.2); color: #10b981; }
     .status-offline { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    .availability-badge { border-radius: 999px; padding: 0.2rem 0.6rem; font-size: 0.75rem; background: rgba(124,107,255,0.2); color: #eef2ff; margin-left: 0.4rem; }
   </style>
 </head>
 <body>
@@ -26,7 +27,8 @@
         document.getElementById('agentsGrid').innerHTML = agents.map(agent => `
           <div class="agent-card">
             <strong>${agent.name}</strong>
-            <span>Status: <span class="status-badge ${agent.status === 'online' ? 'status-online' : 'status-offline'}">${agent.status}</span></span>
+            <span>Status: <span class="status-badge ${agent.status === 'online' ? 'status-online' : agent.status === 'standby' ? 'status-paused' : 'status-offline'}">${agent.status}</span>
+              <span class="availability-badge">${agent.status === 'online' ? 'Free' : 'Busy'}</span></span>
             <span>Last active: ${new Date(agent.last_active).toLocaleString()}</span>
           </div>
         `).join('');
