@@ -132,7 +132,10 @@
     .work-list { display: flex; flex-direction: column; gap: 0.9rem; max-height: 320px; overflow-y: auto; }
     .work-item { border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 0.9rem; background: rgba(255,255,255,0.03); opacity: 0; transform: translateY(10px); animation: fadeIn 0.2s forwards; }
     .work-item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
+    .work-actions { display: inline-flex; gap: 0.3rem; }
+    .work-action-btn { border: none; border-radius: 999px; width: 28px; height: 28px; background: rgba(255,255,255,0.1); color: var(--text); cursor: pointer; font-size: 0.85rem; }
     .work-tag { border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); padding: 0.15rem 0.6rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .work-meta { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
     @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
     .action-status { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.4rem; }
     .quick-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
@@ -141,6 +144,16 @@
     .agent-modal.open { display: flex; }
     .agent-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
     .agent-modal-panel { position: relative; width: min(480px, 92vw); border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(8,12,24,0.95); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .task-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 60; }
+    .task-modal.open { display: flex; }
+    .task-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+    .task-modal-panel { position: relative; width: min(420px, 90vw); border-radius: 1.2rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(8,12,24,0.95); padding: 1.4rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .task-modal-panel label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.9rem; }
+    .task-modal-panel input { border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text); padding: 0.7rem; }
+    .task-modal-actions { display: flex; justify-content: flex-end; gap: 0.6rem; }
+    .task-save, .task-cancel { border: none; border-radius: 999px; padding: 0.5rem 1.1rem; cursor: pointer; }
+    .task-save { background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; }
+    .task-cancel { background: rgba(255,255,255,0.1); color: var(--text); }
     .agent-modal-head { display: flex; justify-content: space-between; align-items: center; }
     .agent-modal-head button { border: none; background: transparent; color: var(--text); font-size: 1.3rem; cursor: pointer; }
     .agent-select-row { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 0.7rem 1rem; margin-bottom: 0.7rem; }
@@ -202,19 +215,6 @@
       </div>
     </div>
   </header>
-    <div>
-      <p class="muted" id="dashboardGreeting">Welcome back</p>
-      <h1 id="companyTitle">Operion Control Center</h1>
-    </div>
-    <div class="profile-chip">
-      <div class="avatar" id="profileAvatar" aria-hidden="true">👤</div>
-      <div>
-        <strong id="profileName">User</strong>
-        <p class="muted" id="profileRole">Command operator</p>
-      </div>
-      <a href="profile.html" class="profile-btn">Profile</a>
-    </div>
-  </header>
   <section class="metrics" id="metricsCards">
     <div class="metric-card"><span>Loading metrics…</span></div>
   </section>
@@ -245,6 +245,18 @@
     <button class="action-btn">⏸️ Pause notifications</button>
     <button class="action-btn">🤝 Invite teammate</button>
   </section>
+
+  <div class="task-modal" id="taskModal" aria-hidden="true">
+    <div class="task-modal-backdrop"></div>
+    <div class="task-modal-panel">
+      <h3>Edit task</h3>
+      <label>Title<input type="text" id="taskTitleInput" /></label>
+      <div class="task-modal-actions">
+        <button class="task-save" id="saveTaskEdit">Save</button>
+        <button class="task-cancel" id="cancelTaskEdit">Cancel</button>
+      </div>
+    </div>
+  </div>
 
   <div class="agent-modal" id="agentModal" aria-hidden="true">
     <div class="agent-modal-backdrop"></div>
@@ -374,9 +386,14 @@ const scheduleCard = document.querySelector('.schedule-card');
     }
 
 
-    let agentWork = selectedAgents.map((name, idx) => ({
-      name,
+    const sampleTitles = ['KPI sweep', 'Client pulse', 'Queue triage', 'Handoff audit', 'Release QA'];
+    const sampleDue = ['Today · 5:00 PM', 'Today · 7:30 PM', 'Tomorrow · 9:00 AM', 'Tomorrow · 1:30 PM'];
+    let agentWork = selectedAgents.map((agentName, idx) => ({
+      id: `task-${idx}-${Date.now()}`,
+      name: sampleTitles[idx % sampleTitles.length],
       work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}` ,
+      assigned: agentName,
+      due: sampleDue[idx % sampleDue.length],
       status: ['backlog','progress','done'][idx % 3]
     }));
 
@@ -443,6 +460,12 @@ const scheduleCard = document.querySelector('.schedule-card');
 
     const workTabs = document.querySelectorAll('.work-tab');
     const workListEl = document.getElementById('workList');
+    const taskModal = document.getElementById('taskModal');
+    const taskTitleInput = document.getElementById('taskTitleInput');
+    const saveTaskEdit = document.getElementById('saveTaskEdit');
+    const cancelTaskEdit = document.getElementById('cancelTaskEdit');
+    let editingTaskId = null;
+
     const getGroupedWork = () => ({
       backlog: agentWork.filter(item => item.status === 'backlog'),
       progress: agentWork.filter(item => item.status === 'progress'),
@@ -453,23 +476,97 @@ const scheduleCard = document.querySelector('.schedule-card');
       const groupedWork = getGroupedWork();
       const items = groupedWork[currentGroup] || [];
       workListEl.innerHTML = items.length ? items.map(item => `
-        <div class="work-item" draggable="true" data-task-name="${item.name}">
+        <div class="work-item" draggable="true" data-task-id="${item.id}">
           <div class="work-item-head">
-            <strong>${item.name}</strong>
-            <span class="work-tag">${item.status === 'done' ? 'Completed' : item.status === 'progress' ? 'Running' : 'Queued'}</span>
+            <div>
+              <strong>${item.name}</strong>
+              <span class="work-tag">${item.status === 'done' ? 'Completed' : item.status === 'progress' ? 'Running' : 'Queued'}</span>
+            </div>
+            <div class="work-actions">
+              <button class="work-action-btn" data-action="done" title="Mark done">✔</button>
+              <button class="work-action-btn" data-action="reassign" title="Reassign">↺</button>
+              <button class="work-action-btn" data-action="edit" title="Edit">✎</button>
+              <button class="work-action-btn" data-action="delete" title="Delete">✕</button>
+            </div>
           </div>
           <p>${item.work}</p>
+          <div class="work-meta">
+            <span>👤 ${item.assigned || 'Unassigned'}</span>
+            <span>🕒 ${item.due || 'Soon'}</span>
+          </div>
         </div>
       `).join('') : '<p>No tasks in this column.</p>';
       attachDragHandlers();
     };
 
-    let draggedTaskName = null;
+    let draggedTaskId = null;
     const attachDragHandlers = () => {
       document.querySelectorAll('.work-item').forEach(item => {
-        item.addEventListener('dragstart', () => draggedTaskName = item.dataset.taskName);
+        item.addEventListener('dragstart', () => draggedTaskId = item.dataset.taskId);
       });
     };
+
+    const handleTaskAction = (taskId, action) => {
+      const target = agentWork.find(task => task.id === taskId);
+      if (!target) return;
+      if (action === 'done') {
+        target.status = 'done';
+        renderWork();
+        return;
+      }
+      if (action === 'reassign') {
+        const nextOwner = prompt('Assign to which agent?', target.assigned || '');
+        if (nextOwner) {
+          target.assigned = nextOwner;
+          renderWork();
+        }
+        return;
+      }
+      if (action === 'delete') {
+        if (confirm(`Delete ${target.name}?`)) {
+          agentWork = agentWork.filter(task => task.id !== taskId);
+          renderWork();
+        }
+        return;
+      }
+      if (action === 'edit') {
+        editingTaskId = taskId;
+        taskTitleInput.value = target.name || '';
+        taskModal?.classList.add('open');
+        taskModal?.setAttribute('aria-hidden', 'false');
+        setTimeout(() => taskTitleInput?.focus(), 0);
+      }
+    };
+
+    const closeTaskModal = () => {
+      taskModal?.classList.remove('open');
+      taskModal?.setAttribute('aria-hidden', 'true');
+      editingTaskId = null;
+    };
+
+    workListEl?.addEventListener('click', event => {
+      const btn = event.target.closest('.work-action-btn');
+      if (!btn) return;
+      const taskEl = btn.closest('.work-item');
+      if (!taskEl) return;
+      handleTaskAction(taskEl.dataset.taskId, btn.dataset.action);
+    });
+
+    saveTaskEdit?.addEventListener('click', () => {
+      if (!editingTaskId) return closeTaskModal();
+      const target = agentWork.find(task => task.id === editingTaskId);
+      if (!target) return closeTaskModal();
+      target.name = taskTitleInput.value.trim() || target.name;
+      renderWork();
+      closeTaskModal();
+    });
+    cancelTaskEdit?.addEventListener('click', closeTaskModal);
+    taskModal?.addEventListener('click', event => {
+      if (event.target.classList.contains('task-modal-backdrop')) closeTaskModal();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && taskModal?.classList.contains('open')) closeTaskModal();
+    });
 
     workTabs.forEach(tab => {
       tab.addEventListener('click', () => {
@@ -480,13 +577,13 @@ const scheduleCard = document.querySelector('.schedule-card');
       });
       tab.addEventListener('dragover', event => event.preventDefault());
       tab.addEventListener('drop', () => {
-        if (!draggedTaskName) return;
-        const target = agentWork.find(task => task.name === draggedTaskName);
+        if (!draggedTaskId) return;
+        const target = agentWork.find(task => task.id === draggedTaskId);
         if (!target) return;
         target.status = tab.dataset.tab;
         currentGroup = tab.dataset.tab;
         renderWork();
-        draggedTaskName = null;
+        draggedTaskId = null;
       });
     });
     renderWork();
@@ -527,293 +624,6 @@ const scheduleCard = document.querySelector('.schedule-card');
     }
     addMessage(lead.name || "Command agent", "Welcome to your dashboard. Ask me to run a playbook or summarize today's work.");
 
-        const collapseBtn = document.getElementById('collapseSidebar');
-    const sidebarEl = document.getElementById('sidebar');
-    collapseBtn?.addEventListener('click', () => {
-      sidebarEl?.classList.toggle('collapsed');
-    });
-
-    const notifBtn = document.getElementById('notifBtn');
-    const notifDropdown = document.getElementById('notifDropdown');
-    const renderNotifications = () => {
-      if (!notifDropdown) return;
-      const latest = notifications.slice(0, 5);
-      notifDropdown.innerHTML = latest.map(n => `
-        <div class="notif-item ${n.read ? '' : 'unread'}">
-          <strong>${n.text}</strong>
-          <span>${n.at}</span>
-        </div>
-      `).join('');
-    };
-    renderNotifications();
-
-    notifBtn?.addEventListener('click', () => {
-      notifDropdown?.classList.toggle('open');
-    });
-    document.addEventListener('click', event => {
-      if (!notifDropdown) return;
-      if (event.target.closest('#notifBtn') || event.target.closest('#notifDropdown')) return;
-      notifDropdown.classList.remove('open');
-    });
-const actionStatus = document.getElementById('actionStatus');
-    const launchBtn = document.querySelector('.action-btn.primary');
-    const pauseBtn = document.querySelectorAll('.action-btn')[1];
-    const inviteBtn = document.querySelectorAll('.action-btn')[2];
-
-    const setActionStatus = (text) => {
-      if (actionStatus) {
-        actionStatus.textContent = text;
-        setTimeout(() => (actionStatus.textContent = 'Ready'), 2500);
-      }
-    };
-
-    launchBtn?.addEventListener('click', () => {
-      setActionStatus('Launching agent… (placeholder modal)');
-    });
-    pauseBtn?.addEventListener('click', () => {
-      const paused = pauseBtn.dataset.state === 'paused';
-      pauseBtn.dataset.state = paused ? 'active' : 'paused';
-      pauseBtn.textContent = paused ? '⏸️ Pause notifications' : '▶️ Resume notifications';
-      setActionStatus(paused ? 'Notifications resumed' : 'Notifications paused');
-    });
-    inviteBtn?.addEventListener('click', () => {
-      setActionStatus('Invite dialog opened (placeholder)');
-    });
-    document.getElementById('chatForm').addEventListener('submit', e => {
-      e.preventDefault();
-      const input = document.getElementById('chatInput');
-      const message = input.value.trim();
-      if (!message) return;
-      addMessage(userName || 'You', message);
-      setTimeout(() => addMessage(lead.name || 'Command agent', "Got it! I'll queue that up."), 600);
-      input.value = '';
-    });
-  </script></script>
-    </main>
-  </div>
-</body>
-</html>E html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Operion · Dashboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      font-family: 'Inter', system-ui, sans-serif;
-      color-scheme: dark;
-      --bg: #04060f;
-      --card: rgba(255,255,255,0.03);
-      --card-strong: rgba(255,255,255,0.06);
-      --text: #eef2ff;
-      --muted: #9badcf;
-      --accent: #7c6bff;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: radial-gradient(circle at 15% 20%, rgba(124,107,255,0.35), transparent 60%),
-                  radial-gradient(circle at 85% 5%, rgba(71,169,255,0.3), transparent 55%),
-                  linear-gradient(180deg, #03050b, #04060f);
-      color: var(--text);
-      padding: 2.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-    header { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
-    header h1 { margin: 0; font-size: 1.9rem; }
-    header .muted { margin: 0; color: var(--muted); }
-    .dashboard-layout { display: grid; grid-template-columns: 220px 1fr; gap: 2rem; min-height: 100vh; }
-    .sidebar { border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 1.5rem; background: rgba(0,0,0,0.25); display: flex; flex-direction: column; gap: 1.5rem; }
-    .sidebar-logo { font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-    .sidebar-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.9rem; border-radius: 0.9rem; color: var(--text); text-decoration: none; border: 1px solid transparent; }
-    .sidebar-link:hover { border-color: rgba(255,255,255,0.2); }
-    .sidebar-link.active { background: rgba(124,107,255,0.2); border-color: transparent; }
-    .main-content { display: flex; flex-direction: column; gap: 2rem; }
-    @media (max-width: 960px) { .dashboard-layout { grid-template-columns: 1fr; } .sidebar { flex-direction: row; overflow-x: auto; } }
-    .profile-chip { display: flex; align-items: center; gap: 0.8rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; padding: 0.6rem 1rem; background: rgba(255,255,255,0.05); }
-    .profile-btn { border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; padding: 0.35rem 0.9rem; text-decoration: none; color: var(--text); background: rgba(124,107,255,0.2); font-size: 0.85rem; }
-    .profile-chip .avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
-    .profile-chip .avatar.has-photo { border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.05); }
-    .profile-chip .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .summaries { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
-    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
-    .metric-card { border-radius: 1.4rem; border: 1px solid rgba(255,255,255,0.12); padding: 1.2rem; background: rgba(255,255,255,0.04); display: flex; flex-direction: column; gap: 0.3rem; }
-    .metric-card strong { font-size: 2rem; }
-    .metric-card span { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-    .metric-card p { margin: 0; font-size: 0.95rem; color: var(--muted); }
-    .metric-trend { display: inline-block; margin-top: 0.4rem; color: rgba(255,255,255,0.7); font-size: 0.85rem; }
-    .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
-    .card { border-radius: 1.35rem; border: 1px solid rgba(255,255,255,0.08); background: var(--card); padding: 1.4rem; }
-    .card h3 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-    .card p { margin: 0; }
-    .panel-row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 1rem; }
-    .activity-row { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr) minmax(0, 1.5fr); }
-    .activity-feed-card { border-radius: 1.35rem; border: 1px solid rgba(255,255,255,0.08); background: var(--card); padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
-    .activity-feed { display: flex; flex-direction: column; gap: 0.8rem; max-height: 320px; overflow-y: auto; }
-    .activity-item { border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 0.8rem 1rem; display: flex; align-items: center; gap: 0.8rem; background: rgba(255,255,255,0.02); }
-    .activity-icon { width: 32px; height: 32px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem; }
-    .activity-text { flex: 1; }
-    .activity-text p { margin: 0; font-size: 0.95rem; }
-    .activity-text span { font-size: 0.8rem; color: var(--muted); }
-    .agent-list { max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.8rem; }
-    .see-all { margin-top: 1rem; text-align: right; }
-    .see-all a { color: var(--accent); text-decoration: none; font-weight: 500; }
-    .agent-pill { border-radius: 1rem; border: 1px solid rgba(255,255,255,0.12); padding: 0.9rem 1rem; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.04); }
-    .schedule-card { display: flex; flex-direction: column; gap: 1rem; }
-    .schedule-list { display: flex; flex-direction: column; gap: 0.7rem; }
-    .schedule-item { border-left: 3px solid rgba(124,107,255,0.7); padding-left: 0.9rem; }
-    .next-tasks-card { display: flex; flex-direction: column; gap: 1rem; }
-    .task-chip { border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 0.8rem; margin-bottom: 0.6rem; }
-    .task-chip-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem; }
-    .task-chip-actions { display: inline-flex; gap: 0.3rem; }
-    .task-action { border: none; border-radius: 999px; background: rgba(255,255,255,0.1); color: var(--text); width: 28px; height: 28px; cursor: pointer; }
-    .task-chip strong { display: block; }
-    .task-chip span { font-size: 0.85rem; color: var(--muted); }
-    .schedule-item span { font-size: 0.85rem; color: var(--muted); }
-    .schedule-item p { margin: 0.1rem 0 0; font-size: 1rem; }
-    .agent-meta { margin: 0; font-size: 0.85rem; color: var(--muted); }
-    .status-badge { border-radius: 999px; padding: 0.25rem 0.7rem; font-size: 0.85rem; text-transform: capitalize; }
-    .status-online { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.4); }
-    .status-paused { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.4); }
-    .status-offline { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); }
-    .work-tabs { display: flex; gap: 0.6rem; margin-bottom: 1rem; }
-    .work-tab { border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: var(--text); padding: 0.45rem 1rem; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease; }
-    .work-tab.active { background: rgba(124,107,255,0.25); border-color: transparent; }
-    .work-tab:hover { border-color: rgba(255,255,255,0.4); }
-    .work-list { display: flex; flex-direction: column; gap: 0.9rem; max-height: 320px; overflow-y: auto; }
-    .work-item { border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 0.9rem; background: rgba(255,255,255,0.03); opacity: 0; transform: translateY(10px); animation: fadeIn 0.2s forwards; }
-    .work-item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
-    .work-tag { border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); padding: 0.15rem 0.6rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-    @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
-    .action-status { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.4rem; }
-    .quick-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
-    .add-agent-btn { border-radius: 999px; border: 1px dashed rgba(255,255,255,0.4); background: transparent; color: var(--text); padding: 0.35rem 0.8rem; font-size: 0.85rem; cursor: pointer; }
-    .agent-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 50; }
-    .agent-modal.open { display: flex; }
-    .agent-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
-    .agent-modal-panel { position: relative; width: min(480px, 92vw); border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(8,12,24,0.95); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
-    .agent-modal-head { display: flex; justify-content: space-between; align-items: center; }
-    .agent-modal-head button { border: none; background: transparent; color: var(--text); font-size: 1.3rem; cursor: pointer; }
-    .agent-select-row { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 0.7rem 1rem; margin-bottom: 0.7rem; }
-    .agent-select-info { display: flex; flex-direction: column; }
-    .agent-select-checkbox { width: 18px; height: 18px; }
-    .action-btn { border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text); padding: 0.8rem 1.2rem; font-weight: 500; cursor: pointer; transition: border-color 0.2s ease, transform 0.15s ease; }
-    .action-btn:hover { border-color: rgba(255,255,255,0.4); transform: translateY(-1px); }
-    .action-btn.primary { background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; border-color: transparent; }
-    .chat { border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.1); background: var(--card-strong); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
-    .chat-log { min-height: 120px; max-height: 220px; overflow-y: auto; border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; }
-    .chat-entry { display: flex; flex-direction: column; gap: 0.25rem; }
-    .chat-entry span { font-size: 0.85rem; color: var(--muted); }
-    .chat form { display: flex; gap: 0.8rem; }
-    .chat input { flex: 1; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: var(--text); padding: 0.85rem 1rem; }
-    .chat button { border: none; border-radius: 1rem; padding: 0.9rem 1.3rem; background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; font-weight: 600; cursor: pointer; }
-    @media (max-width: 960px) {
-      .panel-row { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
-  <div class="dashboard-layout">
-    <aside class="sidebar">
-      <div class="sidebar-logo">Operion</div>
-      <nav>
-        <a href="dashboard.html" class="sidebar-link active">📊 Dashboard</a>
-        <a href="agents.html" class="sidebar-link">🤖 Agents</a>
-        <a href="#work" class="sidebar-link">📋 Work board</a>
-        <a href="#activity" class="sidebar-link">📡 Activity</a>
-        <a href="#settings" class="sidebar-link">⚙️ Settings</a>
-      </nav>
-    </aside>
-    <main class="main-content">
-    
-    <div>
-      <p class="muted" id="dashboardGreeting">Welcome back</p>
-      <h1 id="companyTitle">Operion Control Center</h1>
-    </div>
-    <div class="profile-chip">
-      <div class="avatar" id="profileAvatar" aria-hidden="true">👤</div>
-      <div>
-        <strong id="profileName">User</strong>
-        <p class="muted" id="profileRole">Command operator</p>
-      </div>
-      <a href="profile.html" class="profile-btn">Profile</a>
-    </div>
-  </header>
-  <section class="metrics" id="metricsCards">
-    <div class="metric-card"><span>Loading metrics…</span></div>
-  </section>
-  <section class="panel-row activity-row">
-    <div class="card">
-      <h3>Agents selected</h3>
-      <button class="add-agent-btn" id="openAgentModal">+ Add agent</button>
-      <div class="agent-list" id="agentList">Loading…</div>
-      <div class="see-all"><a href="agents-full.html">See all</a></div>
-    </div>
-    <div class="card">
-      <h3>Work board</h3>
-      <div class="work-tabs">
-        <button class="work-tab active" data-tab="backlog">Backlog</button>
-        <button class="work-tab" data-tab="progress">In progress</button>
-        <button class="work-tab" data-tab="done">Done</button>
-      </div>
-      <div class="work-list" id="workList">Preparing tasks…</div>
-    </div>
-    <aside class="activity-feed-card">
-      <h3>Live activity</h3>
-      <div id="activityFeed" class="activity-feed">Loading…</div>
-    </aside>
-  </section>
-  <div id="actionStatus" class="action-status">Ready</div>
-  <section class="quick-actions">
-    <button class="action-btn primary">🚀 Launch agent</button>
-    <button class="action-btn">⏸️ Pause notifications</button>
-    <button class="action-btn">🤝 Invite teammate</button>
-  </section>
-
-  <div class="agent-modal" id="agentModal" aria-hidden="true">
-    <div class="agent-modal-backdrop"></div>
-    <div class="agent-modal-panel">
-      <div class="agent-modal-head">
-        <h3>Select agents</h3>
-        <button id="closeAgentModal">×</button>
-      </div>
-      <div id="agentModalList">Loading agents…</div>
-    </div>
-  </div>
-  <section class="chat">
-    <div class="chat-log" id="chatLog"></div>
-    <form id="chatForm">
-      <input type="text" id="chatInput" placeholder="Ask your agent anything…" />
-      <button type="submit">Send</button>
-    </form>
-  </section>
-  <script>
-    const lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
-    const langs = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
-    const user = JSON.parse(sessionStorage.getItem('operionUserDetails') || '{}');
-    const userName = sessionStorage.getItem('operionUserName') || '';
-    document.getElementById('profileName').textContent = userName || 'Operator';
-    document.getElementById('profileRole').textContent = user.occupation || 'Ops lead';
-    const avatarEl = document.getElementById('profileAvatar');
-    const storedPhoto = sessionStorage.getItem('operionProfilePhoto');
-    if (avatarEl) {
-      if (storedPhoto) {
-        avatarEl.innerHTML = `<img src=\"${storedPhoto}\" alt=\"${userName || 'Profile photo'}\" />`;
-        avatarEl.classList.add('has-photo');
-        avatarEl.removeAttribute('aria-hidden');
-      } else {
-        avatarEl.textContent = '👤';
-        avatarEl.classList.remove('has-photo');
-        avatarEl.setAttribute('aria-hidden', 'true');
-      }
-    }
-    const company = sessionStorage.getItem('operionCompanyName') || 'Operion workspace';
         const collapseBtn = document.getElementById('collapseSidebar');
     const sidebarEl = document.getElementById('sidebar');
     collapseBtn?.addEventListener('click', () => {
@@ -863,196 +673,17 @@ const actionStatus = document.getElementById('actionStatus');
       renderNotifications();
     });
 
-const scheduleCard = document.querySelector('.schedule-card');
-    const workingHours = user.hours || '9 AM – 6 PM';
-    const timezone = user.timezone || 'Asia/Kolkata';
-    if (scheduleCard) {
-      scheduleCard.querySelector('.schedule-list').innerHTML = `
-        <div class="schedule-item">
-          <span>${workingHours.split('–')[0].trim()} (${timezone})</span>
-          <p>Agent monitoring</p>
-        </div>
-        <div class="schedule-item">
-          <span>${workingHours.split('–')[1]?.trim() || '2:00 PM'} (${timezone})</span>
-          <p>Task review sync</p>
-        </div>
-      `;
-    }
-    const preset = JSON.parse(sessionStorage.getItem('operionAgents') || '[]');
-    const commons = JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]');
-    const customs = JSON.parse(sessionStorage.getItem('operionCustomAgents') || '[]');
-    const legacyCombined = JSON.parse(sessionStorage.getItem('operionCombinedAgents') || 'null');
-
-    let selectedAgents = Array.from(new Set([
-      ...preset,
-      ...commons,
-      ...customs.map(c => c?.name || c)
-    ].filter(Boolean)));
-
-    if (!selectedAgents.length && legacyCombined) {
-      selectedAgents = Array.from(new Set([
-        ...(legacyCombined.preset || []),
-        ...((legacyCombined.custom || []).map(c => c?.name || c)),
-        ...(legacyCombined.commons || [])
-      ].filter(Boolean)));
-    }
-
-
-    const agentWork = selectedAgents.map((name, idx) => ({
-      name,
-      work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}`
-    }));
-
-    const metricsEl = document.getElementById('metricsCards');
-    const runMetrics = () => {
-      const metrics = [
-        { label: 'Active agents', value: 12, hint: 'Live now', trend: '+2 vs. yesterday' },
-        { label: 'Tasks today', value: 248, hint: 'Queued assignments', trend: '+18%' },
-        { label: 'Escalations', value: 3, hint: 'Need attention', trend: '-1 vs. avg' },
-        { label: 'System health', value: '99%', hint: 'Uptime last 24h', trend: 'Stable' }
-      ];
-      if (metricsEl) {
-        metricsEl.innerHTML = metrics.map(item => `
-          <div class="metric-card">
-            <span>${item.label}</span>
-            <strong>${item.value}</strong>
-            <p>${item.hint}</p>
-            <small class="metric-trend">${item.trend}</small>
-          </div>
-        `).join('');
-      }
-    };
-
-    const greetEl = document.getElementById('dashboardGreeting');
-    if (greetEl) greetEl.textContent = `Hi ${userName || 'operator'}, ${lead.name || 'your command agent'} is online.`;
-    const titleEl = document.getElementById('companyTitle');
-    if (titleEl) titleEl.textContent = company;
-    const leadEl = document.getElementById('leadSummary');
-    if (leadEl) leadEl.textContent = lead.name || '—';
-    const langEl = document.getElementById('languageSummary');
-    if (langEl) langEl.textContent = langs.length ? langs.join(', ') : 'No languages set yet';
-    const userEl = document.getElementById('userSummary');
-    if (userEl) userEl.textContent = `Age ${user.age || '—'} · Fav color ${user.favoriteColor || '—'} · Fav place ${user.favoritePlace || '—'} · Role ${user.occupation || '—'}`;
-
-    const agentListEl = document.getElementById('agentList');
-    fetch('agent-list.json')
-      .then(resp => resp.json())
-      .then(agentData => {
-        const list = agentData.slice(0, 6);
-        agentListEl.innerHTML = list.map(agent => {
-          const statusClass = agent.status === 'online'
-            ? 'status-online'
-            : agent.status === 'paused'
-              ? 'status-paused'
-              : 'status-offline';
-          const lastActive = new Date(agent.last_active).toLocaleString('en-IN', {
-            hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short'
-          });
-          return `
-            <div class="agent-pill">
-              <div>
-                <strong>${agent.name}</strong>
-                <p class="agent-meta">Last active ${lastActive}</p>
-              </div>
-              <span class="status-badge ${statusClass}">${agent.status}</span>
-            </div>
-          `;
-        }).join('');
-        runMetrics(list);
-      })
-      .catch(() => {
-        agentListEl.innerHTML = 'Unable to load agents.';
-      });
-
-    const workTabs = document.querySelectorAll('.work-tab');
-    const workListEl = document.getElementById('workList');
-    const groupedWork = {
-      backlog: agentWork.filter((_, idx) => idx % 3 === 0),
-      progress: agentWork.filter((_, idx) => idx % 3 === 1),
-      done: agentWork.filter((_, idx) => idx % 3 === 2)
-    };
-    const renderWork = () => {
-      const groupedWork = getGroupedWork();
-      const items = groupedWork[currentGroup] || [];
-      workListEl.innerHTML = items.length ? items.map(item => `
-        <div class="work-item" draggable="true" data-task-name="${item.name}">
-          <div class="work-item-head">
-            <strong>${item.name}</strong>
-            <span class="work-tag">${item.status === 'done' ? 'Completed' : item.status === 'progress' ? 'Running' : 'Queued'}</span>
-          </div>
-          <p>${item.work}</p>
-        </div>
-      `).join('') : '<p>No tasks in this column.</p>';
-      attachDragHandlers();
-    };
-
-    workTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        workTabs.forEach(btn => btn.classList.remove('active'));
-        tab.classList.add('active');
-        currentGroup = tab.dataset.tab;
-        renderWork();
-      });
+    notifBtn?.addEventListener('click', event => {
+      event.stopPropagation();
+      notifDropdown?.classList.toggle('open');
+      if (notifDropdown?.classList.contains('open')) renderNotifications();
     });
-    renderWork();
-
-    const attachDragHandlers = () => {
-      document.querySelectorAll('.work-item').forEach(item => {
-        item.addEventListener('dragstart', () => draggedTaskName = item.dataset.taskName);
-      });
-    };
-    let draggedTaskName = null;
-    workTabs.forEach(tab => {
-      tab.addEventListener('dragover', event => event.preventDefault());
-      tab.addEventListener('drop', () => {
-        if (!draggedTaskName) return;
-        const target = agentWork.find(task => task.name === draggedTaskName);
-        if (!target) return;
-        target.status = tab.dataset.tab;
-        currentGroup = tab.dataset.tab;
-        renderWork();
-        draggedTaskName = null;
-        logActivity?.(`Moved ${target.name} to ${tab.textContent}`);
-      });
+    document.addEventListener('click', event => {
+      if (!notifDropdown) return;
+      if (event.target.closest('#notifBtn') || event.target.closest('#notifDropdown')) return;
+      notifDropdown.classList.remove('open');
     });
-
-    runMetrics();
-
-    const activityFeedEl = document.getElementById('activityFeed');
-    const renderDashboardActivity = () => {
-      if (!activityFeedEl) return;
-      const log = JSON.parse(sessionStorage.getItem('operionActivityLog') || '[]').slice(0, 10);
-      if (!log.length) {
-        activityFeedEl.innerHTML = '<div class="activity-item"><div class="activity-text"><p>No profile activity yet.</p><span>Make an edit to see it here.</span></div></div>';
-        return;
-      }
-      activityFeedEl.innerHTML = log.map(entry => {
-        const when = new Date(entry.at).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' });
-        return `
-          <div class="activity-item">
-            <span class="activity-icon">📝</span>
-            <div class="activity-text">
-              <p>${entry.label}</p>
-              <span>${when}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-    };
-    renderDashboardActivity();
-    setInterval(renderDashboardActivity, 10000);
-
-    const chatLog = document.getElementById('chatLog');
-    function addMessage(from, text) {
-      const block = document.createElement('div');
-      block.className = 'chat-entry';
-      block.innerHTML = `<span>${from}</span><p>${text}</p>`;
-      chatLog.appendChild(block);
-      chatLog.scrollTop = chatLog.scrollHeight;
-    }
-    addMessage(lead.name || "Command agent", "Welcome to your dashboard. Ask me to run a playbook or summarize today's work.");
-
-    const actionStatus = document.getElementById('actionStatus');
+const actionStatus = document.getElementById('actionStatus');
     const launchBtn = document.querySelector('.action-btn.primary');
     const pauseBtn = document.querySelectorAll('.action-btn')[1];
     const inviteBtn = document.querySelectorAll('.action-btn')[2];
@@ -1085,7 +716,7 @@ const scheduleCard = document.querySelector('.schedule-card');
       setTimeout(() => addMessage(lead.name || 'Command agent', "Got it! I'll queue that up."), 600);
       input.value = '';
     });
-  </script></script>
+  </script>
     </main>
   </div>
 </body>
