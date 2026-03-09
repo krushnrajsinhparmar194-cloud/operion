@@ -193,6 +193,14 @@
     .task-save, .task-cancel { border: none; border-radius: 999px; padding: 0.5rem 1.1rem; cursor: pointer; }
     .task-save { background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; }
     .task-cancel { background: rgba(255,255,255,0.1); color: var(--text); }
+
+    .task-form { display: flex; flex-direction: column; gap: 0.8rem; }
+    .task-form textarea { border-radius: 0.9rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: var(--text); padding: 0.7rem; resize: vertical; }
+    .task-form select { border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); color: var(--text); padding: 0.6rem; }
+    .secondary-agent-group { border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 0.8rem; }
+    .secondary-agent-group p { margin: 0 0 0.4rem; font-size: 0.85rem; color: var(--muted); }
+    .secondary-agent-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .secondary-agent-list label { border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.7rem; font-size: 0.85rem; cursor: pointer; display: inline-flex; gap: 0.4rem; align-items: center; }
     .agent-modal-head { display: flex; justify-content: space-between; align-items: center; }
     .agent-modal-head button { border: none; background: transparent; color: var(--text); font-size: 1.3rem; cursor: pointer; }
     .agent-select-row { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 0.7rem 1rem; margin-bottom: 0.7rem; }
@@ -243,6 +251,7 @@
         <span>🔍</span>
         <input type="search" placeholder="Search agents, tasks..." />
       </div>
+      <button class="action-btn" id="openNewTask">+ New task</button>
       <button class="action-btn primary">+ New action</button>
       <button class="icon-btn has-tooltip" id="notifBtn" data-tooltip="Notifications">🔔<span class="notif-count" id="notifCount">0</span></button>
       <div class="profile-chip compact">
@@ -373,6 +382,26 @@
         <button class="task-save" id="saveTaskEdit">Save</button>
         <button class="task-cancel" id="cancelTaskEdit">Cancel</button>
       </div>
+    </div>
+  </div>
+
+  <div class="task-modal" id="newTaskModal" aria-hidden="true">
+    <div class="task-modal-backdrop"></div>
+    <div class="task-modal-panel">
+      <h3>Create task</h3>
+      <form id="newTaskForm" class="task-form">
+        <label>Task name<input type="text" id="taskNameInput" required /></label>
+        <label>Description<textarea id="taskDescInput" rows="4" placeholder="What needs to get done?"></textarea></label>
+        <label>Primary agent<select id="primaryAgentSelect"></select></label>
+        <div class="secondary-agent-group">
+          <p>Select supporting agents</p>
+          <div id="secondaryAgentList" class="secondary-agent-list"></div>
+        </div>
+        <div class="task-modal-actions">
+          <button type="button" class="task-cancel" id="cancelNewTask">Cancel</button>
+          <button type="submit" class="task-save">Create task</button>
+        </div>
+      </form>
     </div>
   </div>
 

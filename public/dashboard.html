@@ -387,6 +387,26 @@
     </div>
   </div>
 
+  <div class="task-modal" id="newTaskModal" aria-hidden="true">
+    <div class="task-modal-backdrop"></div>
+    <div class="task-modal-panel">
+      <h3>Create task</h3>
+      <form id="newTaskForm" class="task-form">
+        <label>Task name<input type="text" id="taskNameInput" required /></label>
+        <label>Description<textarea id="taskDescInput" rows="4" placeholder="What needs to get done?"></textarea></label>
+        <label>Primary agent<select id="primaryAgentSelect"></select></label>
+        <div class="secondary-agent-group">
+          <p>Select supporting agents</p>
+          <div id="secondaryAgentList" class="secondary-agent-list"></div>
+        </div>
+        <div class="task-modal-actions">
+          <button type="button" class="task-cancel" id="cancelNewTask">Cancel</button>
+          <button type="submit" class="task-save">Create task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div class="agent-modal" id="agentModal" aria-hidden="true">
     <div class="agent-modal-backdrop"></div>
     <div class="agent-modal-panel">
