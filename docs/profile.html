@@ -337,8 +337,15 @@
     let lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
     let teamPrimary = JSON.parse(sessionStorage.getItem('operionTeamPrimary') || '{}');
     let teamBackup = JSON.parse(sessionStorage.getItem('operionTeamBackup') || '{}');
+    let activityLog = JSON.parse(sessionStorage.getItem('operionActivityLog') || '[]');
     const prefDefaults = { email: true, sms: false, dashboard: true, cadence: 'Instant' };
     let notificationPrefs = { ...prefDefaults, ...JSON.parse(sessionStorage.getItem('operionNotificationPrefs') || '{}') };
+    const logActivity = (label) => {
+      const entry = { label, at: new Date().toISOString() };
+      activityLog = [entry, ...activityLog].slice(0, 20);
+      sessionStorage.setItem('operionActivityLog', JSON.stringify(activityLog));
+    };
+
     const teamDirectory = [
       { name: 'Krushnaraj Parmar', role: 'Founder' },
       { name: 'Ops Desk', role: 'Operations Lead' },
