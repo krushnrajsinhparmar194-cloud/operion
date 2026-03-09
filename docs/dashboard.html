@@ -482,6 +482,47 @@
       sidebarEl?.classList.toggle('collapsed');
     });
 
+    const newTaskTrigger = document.getElementById('openNewTask');
+    const newTaskModal = document.getElementById('newTaskModal');
+    const newTaskForm = document.getElementById('newTaskForm');
+    const cancelNewTask = document.getElementById('cancelNewTask');
+    const primaryAgentSelect = document.getElementById('primaryAgentSelect');
+    const secondaryAgentList = document.getElementById('secondaryAgentList');
+
+    const openNewTaskModal = () => {
+      newTaskModal?.classList.add('open');
+      newTaskModal?.setAttribute('aria-hidden', 'false');
+    };
+    const closeNewTaskModal = () => {
+      newTaskModal?.classList.remove('open');
+      newTaskModal?.setAttribute('aria-hidden', 'true');
+      newTaskForm?.reset();
+    };
+
+    newTaskTrigger?.addEventListener('click', openNewTaskModal);
+    cancelNewTask?.addEventListener('click', closeNewTaskModal);
+
+    newTaskForm?.addEventListener('submit', event => {
+      event.preventDefault();
+      const name = (document.getElementById('taskNameInput')?.value || 'Untitled task').trim();
+      const desc = document.getElementById('taskDescInput')?.value || '';
+      const owner = primaryAgentSelect?.value || selectedAgents[0] || 'Command bridge';
+      const secondary = Array.from(secondaryAgentList?.querySelectorAll('input:checked') || []).map(input => input.value);
+      const task = {
+        id: `new-task-${Date.now()}`,
+        name,
+        work: desc || `Task created ${new Date().toLocaleTimeString()}`,
+        assigned: owner,
+        collaborators: secondary,
+        due: 'Soon',
+        status: 'backlog',
+        createdAt: new Date().toISOString()
+      };
+      agentWork.unshift(task);
+      renderWork();
+      closeNewTaskModal();
+    });
+
     const notifBtn = document.getElementById('notifBtn');
     const notifDropdown = document.getElementById('notifDropdown');
     const notifList = document.getElementById('notifList');
@@ -574,6 +615,16 @@ const scheduleCard = document.querySelector('.schedule-card');
       due: sampleDue[idx % sampleDue.length],
       status: ['backlog','progress','done'][idx % 3]
     }));
+
+    const renderNewTaskAgents = (agents) => {
+      if (!primaryAgentSelect || !secondaryAgentList) return;
+      const source = agents && agents.length ? agents : (selectedAgents.length ? selectedAgents.map(name => ({ name })) : fallbackRoster);
+      const options = source.map(agent => agent.name || agent);
+      primaryAgentSelect.innerHTML = options.map(name => `<option value="${name}">${name}</option>`).join('');
+      secondaryAgentList.innerHTML = options.map(name => `
+        <label><input type="checkbox" value="${name}" />${name}</label>
+      `).join('');
+    };
 
     const metricsEl = document.getElementById('metricsCards');
     const runMetrics = () => {
