@@ -228,12 +228,23 @@
 
     const recommendedList = recommendedMap[industry] || defaultAgents.slice(0, 4);
     const allAgents = Array.from(new Set([...defaultAgents, ...recommendedList]));
-    const selected = new Set(JSON.parse(sessionStorage.getItem('operionAgents') || '[]'));
+    const prevSelected = JSON.parse(sessionStorage.getItem('operionAgents') || '[]');
+    const selected = new Set(prevSelected);
+
+    const syncSelectedState = () => {
+      document.querySelectorAll('.agent-card').forEach(card => {
+        const title = card.dataset.title;
+        if (!title) return;
+        card.classList.toggle('selected', selected.has(title));
+      });
+      updateSelectedCount();
+    };
 
     const renderCard = (agent, container) => {
       const card = document.createElement('button');
       card.type = 'button';
       card.className = 'agent-card';
+      card.dataset.title = agent.title;
       card.innerHTML = `<strong>${agent.title}</strong><p>${agent.desc || ''}</p>`;
       if (selected.has(agent.title)) card.classList.add('selected');
       card.addEventListener('click', () => {
@@ -242,8 +253,7 @@
         } else {
           selected.add(agent.title);
         }
-        card.classList.toggle('selected');
-        updateSelectedCount();
+        syncSelectedState();
       });
       container.appendChild(card);
     };
@@ -251,6 +261,7 @@
     const renderRecommended = () => {
       recommendedGrid.innerHTML = '';
       recommendedList.forEach(agent => renderCard(agent, recommendedGrid));
+      syncSelectedState();
     };
 
     const renderAll = (filter = '') => {
@@ -266,6 +277,7 @@
           renderCard(agent, allGrid);
         }
       });
+      syncSelectedState();
     };
 
     const updateSelectedCount = () => {
@@ -292,7 +304,7 @@
 
     renderRecommended();
     renderAll();
-    updateSelectedCount();
+    syncSelectedState();
   </script>
 </body>
 </html>

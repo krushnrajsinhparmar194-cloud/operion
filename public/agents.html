@@ -219,7 +219,17 @@
 
     const recommendedList = recommendedMap[industry] || defaultAgents.slice(0, 4);
     const allAgents = Array.from(new Set([...defaultAgents, ...recommendedList]));
-    const selected = new Set(JSON.parse(sessionStorage.getItem('operionAgents') || '[]'));
+    const prevSelected = JSON.parse(sessionStorage.getItem('operionAgents') || '[]');
+    const selected = new Set(prevSelected);
+
+    const syncSelectedState = () => {
+      document.querySelectorAll('.agent-card').forEach(card => {
+        const title = card.dataset.title;
+        if (!title) return;
+        card.classList.toggle('selected', selected.has(title));
+      });
+      updateSelectedCount();
+    };
 
     const renderCard = (agent, container) => {
       const card = document.createElement('button');
