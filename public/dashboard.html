@@ -62,7 +62,8 @@
     .search-box { display: inline-flex; align-items: center; gap: 0.4rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); padding: 0.35rem 0.9rem; background: rgba(255,255,255,0.05); }
     .search-box input { border: none; background: transparent; color: var(--text); width: 200px; }
     .search-box input:focus { outline: none; }
-    .icon-btn { border: none; border-radius: 999px; width: 36px; height: 36px; background: rgba(255,255,255,0.1); color: var(--text); cursor: pointer; }
+    .icon-btn { position: relative; border: none; border-radius: 999px; width: 36px; height: 36px; background: rgba(255,255,255,0.1); color: var(--text); cursor: pointer; }
+    .notif-count { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; border-radius: 999px; background: #ef4444; color: #fff; font-size: 0.7rem; display: inline-flex; align-items: center; justify-content: center; padding: 0 5px; }
     header .muted { margin: 0; color: var(--muted); }
     .dashboard-layout { display: grid; grid-template-columns: 220px 1fr; gap: 2rem; min-height: 100vh; }
     .sidebar { border: 1px solid rgba(255,255,255,0.08); border-radius: 1.5rem; padding: 1.5rem; background: rgba(0,0,0,0.25); display: flex; flex-direction: column; gap: 1.5rem; }
@@ -179,7 +180,7 @@
         <span>🔍</span>
         <input type="search" placeholder="Search agents, tasks..." />
       </div>
-      <button class="icon-btn" id="notifBtn">🔔</button>
+      <button class="icon-btn" id="notifBtn">🔔<span class="notif-count" id="notifCount">0</span></button>
       <button class="action-btn primary">+ New action</button>
       <div class="profile-chip">
         <div class="avatar" id="profileAvatar" aria-hidden="true">👤</div>
@@ -265,10 +266,12 @@
       { text: 'Escalation cleared: API latency', at: 'Yesterday · 9:10 PM', read: true }
     ];
 
-    const notifBtn = document.getElementById('notifBtn');
+        const notifBtn = document.getElementById('notifBtn');
     const notifDropdown = document.getElementById('notifDropdown');
     const notifList = document.getElementById('notifList');
     const markAllReadBtn = document.getElementById('markAllRead');
+    const notifCount = document.getElementById('notifCount');
+
     const renderNotifications = () => {
       if (!notifList) return;
       const latest = notifications
@@ -281,7 +284,13 @@
           <span>${n.at}</span>
         </div>
       `).join('');
+      if (notifCount) {
+        const unread = notifications.filter(note => !note.read).length;
+        notifCount.textContent = unread;
+        notifCount.style.display = unread ? 'inline-flex' : 'none';
+      }
     };
+
     notifBtn?.addEventListener('click', event => {
       event.stopPropagation();
       notifDropdown?.classList.toggle('open');
@@ -754,10 +763,12 @@ const actionStatus = document.getElementById('actionStatus');
     document.getElementById('profileName').textContent = userName || 'Operator';
     document.getElementById('profileRole').textContent = user.occupation || 'Ops lead';
     const company = sessionStorage.getItem('operionCompanyName') || 'Operion workspace';
-    const notifBtn = document.getElementById('notifBtn');
+        const notifBtn = document.getElementById('notifBtn');
     const notifDropdown = document.getElementById('notifDropdown');
     const notifList = document.getElementById('notifList');
     const markAllReadBtn = document.getElementById('markAllRead');
+    const notifCount = document.getElementById('notifCount');
+
     const renderNotifications = () => {
       if (!notifList) return;
       const latest = notifications
@@ -770,7 +781,13 @@ const actionStatus = document.getElementById('actionStatus');
           <span>${n.at}</span>
         </div>
       `).join('');
+      if (notifCount) {
+        const unread = notifications.filter(note => !note.read).length;
+        notifCount.textContent = unread;
+        notifCount.style.display = unread ? 'inline-flex' : 'none';
+      }
     };
+
     notifBtn?.addEventListener('click', event => {
       event.stopPropagation();
       notifDropdown?.classList.toggle('open');
