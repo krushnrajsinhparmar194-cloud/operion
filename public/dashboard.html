@@ -235,23 +235,28 @@
     `).join('') : '<p>No agent work queued yet.</p>';
 
     const activityFeedEl = document.getElementById('activityFeed');
-    const activityEvents = [
-      { icon: '🟢', text: 'Agent Release Pilot started a deployment playbook', at: '2 min ago' },
-      { icon: '✅', text: 'Task "Prep QBR" completed by Ops Analyst', at: '15 min ago' },
-      { icon: '⚠️', text: 'Escalation triggered: Payment failures spike', at: '32 min ago' },
-      { icon: '🟣', text: 'Agent Billing Desk paused for review', at: '1 hr ago' }
-    ];
-    if (activityFeedEl) {
-      activityFeedEl.innerHTML = activityEvents.map(event => `
-        <div class="activity-item">
-          <span class="activity-icon">${event.icon}</span>
-          <div class="activity-text">
-            <p>${event.text}</p>
-            <span>${event.at}</span>
+    const renderDashboardActivity = () => {
+      if (!activityFeedEl) return;
+      const log = JSON.parse(sessionStorage.getItem('operionActivityLog') || '[]').slice(0, 10);
+      if (!log.length) {
+        activityFeedEl.innerHTML = '<div class="activity-item"><div class="activity-text"><p>No profile activity yet.</p><span>Make an edit to see it here.</span></div></div>';
+        return;
+      }
+      activityFeedEl.innerHTML = log.map(entry => {
+        const when = new Date(entry.at).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' });
+        return `
+          <div class="activity-item">
+            <span class="activity-icon">📝</span>
+            <div class="activity-text">
+              <p>${entry.label}</p>
+              <span>${when}</span>
+            </div>
           </div>
-        </div>
-      `).join('');
-    }
+        `;
+      }).join('');
+    };
+    renderDashboardActivity();
+    setInterval(renderDashboardActivity, 10000);
 
     const chatLog = document.getElementById('chatLog');
     function addMessage(from, text) {
