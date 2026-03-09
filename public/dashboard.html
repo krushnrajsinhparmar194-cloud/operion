@@ -38,6 +38,11 @@
     .profile-btn { border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; padding: 0.35rem 0.9rem; text-decoration: none; color: var(--text); background: rgba(124,107,255,0.2); font-size: 0.85rem; }
     .profile-chip .avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
     .summaries { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .metric-card { border-radius: 1.4rem; border: 1px solid rgba(255,255,255,0.12); padding: 1.2rem; background: rgba(255,255,255,0.04); display: flex; flex-direction: column; gap: 0.3rem; }
+    .metric-card strong { font-size: 2rem; }
+    .metric-card span { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .metric-card p { margin: 0; font-size: 0.95rem; color: var(--muted); }
     .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
     .card { border-radius: 1.35rem; border: 1px solid rgba(255,255,255,0.08); background: var(--card); padding: 1.4rem; }
     .card h3 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
@@ -76,6 +81,9 @@
       <a href="profile.html" class="profile-btn">Profile</a>
     </div>
   </header>
+  <section class="metrics" id="metricsCards">
+    <div class="metric-card"><span>Loading metrics…</span></div>
+  </section>
   <section class="panel-row">
     <div class="card">
       <h3>Agents selected</h3>
@@ -121,7 +129,26 @@
       ].filter(Boolean)));
     }
 
+
     const agentWork = selectedAgents.map((name, idx) => ({
+
+    const metricsEl = document.getElementById('metricsCards');
+    const runMetrics = () => {
+      const metrics = [
+        { label: 'Agents online', value: selectedAgents.length || 0, hint: 'Linked to your workspace' },
+        { label: 'Tasks queued', value: agentWork.length || 0, hint: 'Next actions for agents' },
+        { label: 'Languages active', value: langs.length || 0, hint: 'Localization ready' }
+      ];
+      if (metricsEl) {
+        metricsEl.innerHTML = metrics.map(item => `
+          <div class="metric-card">
+            <span>${item.label}</span>
+            <strong>${item.value}</strong>
+            <p>${item.hint}</p>
+          </div>
+        `).join('');
+      }
+    };
       name,
       work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}`
     }));
@@ -147,6 +174,7 @@
     `).join('') : 'No agents selected.';
 
     const workListEl = document.getElementById('workList');
+    runMetrics();
     workListEl.innerHTML = agentWork.length ? agentWork.map(item => `
       <div class="work-item">
         <strong>${item.name}</strong>
