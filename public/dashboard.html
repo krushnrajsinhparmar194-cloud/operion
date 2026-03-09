@@ -526,6 +526,10 @@ const scheduleCard = document.querySelector('.schedule-card');
       ].filter(Boolean)));
     }
 
+    if (!selectedAgents.length) {
+      selectedAgents = ['Release Pilot','Incident Triage','Billing Desk','Ops Analyst'];
+    }
+
 
     const sampleTitles = ['KPI sweep', 'Client pulse', 'Queue triage', 'Handoff audit', 'Release QA'];
     const sampleDue = ['Today · 5:00 PM', 'Today · 7:30 PM', 'Tomorrow · 9:00 AM', 'Tomorrow · 1:30 PM'];
