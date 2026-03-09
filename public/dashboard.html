@@ -72,6 +72,8 @@
     .work-tab:hover { border-color: rgba(255,255,255,0.4); }
     .work-list { display: flex; flex-direction: column; gap: 0.9rem; max-height: 320px; overflow-y: auto; }
     .work-item { border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 0.9rem; background: rgba(255,255,255,0.03); opacity: 0; transform: translateY(10px); animation: fadeIn 0.2s forwards; }
+    .work-item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
+    .work-tag { border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); padding: 0.15rem 0.6rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
     @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
     .action-status { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.4rem; }
     .quick-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
@@ -250,15 +252,18 @@
     const workTabs = document.querySelectorAll('.work-tab');
     const workListEl = document.getElementById('workList');
     const groupedWork = {
-      backlog: agentWork.slice(0, 3),
-      progress: agentWork.slice(3, 5),
-      done: agentWork.slice(5, 7)
+      backlog: agentWork.filter((_, idx) => idx % 3 === 0),
+      progress: agentWork.filter((_, idx) => idx % 3 === 1),
+      done: agentWork.filter((_, idx) => idx % 3 === 2)
     };
     const renderWork = (group = 'backlog') => {
       const items = groupedWork[group] || [];
       workListEl.innerHTML = items.length ? items.map(item => `
         <div class="work-item">
-          <strong>${item.name}</strong>
+          <div class="work-item-head">
+            <strong>${item.name}</strong>
+            <span class="work-tag">${group === 'done' ? 'Completed' : group === 'progress' ? 'Running' : 'Queued'}</span>
+          </div>
           <p>${item.work}</p>
         </div>
       `).join('') : '<p>No tasks in this column.</p>';
