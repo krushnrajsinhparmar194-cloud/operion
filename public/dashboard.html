@@ -189,6 +189,21 @@
     document.getElementById('profileName').textContent = userName || 'Operator';
     document.getElementById('profileRole').textContent = user.occupation || 'Ops lead';
     const company = sessionStorage.getItem('operionCompanyName') || 'Operion workspace';
+    const scheduleCard = document.querySelector('.schedule-card');
+    const workingHours = user.hours || '9 AM – 6 PM';
+    const timezone = user.timezone || 'Asia/Kolkata';
+    if (scheduleCard) {
+      scheduleCard.querySelector('.schedule-list').innerHTML = `
+        <div class="schedule-item">
+          <span>${workingHours.split('–')[0].trim()} (${timezone})</span>
+          <p>Agent monitoring</p>
+        </div>
+        <div class="schedule-item">
+          <span>${workingHours.split('–')[1]?.trim() || '2:00 PM'} (${timezone})</span>
+          <p>Task review sync</p>
+        </div>
+      `;
+    }
     const preset = JSON.parse(sessionStorage.getItem('operionAgents') || '[]');
     const commons = JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]');
     const customs = JSON.parse(sessionStorage.getItem('operionCustomAgents') || '[]');
