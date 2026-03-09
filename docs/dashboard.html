@@ -79,6 +79,14 @@
     @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
     .action-status { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.4rem; }
     .quick-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+    .add-agent-btn { border-radius: 999px; border: 1px dashed rgba(255,255,255,0.4); background: transparent; color: var(--text); padding: 0.35rem 0.8rem; font-size: 0.85rem; cursor: pointer; }
+    .agent-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 50; }
+    .agent-modal.open { display: flex; }
+    .agent-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+    .agent-modal-panel { position: relative; width: min(480px, 92vw); border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(8,12,24,0.95); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .agent-modal-head { display: flex; justify-content: space-between; align-items: center; }
+    .agent-modal-head button { border: none; background: transparent; color: var(--text); font-size: 1.3rem; cursor: pointer; }
+    .agent-modal-list-item { border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 0.8rem 1rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
     .action-btn { border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text); padding: 0.8rem 1.2rem; font-weight: 500; cursor: pointer; transition: border-color 0.2s ease, transform 0.15s ease; }
     .action-btn:hover { border-color: rgba(255,255,255,0.4); transform: translateY(-1px); }
     .action-btn.primary { background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; border-color: transparent; }
@@ -115,6 +123,7 @@
   <section class="panel-row activity-row">
     <div class="card">
       <h3>Agents selected</h3>
+      <button class="add-agent-btn" id="openAgentModal">+ Add agent</button>
       <div class="agent-list" id="agentList">Loading…</div>
       <div class="see-all"><a href="agents-full.html">See all</a></div>
     </div>
@@ -150,6 +159,16 @@
     <button class="action-btn">🤝 Invite teammate</button>
   </section>
 
+  <div class="agent-modal" id="agentModal" aria-hidden="true">
+    <div class="agent-modal-backdrop"></div>
+    <div class="agent-modal-panel">
+      <div class="agent-modal-head">
+        <h3>Select agents</h3>
+        <button id="closeAgentModal">×</button>
+      </div>
+      <div id="agentModalList">Loading agents…</div>
+    </div>
+  </div>
   <section class="chat">
     <div class="chat-log" id="chatLog"></div>
     <form id="chatForm">
