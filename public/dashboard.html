@@ -68,6 +68,7 @@
     .status-offline { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); }
     .work-list { display: flex; flex-direction: column; gap: 0.9rem; max-height: 320px; overflow-y: auto; }
     .work-item { border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 0.9rem; background: rgba(255,255,255,0.03); }
+    .action-status { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.4rem; }
     .quick-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
     .action-btn { border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text); padding: 0.8rem 1.2rem; font-weight: 500; cursor: pointer; transition: border-color 0.2s ease, transform 0.15s ease; }
     .action-btn:hover { border-color: rgba(255,255,255,0.4); transform: translateY(-1px); }
@@ -128,6 +129,7 @@
       <div class="work-list" id="workList">Preparing tasks…</div>
     </div>
   </section>
+  <div id="actionStatus" class="action-status">Ready</div>
   <section class="quick-actions">
     <button class="action-btn primary">🚀 Launch agent</button>
     <button class="action-btn">⏸️ Pause notifications</button>
@@ -278,6 +280,30 @@
     }
     addMessage(lead.name || "Command agent", "Welcome to your dashboard. Ask me to run a playbook or summarize today's work.");
 
+    const actionStatus = document.getElementById('actionStatus');
+    const launchBtn = document.querySelector('.action-btn.primary');
+    const pauseBtn = document.querySelectorAll('.action-btn')[1];
+    const inviteBtn = document.querySelectorAll('.action-btn')[2];
+
+    const setActionStatus = (text) => {
+      if (actionStatus) {
+        actionStatus.textContent = text;
+        setTimeout(() => (actionStatus.textContent = 'Ready'), 2500);
+      }
+    };
+
+    launchBtn?.addEventListener('click', () => {
+      setActionStatus('Launching agent… (placeholder modal)');
+    });
+    pauseBtn?.addEventListener('click', () => {
+      const paused = pauseBtn.dataset.state === 'paused';
+      pauseBtn.dataset.state = paused ? 'active' : 'paused';
+      pauseBtn.textContent = paused ? '⏸️ Pause notifications' : '▶️ Resume notifications';
+      setActionStatus(paused ? 'Notifications resumed' : 'Notifications paused');
+    });
+    inviteBtn?.addEventListener('click', () => {
+      setActionStatus('Invite dialog opened (placeholder)');
+    });
     document.getElementById('chatForm').addEventListener('submit', e => {
       e.preventDefault();
       const input = document.getElementById('chatInput');
