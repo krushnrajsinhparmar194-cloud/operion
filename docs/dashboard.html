@@ -192,6 +192,9 @@
     .task-detail-row span { color: var(--text); font-weight: 500; }
     .chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
     .chip-row span { border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); padding: 0.25rem 0.7rem; font-size: 0.75rem; }
+    .sub-status-list { display: flex; flex-direction: column; gap: 0.4rem; }
+    .sub-status-item { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.8rem; padding: 0.4rem 0.7rem; }
+    .sub-status-item span { color: var(--text); font-weight: 500; }
     .add-agent-btn { border-radius: 999px; border: 1px dashed rgba(255,255,255,0.4); background: transparent; color: var(--text); padding: 0.35rem 0.8rem; font-size: 0.85rem; cursor: pointer; }
     .agent-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 50; }
     .agent-modal.open { display: flex; }
@@ -354,6 +357,10 @@
             <p style="margin:0 0 0.3rem;font-size:0.75rem;color:var(--muted);">Collaborators</p>
             <div class="chip-row" id="detailTaskAgents"></div>
           </div>
+          <div>
+            <p style="margin:0 0 0.3rem;font-size:0.75rem;color:var(--muted);">Agent progress</p>
+            <div class="sub-status-list" id="detailSubStatus"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -444,6 +451,11 @@
         <div class="secondary-agent-group">
           <p>Select supporting agents</p>
           <div id="secondaryAgentList" class="secondary-agent-list"></div>
+        </div>
+        <div class="task-squad-group">
+          <label>ETA
+            <input type="text" id="taskEtaInput" placeholder="e.g. Today · 6:00 PM" />
+          </label>
         </div>
         <div class="task-squad-group">
           <label for="taskSquadSelect">Saved squad
@@ -583,6 +595,7 @@
       const name = (document.getElementById('taskNameInput')?.value || 'Untitled task').trim();
       const desc = document.getElementById('taskDescInput')?.value || '';
       const autoAssign = !!autoAssignToggle?.checked;
+      const etaInput = document.getElementById('taskEtaInput');
       let owner = primaryAgentSelect?.value || selectedAgents[0] || fallbackTeamList[0] || 'Command bridge';
       let secondary = Array.from(secondaryAgentList?.querySelectorAll('input:checked') || []).map(input => input.value);
       let teamName = 'Ad-hoc squad';
@@ -607,7 +620,7 @@
         teamMembers.unshift(owner);
       }
 
-      const dueTime = new Date().toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+      const dueTime = etaInput?.value?.trim() || new Date().toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
       const task = {
         id: `new-task-${Date.now()}`,
         name,
@@ -616,6 +629,7 @@
         collaborators: [...new Set(secondary)],
         due: dueTime,
         dueTime,
+        eta: dueTime,
         progress: autoAssign ? 35 + Math.round(Math.random() * 20) : Math.round(Math.random() * 20),
         subStatus: [...new Set(teamMembers.slice(0, 3))].map((member, idx) => ({
           agent: member,
@@ -844,6 +858,7 @@ const scheduleCard = document.querySelector('.schedule-card');
     const detailTaskTeam = document.getElementById('detailTaskTeam');
     const detailTaskOwner = document.getElementById('detailTaskOwner');
     const detailTaskAgents = document.getElementById('detailTaskAgents');
+    const detailSubStatus = document.getElementById('detailSubStatus');
     let activeTaskId = null;
 
     const renderDetailAgents = (agents = []) => {
@@ -854,6 +869,22 @@ const scheduleCard = document.querySelector('.schedule-card');
       }
       detailTaskAgents.innerHTML = agents
         .map(agent => `<span>${agent}</span>`)
+        .join('');
+    };
+
+    const renderSubStatus = (subStatus = []) => {
+      if (!detailSubStatus) return;
+      if (!subStatus.length) {
+        detailSubStatus.innerHTML = '<div class="sub-status-item"><span>—</span><small>No updates</small></div>';
+        return;
+      }
+      detailSubStatus.innerHTML = subStatus
+        .map(item => `
+          <div class="sub-status-item">
+            <span>${item.agent}</span>
+            <small>${item.state}</small>
+          </div>
+        `)
         .join('');
     };
 
@@ -870,9 +901,10 @@ const scheduleCard = document.querySelector('.schedule-card');
       taskDetailBody.classList.add('active');
       detailTaskTitle.textContent = task.name || 'Untitled task';
       detailTaskDescription.textContent = task.work || '—';
-      detailTaskTeam.textContent = task.team?.name || 'Ad-hoc squad';
+      detailTaskTeam.textContent = `${task.team?.name || 'Ad-hoc squad'} · ETA ${task.eta || task.due || 'Soon'}`;
       detailTaskOwner.textContent = task.assigned || 'Unassigned';
       renderDetailAgents(task.collaborators || []);
+      renderSubStatus(task.subStatus || []);
       document.querySelectorAll('.work-item').forEach(item => {
         item.classList.toggle('active', item.dataset.taskId === task.id);
       });
@@ -1061,7 +1093,7 @@ const scheduleCard = document.querySelector('.schedule-card');
           <p>${item.work}</p>
           <div class="work-meta">
             <span>👤 ${item.assigned || 'Unassigned'}</span>
-            <span>🕒 ${item.due || 'Soon'}</span>
+            <span>🕒 ETA ${item.eta || item.due || 'Soon'}</span>
           </div>
           <div class="work-progress">
             <div class="work-progress-bar">
