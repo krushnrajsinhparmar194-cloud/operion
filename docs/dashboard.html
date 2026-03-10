@@ -169,7 +169,8 @@
     .work-tab.active { background: rgba(124,107,255,0.25); border-color: transparent; }
     .work-tab:hover { border-color: rgba(255,255,255,0.4); }
     .work-list { display: flex; flex-direction: column; gap: 0.9rem; max-height: 320px; overflow-y: auto; }
-    .work-item { border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 0.9rem; background: rgba(255,255,255,0.03); opacity: 0; transform: translateY(10px); animation: fadeIn 0.2s forwards; }
+    .work-item { border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; padding: 0.9rem; background: rgba(255,255,255,0.03); opacity: 0; transform: translateY(10px); animation: fadeIn 0.2s forwards; cursor: pointer; }
+    .work-item.active { border-color: rgba(124,107,255,0.5); background: rgba(124,107,255,0.08); }
     .work-item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
     .work-actions { display: inline-flex; gap: 0.3rem; }
     .work-action-btn { border: none; border-radius: 999px; width: 28px; height: 28px; background: rgba(255,255,255,0.1); color: var(--text); cursor: pointer; font-size: 0.85rem; }
@@ -577,21 +578,61 @@
       event.preventDefault();
       const name = (document.getElementById('taskNameInput')?.value || 'Untitled task').trim();
       const desc = document.getElementById('taskDescInput')?.value || '';
-      const owner = primaryAgentSelect?.value || selectedAgents[0] || 'Command bridge';
-      const secondary = Array.from(secondaryAgentList?.querySelectorAll('input:checked') || []).map(input => input.value);
+      const autoAssign = !!autoAssignToggle?.checked;
+      let owner = primaryAgentSelect?.value || selectedAgents[0] || fallbackTeamList[0] || 'Command bridge';
+      let secondary = Array.from(secondaryAgentList?.querySelectorAll('input:checked') || []).map(input => input.value);
+      let teamName = 'Ad-hoc squad';
+      let teamMembers = squadMemberSelections.size ? Array.from(squadMemberSelections) : [...new Set([owner, ...secondary])];
+      let teamId = selectedTeamId || 'adhoc';
+
+      if (selectedTeamId) {
+        const team = savedTeams.find(t => t.id === selectedTeamId);
+        if (team) {
+          teamName = team.name;
+          teamMembers = [...team.members];
+        }
+      }
+
+      if (autoAssign) {
+        teamName = 'Fallback Ops';
+        teamId = 'fallback-auto';
+        teamMembers = [...fallbackTeamList];
+        owner = teamMembers[0];
+        secondary = teamMembers.slice(1);
+      } else if (!teamMembers.includes(owner)) {
+        teamMembers.unshift(owner);
+      }
+
+      const dueTime = new Date().toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
       const task = {
         id: `new-task-${Date.now()}`,
         name,
         work: desc || `Task created ${new Date().toLocaleTimeString()}`,
         assigned: owner,
-        collaborators: secondary,
-        due: 'Soon',
+        collaborators: [...new Set(secondary)],
+        due: dueTime,
+        dueTime,
         status: 'backlog',
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        team: {
+          id: teamId,
+          name: teamName,
+          members: [...new Set(teamMembers)]
+        }
       };
       agentWork.unshift(task);
       renderWork();
+      showTaskDetail(task);
       closeNewTaskModal();
+      newTaskForm?.reset();
+      squadMemberSelections = new Set();
+      selectedTeamId = '';
+      renderSquadSelect();
+      renderSquadMembers();
+      autoAssignToggle.checked = false;
+      taskSquadList?.classList.remove('disabled');
+      secondaryAgentList?.classList.remove('disabled');
+      primaryAgentSelect?.removeAttribute('disabled');
     });
 
     const notifBtn = document.getElementById('notifBtn');
@@ -729,10 +770,13 @@ const scheduleCard = document.querySelector('.schedule-card');
 
     const renderSquadMembers = (teamId = '') => {
       if (!taskSquadList) return;
-      const baseMembers = teamId
+      const sourceMembers = teamId
         ? (savedTeams.find(team => team.id === teamId)?.members || [])
         : (selectedAgents.length ? selectedAgents : fallbackTeamList);
-      if (!baseMembers.length) baseMembers.push(...fallbackTeamList);
+      const baseMembers = sourceMembers.length ? [...new Set(sourceMembers)] : [...fallbackTeamList];
+      if (!squadMemberSelections.size) {
+        squadMemberSelections = new Set(baseMembers);
+      }
       taskSquadList.innerHTML = baseMembers
         .map(member => `
           <label><input type="checkbox" value="${member}" ${squadMemberSelections.has(member) ? 'checked' : ''} />${member}</label>
@@ -761,14 +805,57 @@ const scheduleCard = document.querySelector('.schedule-card');
       const isAuto = autoAssignToggle.checked;
       taskSquadList?.classList.toggle('disabled', isAuto);
       secondaryAgentList?.classList.toggle('disabled', isAuto);
-      primaryAgentSelect?.setAttribute('disabled', isAuto ? 'true' : 'false');
-      if (!isAuto) {
+      if (isAuto) {
+        primaryAgentSelect?.setAttribute('disabled', 'true');
+      } else {
         primaryAgentSelect?.removeAttribute('disabled');
       }
     });
 
     renderSquadSelect();
     renderSquadMembers();
+
+    const taskDetailPanel = document.getElementById('taskDetailPanel');
+    const taskDetailEmpty = document.getElementById('taskDetailEmpty');
+    const taskDetailBody = document.getElementById('taskDetailBody');
+    const detailTaskTitle = document.getElementById('detailTaskTitle');
+    const detailTaskDescription = document.getElementById('detailTaskDescription');
+    const detailTaskTeam = document.getElementById('detailTaskTeam');
+    const detailTaskOwner = document.getElementById('detailTaskOwner');
+    const detailTaskAgents = document.getElementById('detailTaskAgents');
+    let activeTaskId = null;
+
+    const renderDetailAgents = (agents = []) => {
+      if (!detailTaskAgents) return;
+      if (!agents.length) {
+        detailTaskAgents.innerHTML = '<span>No collaborators</span>';
+        return;
+      }
+      detailTaskAgents.innerHTML = agents
+        .map(agent => `<span>${agent}</span>`)
+        .join('');
+    };
+
+    const showTaskDetail = (task = null) => {
+      if (!taskDetailPanel || !taskDetailBody || !taskDetailEmpty) return;
+      if (!task) {
+        activeTaskId = null;
+        taskDetailBody.classList.remove('active');
+        taskDetailEmpty.style.display = 'block';
+        return;
+      }
+      activeTaskId = task.id;
+      taskDetailEmpty.style.display = 'none';
+      taskDetailBody.classList.add('active');
+      detailTaskTitle.textContent = task.name || 'Untitled task';
+      detailTaskDescription.textContent = task.work || '—';
+      detailTaskTeam.textContent = task.team?.name || 'Ad-hoc squad';
+      detailTaskOwner.textContent = task.assigned || 'Unassigned';
+      renderDetailAgents(task.collaborators || []);
+      document.querySelectorAll('.work-item').forEach(item => {
+        item.classList.toggle('active', item.dataset.taskId === task.id);
+      });
+    };
 
     const metricsEl = document.getElementById('metricsCards');
     const runMetrics = () => {
@@ -937,7 +1024,7 @@ const scheduleCard = document.querySelector('.schedule-card');
       const groupedWork = getGroupedWork();
       const items = groupedWork[currentGroup] || [];
       workListEl.innerHTML = items.length ? items.map(item => `
-        <div class="work-item" draggable="true" data-task-id="${item.id}">
+        <div class="work-item ${item.id === activeTaskId ? 'active' : ''}" draggable="true" data-task-id="${item.id}">
           <div class="work-item-head">
             <div>
               <strong>${item.name}</strong>
@@ -1006,11 +1093,17 @@ const scheduleCard = document.querySelector('.schedule-card');
     };
 
     workListEl?.addEventListener('click', event => {
-      const btn = event.target.closest('.work-action-btn');
-      if (!btn) return;
-      const taskEl = btn.closest('.work-item');
+      const taskEl = event.target.closest('.work-item');
       if (!taskEl) return;
-      handleTaskAction(taskEl.dataset.taskId, btn.dataset.action);
+      const btn = event.target.closest('.work-action-btn');
+      if (btn) {
+        handleTaskAction(taskEl.dataset.taskId, btn.dataset.action);
+        return;
+      }
+      const task = agentWork.find(item => item.id === taskEl.dataset.taskId);
+      if (task) {
+        showTaskDetail(task);
+      }
     });
 
     saveTaskEdit?.addEventListener('click', () => {
@@ -1034,6 +1127,7 @@ const scheduleCard = document.querySelector('.schedule-card');
         workTabs.forEach(btn => btn.classList.remove('active'));
         tab.classList.add('active');
         currentGroup = tab.dataset.tab;
+        showTaskDetail(null);
         renderWork();
       });
       tab.addEventListener('dragover', event => event.preventDefault());
