@@ -180,6 +180,8 @@
     .work-progress-bar { position: relative; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.1); overflow: hidden; }
     .work-progress-fill { position: absolute; inset: 0; width: 0%; border-radius: 999px; background: linear-gradient(120deg, #4da8ff, #7c6bff); transition: width 0.2s ease; }
     .work-progress-meta { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); margin-top: 0.3rem; }
+    .work-quick-links { margin-top: 0.6rem; display: flex; gap: 0.6rem; font-size: 0.75rem; }
+    .work-quick-links button { border: none; background: rgba(255,255,255,0.1); color: var(--text); padding: 0.3rem 0.8rem; border-radius: 999px; cursor: pointer; font-weight: 500; }
     @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
     .action-status { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.4rem; }
     .quick-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
@@ -884,6 +886,7 @@ const scheduleCard = document.querySelector('.schedule-card');
     const detailTaskAgents = document.getElementById('detailTaskAgents');
     const detailSubStatus = document.getElementById('detailSubStatus');
     const detailAgentEffort = document.getElementById('detailAgentEffort');
+    const detailPreviewFrame = document.getElementById('detailPreviewFrame');
     let activeTaskId = null;
 
     const renderDetailAgents = (agents = []) => {
@@ -1135,6 +1138,10 @@ const scheduleCard = document.querySelector('.schedule-card');
               <span>${item.subStatus?.[0]?.agent || ''} ${item.subStatus?.[0]?.state === 'active' ? 'active' : ''}</span>
             </div>
           </div>
+          <div class="work-quick-links">
+            <button data-action="quick-reply" data-task-id="${item.id}">Quick reply</button>
+            <button data-action="get-answer" data-task-id="${item.id}">Get answer</button>
+          </div>
         </div>
       `).join('') : '<p>No tasks in this column.</p>';
       attachDragHandlers();
@@ -1212,7 +1219,17 @@ const scheduleCard = document.querySelector('.schedule-card');
         handleTaskAction(taskEl.dataset.taskId, btn.dataset.action);
         return;
       }
+      const quickBtn = event.target.closest('.work-quick-links button');
       const task = agentWork.find(item => item.id === taskEl.dataset.taskId);
+      if (quickBtn && task) {
+        const actionType = quickBtn.dataset.action;
+        const previewText = actionType === 'quick-reply'
+          ? `Quick reply drafted for ${task.name}`
+          : `Gathering answer for ${task.name}`;
+        detailPreviewFrame.textContent = previewText;
+        showTaskDetail(task);
+        return;
+      }
       if (task) {
         showTaskDetail(task);
       }
