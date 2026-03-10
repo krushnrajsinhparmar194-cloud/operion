@@ -178,6 +178,15 @@
     @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
     .action-status { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.4rem; }
     .quick-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+    .task-detail-panel { border-radius: 1rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); padding: 1rem; margin-top: 1rem; }
+    .task-detail-panel h4 { margin: 0 0 0.4rem; }
+    .task-detail-panel .task-detail-empty { color: var(--muted); font-size: 0.85rem; }
+    .task-detail-body { display: none; flex-direction: column; gap: 0.6rem; }
+    .task-detail-body.active { display: flex; }
+    .task-detail-row { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted); }
+    .task-detail-row span { color: var(--text); font-weight: 500; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .chip-row span { border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); padding: 0.25rem 0.7rem; font-size: 0.75rem; }
     .add-agent-btn { border-radius: 999px; border: 1px dashed rgba(255,255,255,0.4); background: transparent; color: var(--text); padding: 0.35rem 0.8rem; font-size: 0.85rem; cursor: pointer; }
     .agent-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 50; }
     .agent-modal.open { display: flex; }
@@ -322,6 +331,25 @@
       <div class="work-list" id="workList">
         <div class="skeleton-block" style="height:110px;"></div>
         <div class="skeleton-block" style="height:110px;"></div>
+      </div>
+      <div class="task-detail-panel" id="taskDetailPanel">
+        <div class="task-detail-empty" id="taskDetailEmpty">Select a task to preview</div>
+        <div class="task-detail-body" id="taskDetailBody">
+          <h4 id="detailTaskTitle">—</h4>
+          <p id="detailTaskDescription">—</p>
+          <div class="task-detail-row">
+            <p>Team</p>
+            <span id="detailTaskTeam">—</span>
+          </div>
+          <div class="task-detail-row">
+            <p>Primary agent</p>
+            <span id="detailTaskOwner">—</span>
+          </div>
+          <div>
+            <p style="margin:0 0 0.3rem;font-size:0.75rem;color:var(--muted);">Collaborators</p>
+            <div class="chip-row" id="detailTaskAgents"></div>
+          </div>
+        </div>
       </div>
     </div>
     <aside class="activity-feed-card">
@@ -664,8 +692,15 @@ const scheduleCard = document.querySelector('.schedule-card');
       name: sampleTitles[idx % sampleTitles.length],
       work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}` ,
       assigned: agentName,
+      collaborators: fallbackTeamList.filter(name => name !== agentName).slice(0, 2),
       due: sampleDue[idx % sampleDue.length],
-      status: ['backlog','progress','done'][idx % 3]
+      dueTime: sampleDue[idx % sampleDue.length],
+      status: ['backlog','progress','done'][idx % 3],
+      team: {
+        name: idx % 2 === 0 ? 'Core Ops Squad' : 'Billing Trio',
+        members: [agentName, ...fallbackTeamList.filter(name => name !== agentName).slice(0, 2)]
+      },
+      createdAt: new Date(Date.now() - 1000 * 60 * idx).toISOString()
     }));
 
     const renderNewTaskAgents = (agents = null) => {
@@ -679,6 +714,61 @@ const scheduleCard = document.querySelector('.schedule-card');
     };
 
     renderNewTaskAgents();
+
+    const taskSquadSelect = document.getElementById('taskSquadSelect');
+    const taskSquadList = document.getElementById('taskSquadList');
+    const autoAssignToggle = document.getElementById('autoAssignToggle');
+    let squadMemberSelections = new Set();
+
+    const renderSquadSelect = () => {
+      if (!taskSquadSelect) return;
+      const options = [''].concat(savedTeams.map(team => team.id));
+      taskSquadSelect.innerHTML = '<option value="">Select a saved team</option>' +
+        savedTeams.map(team => `<option value="${team.id}">${team.name}</option>`).join('');
+    };
+
+    const renderSquadMembers = (teamId = '') => {
+      if (!taskSquadList) return;
+      const baseMembers = teamId
+        ? (savedTeams.find(team => team.id === teamId)?.members || [])
+        : (selectedAgents.length ? selectedAgents : fallbackTeamList);
+      if (!baseMembers.length) baseMembers.push(...fallbackTeamList);
+      taskSquadList.innerHTML = baseMembers
+        .map(member => `
+          <label><input type="checkbox" value="${member}" ${squadMemberSelections.has(member) ? 'checked' : ''} />${member}</label>
+        `)
+        .join('');
+    };
+
+    taskSquadList?.addEventListener('change', event => {
+      if (!event.target.matches('input[type="checkbox"]')) return;
+      const value = event.target.value;
+      if (event.target.checked) {
+        squadMemberSelections.add(value);
+      } else {
+        squadMemberSelections.delete(value);
+      }
+    });
+
+    taskSquadSelect?.addEventListener('change', event => {
+      selectedTeamId = event.target.value;
+      const team = savedTeams.find(t => t.id === selectedTeamId);
+      squadMemberSelections = new Set(team ? team.members : []);
+      renderSquadMembers(selectedTeamId);
+    });
+
+    autoAssignToggle?.addEventListener('change', () => {
+      const isAuto = autoAssignToggle.checked;
+      taskSquadList?.classList.toggle('disabled', isAuto);
+      secondaryAgentList?.classList.toggle('disabled', isAuto);
+      primaryAgentSelect?.setAttribute('disabled', isAuto ? 'true' : 'false');
+      if (!isAuto) {
+        primaryAgentSelect?.removeAttribute('disabled');
+      }
+    });
+
+    renderSquadSelect();
+    renderSquadMembers();
 
     const metricsEl = document.getElementById('metricsCards');
     const runMetrics = () => {
