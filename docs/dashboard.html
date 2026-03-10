@@ -660,6 +660,7 @@
         }
       };
       agentWork.unshift(task);
+      localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(agentWork));
       renderWork();
       showTaskDetail(task);
 
@@ -783,27 +784,43 @@ const scheduleCard = document.querySelector('.schedule-card');
         state: phase === 'Completed' ? 'done' : idx === 0 ? 'active' : 'pending'
       }));
     };
-    let agentWork = selectedAgents.map((agentName, idx) => {
-      const status = ['backlog','progress','done'][idx % 3];
-      const teamMembers = [agentName, ...fallbackTeamList.filter(name => name !== agentName).slice(0, 2)];
-      return {
-        id: `task-${idx}-${Date.now()}`,
-        name: sampleTitles[idx % sampleTitles.length],
-        work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}` ,
-        assigned: agentName,
-        collaborators: teamMembers.filter(name => name !== agentName),
-        due: sampleDue[idx % sampleDue.length],
-        dueTime: sampleDue[idx % sampleDue.length],
-        progress: status === 'done' ? 100 : status === 'progress' ? 45 + Math.round(Math.random() * 35) : Math.round(Math.random() * 15),
-        subStatus: generateSubStatus(teamMembers, status === 'done' ? 'Completed' : status === 'progress' ? 'Active' : 'Queued'),
-        status,
-        team: {
-          name: idx % 2 === 0 ? 'Core Ops Squad' : 'Billing Trio',
-          members: teamMembers
-        },
-        createdAt: new Date(Date.now() - 1000 * 60 * idx).toISOString()
-      };
-    });
+
+    const loadStoredTasks = () => {
+      try {
+        const raw = localStorage.getItem(TASK_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch {
+        return null;
+      }
+    };
+
+    let agentWork = loadStoredTasks();
+    if (!agentWork || !agentWork.length) {
+      agentWork = selectedAgents.map((agentName, idx) => {
+        const status = ['backlog','progress','done'][idx % 3];
+        const teamMembers = [agentName, ...fallbackTeamList.filter(name => name !== agentName).slice(0, 2)];
+        return {
+          id: `task-${idx}-${Date.now()}`,
+          name: sampleTitles[idx % sampleTitles.length],
+          work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}` ,
+          assigned: agentName,
+          collaborators: teamMembers.filter(name => name !== agentName),
+          due: sampleDue[idx % sampleDue.length],
+          dueTime: sampleDue[idx % sampleDue.length],
+          progress: status === 'done' ? 100 : status === 'progress' ? 45 + Math.round(Math.random() * 35) : Math.round(Math.random() * 15),
+          subStatus: generateSubStatus(teamMembers, status === 'done' ? 'Completed' : status === 'progress' ? 'Active' : 'Queued'),
+          status,
+          team: {
+            name: idx % 2 === 0 ? 'Core Ops Squad' : 'Billing Trio',
+            members: teamMembers
+          },
+          createdAt: new Date(Date.now() - 1000 * 60 * idx).toISOString()
+        };
+      });
+      localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(agentWork));
+    }
+
+    const TASK_STORAGE_KEY = 'operionDashboardTasks';
 
     const renderNewTaskAgents = (agents = null) => {
       if (!primaryAgentSelect || !secondaryAgentList) return;
@@ -1160,6 +1177,7 @@ const scheduleCard = document.querySelector('.schedule-card');
       if (action === 'done') {
         target.status = 'done';
         target.progress = 100;
+        localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(agentWork));
         renderWork();
         const existingLog = JSON.parse(sessionStorage.getItem('operionActivityLog') || '[]');
         const completionEntry = {
@@ -1177,6 +1195,7 @@ const scheduleCard = document.querySelector('.schedule-card');
         const nextOwner = prompt('Assign to which agent?', target.assigned || '');
         if (nextOwner) {
           target.assigned = nextOwner;
+          localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(agentWork));
           renderWork();
           const existingLog = JSON.parse(sessionStorage.getItem('operionActivityLog') || '[]');
           existingLog.unshift({
@@ -1192,6 +1211,7 @@ const scheduleCard = document.querySelector('.schedule-card');
       if (action === 'delete') {
         if (confirm(`Delete ${target.name}?`)) {
           agentWork = agentWork.filter(task => task.id !== taskId);
+          localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(agentWork));
           renderWork();
         }
         return;
@@ -1240,6 +1260,7 @@ const scheduleCard = document.querySelector('.schedule-card');
       const target = agentWork.find(task => task.id === editingTaskId);
       if (!target) return closeTaskModal();
       target.name = taskTitleInput.value.trim() || target.name;
+      localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(agentWork));
       renderWork();
       closeTaskModal();
     });
@@ -1266,6 +1287,7 @@ const scheduleCard = document.querySelector('.schedule-card');
         if (!target) return;
         target.status = tab.dataset.tab;
         currentGroup = tab.dataset.tab;
+        localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(agentWork));
         renderWork();
         draggedTaskId = null;
       });
