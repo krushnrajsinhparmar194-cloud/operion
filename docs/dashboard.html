@@ -208,7 +208,7 @@
     .task-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 60; }
     .task-modal.open { display: flex; }
     .task-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
-    .task-modal-panel { position: relative; width: min(420px, 90vw); border-radius: 1.2rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(8,12,24,0.95); padding: 1.4rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .task-modal-panel { position: relative; width: min(420px, 90vw); border-radius: 1.2rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(8,12,24,0.95); padding: 1.4rem; display: flex; flex-direction: column; gap: 0.8rem; max-height: min(85vh, 720px); overflow-y: auto; }
     .task-modal-panel label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.9rem; }
     .task-modal-panel input { border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text); padding: 0.7rem; }
     .task-modal-actions { display: flex; justify-content: flex-end; gap: 0.6rem; }
