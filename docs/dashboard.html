@@ -201,6 +201,21 @@
     .secondary-agent-group p { margin: 0 0 0.4rem; font-size: 0.85rem; color: var(--muted); }
     .secondary-agent-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
     .secondary-agent-list label { border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.7rem; font-size: 0.85rem; cursor: pointer; display: inline-flex; gap: 0.4rem; align-items: center; }
+    .task-squad-group { border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 0.8rem; display: flex; flex-direction: column; gap: 0.6rem; }
+    .task-squad-group label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.85rem; color: var(--muted); }
+    .task-squad-group select { border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: var(--text); padding: 0.6rem; }
+    .task-squad-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .task-squad-list label { border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.7rem; font-size: 0.85rem; cursor: pointer; display: inline-flex; gap: 0.4rem; align-items: center; }
+    .task-squad-list.disabled label { opacity: 0.4; pointer-events: none; }
+    .auto-assign-toggle { display: flex; align-items: center; gap: 0.7rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 0.7rem 0.9rem; }
+    .auto-assign-toggle span { font-weight: 500; }
+    .auto-assign-toggle p { margin: 0; font-size: 0.75rem; color: var(--muted); }
+    .toggle-shell { position: relative; width: 46px; height: 24px; }
+    .toggle-shell input { opacity: 0; width: 100%; height: 100%; position: absolute; inset: 0; margin: 0; cursor: pointer; }
+    .toggle-slider { position: absolute; inset: 0; border-radius: 999px; background: rgba(255,255,255,0.2); transition: background 0.2s ease; }
+    .toggle-slider::after { content: ''; position: absolute; top: 2px; left: 4px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform 0.2s ease; }
+    .toggle-shell input:checked + .toggle-slider { background: linear-gradient(120deg, #4da8ff, #7c6bff); }
+    .toggle-shell input:checked + .toggle-slider::after { transform: translateX(18px); }
     .agent-modal-head { display: flex; justify-content: space-between; align-items: center; }
     .agent-modal-head button { border: none; background: transparent; color: var(--text); font-size: 1.3rem; cursor: pointer; }
     .agent-select-row { display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.12); border-radius: 1rem; padding: 0.7rem 1rem; margin-bottom: 0.7rem; }
@@ -397,6 +412,25 @@
           <p>Select supporting agents</p>
           <div id="secondaryAgentList" class="secondary-agent-list"></div>
         </div>
+        <div class="task-squad-group">
+          <label for="taskSquadSelect">Saved squad
+            <select id="taskSquadSelect">
+              <option value="">Select a saved team</option>
+            </select>
+          </label>
+          <p style="margin:0;font-size:0.8rem;color:var(--muted);">Task squad (multi-select)</p>
+          <div id="taskSquadList" class="task-squad-list"></div>
+        </div>
+        <label class="auto-assign-toggle" for="autoAssignToggle">
+          <div>
+            <span>Auto assign squad</span>
+            <p>Use fallback roster when enabled</p>
+          </div>
+          <div class="toggle-shell">
+            <input type="checkbox" id="autoAssignToggle" />
+            <span class="toggle-slider"></span>
+          </div>
+        </label>
         <div class="task-modal-actions">
           <button type="button" class="task-cancel" id="cancelNewTask">Cancel</button>
           <button type="submit" class="task-save">Create task</button>
@@ -427,6 +461,7 @@
     let langs = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
     let user = JSON.parse(sessionStorage.getItem('operionUserDetails') || '{}');
     const userName = sessionStorage.getItem('operionUserName') || '';
+    let selectedTeamId = '';
     if (!lead.name) {
       lead = { name: 'Command bridge', role: 'Ops orchestrator' };
     }
@@ -475,6 +510,14 @@
       { title: 'Ops Analyst slowed', status: 'critical', detail: 'Throughput down 18% vs baseline' },
       { title: 'Incident queue calm', status: 'info', detail: 'No new tickets in 45 minutes' }
     ];
+
+    const savedTeams = [
+      { id: 'core_ops', name: 'Core Ops Squad', members: ['Release Pilot','Incident Triage','Ops Analyst'] },
+      { id: 'billing_trio', name: 'Billing Trio', members: ['Billing Desk','Compliance Desk','Ops Analyst'] },
+      { id: 'mobile_watch', name: 'Mobile Watch', members: ['Mobile push sync','Release Pilot','Risk Analyst'] }
+    ];
+
+    const fallbackTeamList = ['Release Pilot','Incident Triage','Billing Desk','Ops Analyst'];
 
         const collapseBtn = document.getElementById('collapseSidebar');
     const sidebarEl = document.getElementById('sidebar');
