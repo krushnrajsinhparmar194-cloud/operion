@@ -341,6 +341,10 @@
         <button class="work-tab" data-tab="progress">In progress</button>
         <button class="work-tab" data-tab="done">Done</button>
       </div>
+      <div class="work-tabs" style="margin-top:0.6rem;">
+        <button class="work-tab" data-filter="all">All tasks</button>
+        <button class="work-tab" data-filter="mine">My tasks</button>
+      </div>
       <div class="work-list" id="workList">
         <div class="skeleton-block" style="height:110px;"></div>
         <div class="skeleton-block" style="height:110px;"></div>
@@ -1110,7 +1114,9 @@ const scheduleCard = document.querySelector('.schedule-card');
         renderAgentList(fallbackRoster, 'Showing fallback roster.');
       });
 
-    const workTabs = document.querySelectorAll('.work-tab');
+    const workTabs = document.querySelectorAll('.work-tab[data-tab]');
+    const filterTabs = document.querySelectorAll('.work-tab[data-filter]');
+    let currentFilter = 'all';
     const workListEl = document.getElementById('workList');
     const taskModal = document.getElementById('taskModal');
     const taskTitleInput = document.getElementById('taskTitleInput');
@@ -1118,11 +1124,16 @@ const scheduleCard = document.querySelector('.schedule-card');
     const cancelTaskEdit = document.getElementById('cancelTaskEdit');
     let editingTaskId = null;
 
-    const getGroupedWork = () => ({
-      backlog: agentWork.filter(item => item.status === 'backlog'),
-      progress: agentWork.filter(item => item.status === 'progress'),
-      done: agentWork.filter(item => item.status === 'done')
-    });
+    const getGroupedWork = () => {
+      const pool = currentFilter === 'mine'
+        ? agentWork.filter(item => item.assigned === (userName || 'Operator'))
+        : agentWork;
+      return {
+        backlog: pool.filter(item => item.status === 'backlog'),
+        progress: pool.filter(item => item.status === 'progress'),
+        done: pool.filter(item => item.status === 'done')
+      };
+    };
     let currentGroup = 'backlog';
     const renderWork = () => {
       const groupedWork = getGroupedWork();
@@ -1290,6 +1301,19 @@ const scheduleCard = document.querySelector('.schedule-card');
         localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(agentWork));
         renderWork();
         draggedTaskId = null;
+      });
+    });
+
+    filterTabs.forEach(tab => {
+      if (tab.dataset.filter === currentFilter) {
+        tab.classList.add('active');
+      }
+      tab.addEventListener('click', () => {
+        filterTabs.forEach(btn => btn.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.dataset.filter;
+        showTaskDetail(null);
+        renderWork();
       });
     });
     renderWork();
