@@ -802,6 +802,8 @@ const scheduleCard = document.querySelector('.schedule-card');
       }));
     };
 
+    const TASK_STORAGE_KEY = 'operionDashboardTasks';
+
     const loadStoredTasks = () => {
       try {
         const raw = localStorage.getItem(TASK_STORAGE_KEY);
