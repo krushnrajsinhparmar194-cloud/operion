@@ -650,6 +650,7 @@
       const existingLog = JSON.parse(sessionStorage.getItem('operionActivityLog') || '[]');
       existingLog.unshift({
         label: `New task • ${task.name} (${task.team?.name || 'Squad'})`,
+        icon: '🆕',
         at: new Date().toISOString()
       });
       sessionStorage.setItem('operionActivityLog', JSON.stringify(existingLog.slice(0, 20)));
@@ -1138,6 +1139,14 @@ const scheduleCard = document.querySelector('.schedule-card');
         if (nextOwner) {
           target.assigned = nextOwner;
           renderWork();
+          const existingLog = JSON.parse(sessionStorage.getItem('operionActivityLog') || '[]');
+          existingLog.unshift({
+            label: `Task reassigned • ${target.name} → ${nextOwner}`,
+            icon: '♻️',
+            at: new Date().toISOString()
+          });
+          sessionStorage.setItem('operionActivityLog', JSON.stringify(existingLog.slice(0, 20)));
+          renderDashboardActivity();
         }
         return;
       }
@@ -1228,7 +1237,7 @@ const scheduleCard = document.querySelector('.schedule-card');
         const when = new Date(entry.at).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short' });
         return `
           <div class="activity-item">
-            <span class="activity-icon">📝</span>
+            <span class="activity-icon">${entry.icon || '📝'}</span>
             <div class="activity-text">
               <p>${entry.label}</p>
               <span>${when}</span>
