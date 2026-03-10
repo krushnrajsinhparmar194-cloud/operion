@@ -604,6 +604,15 @@ const scheduleCard = document.querySelector('.schedule-card');
       selectedAgents = ['Release Pilot','Incident Triage','Billing Desk','Ops Analyst'];
     }
 
+    const fallbackRoster = [
+      { name: 'Release Pilot', status: 'online', last_active: new Date(Date.now() - 1000 * 60 * 5).toISOString() },
+      { name: 'Incident Triage', status: 'online', last_active: new Date(Date.now() - 1000 * 60 * 15).toISOString() },
+      { name: 'Billing Desk', status: 'paused', last_active: new Date(Date.now() - 1000 * 60 * 45).toISOString() },
+      { name: 'Ops Analyst', status: 'online', last_active: new Date(Date.now() - 1000 * 60 * 25).toISOString() },
+      { name: 'Compliance Desk', status: 'offline', last_active: new Date(Date.now() - 1000 * 60 * 90).toISOString() },
+      { name: 'Risk Analyst', status: 'online', last_active: new Date(Date.now() - 1000 * 60 * 8).toISOString() },
+    ];
+
 
     const sampleTitles = ['KPI sweep', 'Client pulse', 'Queue triage', 'Handoff audit', 'Release QA'];
     const sampleDue = ['Today · 5:00 PM', 'Today · 7:30 PM', 'Tomorrow · 9:00 AM', 'Tomorrow · 1:30 PM'];
@@ -616,7 +625,7 @@ const scheduleCard = document.querySelector('.schedule-card');
       status: ['backlog','progress','done'][idx % 3]
     }));
 
-    const renderNewTaskAgents = (agents) => {
+    const renderNewTaskAgents = (agents = null) => {
       if (!primaryAgentSelect || !secondaryAgentList) return;
       const source = agents && agents.length ? agents : (selectedAgents.length ? selectedAgents.map(name => ({ name })) : fallbackRoster);
       const options = source.map(agent => agent.name || agent);
@@ -625,6 +634,8 @@ const scheduleCard = document.querySelector('.schedule-card');
         <label><input type="checkbox" value="${name}" />${name}</label>
       `).join('');
     };
+
+    renderNewTaskAgents();
 
     const metricsEl = document.getElementById('metricsCards');
     const runMetrics = () => {
@@ -734,33 +745,45 @@ const scheduleCard = document.querySelector('.schedule-card');
     const agentListEl = document.getElementById('agentList');
     renderAiPanels();
 
-    fetch('agent-list.json')
-      .then(resp => resp.json())
-      .then(agentData => {
-        const list = agentData.slice(0, 6);
-        agentListEl.innerHTML = list.map(agent => {
-          const statusClass = agent.status === 'online'
-            ? 'status-online'
-            : agent.status === 'paused'
-              ? 'status-paused'
-              : 'status-offline';
-          const lastActive = new Date(agent.last_active).toLocaleString('en-IN', {
-            hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short'
-          });
-          return `
-            <div class="agent-pill">
-              <div>
-                <strong>${agent.name}</strong>
-                <p class="agent-meta">Last active ${lastActive}</p>
-              </div>
-              <span class="status-badge ${statusClass}">${agent.status}</span>
+    const renderAgentList = (agents, note = '') => {
+      if (!agentListEl) return;
+      const list = (agents && agents.length ? agents : fallbackRoster).slice(0, 6);
+      agentListEl.innerHTML = list.map(agent => {
+        const statusClass = agent.status === 'online'
+          ? 'status-online'
+          : agent.status === 'paused'
+            ? 'status-paused'
+            : 'status-offline';
+        const lastActive = new Date(agent.last_active).toLocaleString('en-IN', {
+          hour: '2-digit', minute: '2-digit', day: '2-digit', month: 'short'
+        });
+        return `
+          <div class="agent-pill">
+            <div>
+              <strong>${agent.name}</strong>
+              <p class="agent-meta">Last active ${lastActive}</p>
             </div>
-          `;
-        }).join('');
-        runMetrics(list);
+            <span class="status-badge ${statusClass}">${agent.status}</span>
+          </div>
+        `;
+      }).join('');
+      if (note) {
+        agentListEl.insertAdjacentHTML('beforeend', `<p class="muted">${note}</p>`);
+      }
+      runMetrics(list);
+      renderNewTaskAgents(list);
+    };
+
+    fetch('agent-list.json')
+      .then(resp => {
+        if (!resp.ok) throw new Error('Network error');
+        return resp.json();
+      })
+      .then(agentData => {
+        renderAgentList(Array.isArray(agentData) ? agentData : fallbackRoster);
       })
       .catch(() => {
-        agentListEl.innerHTML = 'Unable to load agents.';
+        renderAgentList(fallbackRoster, 'Showing fallback roster.');
       });
 
     const workTabs = document.querySelectorAll('.work-tab');
