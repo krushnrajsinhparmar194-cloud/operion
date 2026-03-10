@@ -188,6 +188,9 @@
     .task-detail-panel .task-detail-empty { color: var(--muted); font-size: 0.85rem; }
     .task-detail-body { display: none; flex-direction: column; gap: 0.6rem; }
     .task-detail-body.active { display: flex; }
+    .preview-slot { margin-top: 1rem; border: 1px dashed rgba(255,255,255,0.2); border-radius: 1rem; padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; background: rgba(255,255,255,0.02); }
+    .preview-slot h5 { margin: 0; text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.7rem; color: var(--muted); }
+    .preview-frame { border-radius: 0.8rem; background: rgba(0,0,0,0.4); height: 160px; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.8rem; }
     .task-detail-row { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted); }
     .task-detail-row span { color: var(--text); font-weight: 500; }
     .chip-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
@@ -361,6 +364,10 @@
             <p style="margin:0 0 0.3rem;font-size:0.75rem;color:var(--muted);">Agent progress</p>
             <div class="sub-status-list" id="detailSubStatus"></div>
             <p style="margin:0.3rem 0 0;font-size:0.75rem;color:var(--muted);" id="detailAgentEffort">—</p>
+          </div>
+          <div class="preview-slot">
+            <h5>Preview</h5>
+            <div class="preview-frame" id="detailPreviewFrame">Screenshot placeholder</div>
           </div>
         </div>
       </div>
