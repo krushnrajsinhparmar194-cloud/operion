@@ -176,6 +176,10 @@
     .work-action-btn { border: none; border-radius: 999px; width: 28px; height: 28px; background: rgba(255,255,255,0.1); color: var(--text); cursor: pointer; font-size: 0.85rem; }
     .work-tag { border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); padding: 0.15rem 0.6rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
     .work-meta { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
+    .work-progress { margin-top: 0.6rem; }
+    .work-progress-bar { position: relative; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.1); overflow: hidden; }
+    .work-progress-fill { position: absolute; inset: 0; width: 0%; border-radius: 999px; background: linear-gradient(120deg, #4da8ff, #7c6bff); transition: width 0.2s ease; }
+    .work-progress-meta { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); margin-top: 0.3rem; }
     @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
     .action-status { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.4rem; }
     .quick-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
@@ -612,6 +616,11 @@
         collaborators: [...new Set(secondary)],
         due: dueTime,
         dueTime,
+        progress: autoAssign ? 35 + Math.round(Math.random() * 20) : Math.round(Math.random() * 20),
+        subStatus: [...new Set(teamMembers.slice(0, 3))].map((member, idx) => ({
+          agent: member,
+          state: idx === 0 ? 'active' : 'pending'
+        })),
         status: 'backlog',
         createdAt: new Date().toISOString(),
         team: {
@@ -728,21 +737,33 @@ const scheduleCard = document.querySelector('.schedule-card');
 
     const sampleTitles = ['KPI sweep', 'Client pulse', 'Queue triage', 'Handoff audit', 'Release QA'];
     const sampleDue = ['Today · 5:00 PM', 'Today · 7:30 PM', 'Tomorrow · 9:00 AM', 'Tomorrow · 1:30 PM'];
-    let agentWork = selectedAgents.map((agentName, idx) => ({
-      id: `task-${idx}-${Date.now()}`,
-      name: sampleTitles[idx % sampleTitles.length],
-      work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}` ,
-      assigned: agentName,
-      collaborators: fallbackTeamList.filter(name => name !== agentName).slice(0, 2),
-      due: sampleDue[idx % sampleDue.length],
-      dueTime: sampleDue[idx % sampleDue.length],
-      status: ['backlog','progress','done'][idx % 3],
-      team: {
-        name: idx % 2 === 0 ? 'Core Ops Squad' : 'Billing Trio',
-        members: [agentName, ...fallbackTeamList.filter(name => name !== agentName).slice(0, 2)]
-      },
-      createdAt: new Date(Date.now() - 1000 * 60 * idx).toISOString()
-    }));
+    const generateSubStatus = (members = [], phase = 'Queued') => {
+      return members.slice(0, 3).map((member, idx) => ({
+        agent: member,
+        state: phase === 'Completed' ? 'done' : idx === 0 ? 'active' : 'pending'
+      }));
+    };
+    let agentWork = selectedAgents.map((agentName, idx) => {
+      const status = ['backlog','progress','done'][idx % 3];
+      const teamMembers = [agentName, ...fallbackTeamList.filter(name => name !== agentName).slice(0, 2)];
+      return {
+        id: `task-${idx}-${Date.now()}`,
+        name: sampleTitles[idx % sampleTitles.length],
+        work: `Task ${idx + 1}: ${['Monitor KPI stack','Draft client update','Review support tickets','Optimize handoff','QA latest release'][idx % 5]}` ,
+        assigned: agentName,
+        collaborators: teamMembers.filter(name => name !== agentName),
+        due: sampleDue[idx % sampleDue.length],
+        dueTime: sampleDue[idx % sampleDue.length],
+        progress: status === 'done' ? 100 : status === 'progress' ? 45 + Math.round(Math.random() * 35) : Math.round(Math.random() * 15),
+        subStatus: generateSubStatus(teamMembers, status === 'done' ? 'Completed' : status === 'progress' ? 'Active' : 'Queued'),
+        status,
+        team: {
+          name: idx % 2 === 0 ? 'Core Ops Squad' : 'Billing Trio',
+          members: teamMembers
+        },
+        createdAt: new Date(Date.now() - 1000 * 60 * idx).toISOString()
+      };
+    });
 
     const renderNewTaskAgents = (agents = null) => {
       if (!primaryAgentSelect || !secondaryAgentList) return;
@@ -1041,6 +1062,15 @@ const scheduleCard = document.querySelector('.schedule-card');
           <div class="work-meta">
             <span>👤 ${item.assigned || 'Unassigned'}</span>
             <span>🕒 ${item.due || 'Soon'}</span>
+          </div>
+          <div class="work-progress">
+            <div class="work-progress-bar">
+              <span class="work-progress-fill" style="width:${item.progress || 0}%"></span>
+            </div>
+            <div class="work-progress-meta">
+              <span>${item.progress || 0}%</span>
+              <span>${item.subStatus?.[0]?.agent || ''} ${item.subStatus?.[0]?.state === 'active' ? 'active' : ''}</span>
+            </div>
           </div>
         </div>
       `).join('') : '<p>No tasks in this column.</p>';
