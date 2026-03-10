@@ -593,6 +593,7 @@
     ];
 
     const fallbackTeamList = ['Release Pilot','Incident Triage','Billing Desk','Ops Analyst'];
+    const TASK_STORAGE_KEY = 'operionDashboardTasks';
 
         const collapseBtn = document.getElementById('collapseSidebar');
     const sidebarEl = document.getElementById('sidebar');
@@ -802,7 +803,6 @@ const scheduleCard = document.querySelector('.schedule-card');
       }));
     };
 
-    const TASK_STORAGE_KEY = 'operionDashboardTasks';
 
     const loadStoredTasks = () => {
       try {
