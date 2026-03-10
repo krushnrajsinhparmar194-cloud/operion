@@ -545,6 +545,12 @@
       { text: 'Escalation cleared: API latency', at: 'Yesterday · 9:10 PM', read: true }
     ];
 
+    const pushNotification = (entry) => {
+      notifications.unshift({ ...entry, read: false });
+      if (notifications.length > 10) notifications.pop();
+      renderNotifications();
+    };
+
     const aiSuggestions = [
       { title: 'Spin up claims QA sweep', reason: '92% of backlog tagged “claims” for >6h', action: 'Launch QA pack' },
       { title: 'Send proactive client digest', reason: '4 VIP clients haven’t received updates today', action: 'Draft digest' },
@@ -1134,13 +1140,15 @@ const scheduleCard = document.querySelector('.schedule-card');
         target.progress = 100;
         renderWork();
         const existingLog = JSON.parse(sessionStorage.getItem('operionActivityLog') || '[]');
-        existingLog.unshift({
+        const completionEntry = {
           label: `Task completed • ${target.name}`,
           icon: '✅',
           at: new Date().toISOString()
-        });
+        };
+        existingLog.unshift(completionEntry);
         sessionStorage.setItem('operionActivityLog', JSON.stringify(existingLog.slice(0, 20)));
         renderDashboardActivity();
+        pushNotification({ text: completionEntry.label, at: 'Just now' });
         return;
       }
       if (action === 'reassign') {
