@@ -223,6 +223,8 @@
     .secondary-agent-group p { margin: 0 0 0.4rem; font-size: 0.85rem; color: var(--muted); }
     .secondary-agent-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
     .secondary-agent-list label { border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.7rem; font-size: 0.85rem; cursor: pointer; display: inline-flex; gap: 0.4rem; align-items: center; }
+    .watcher-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .watcher-list label { border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); padding: 0.35rem 0.7rem; font-size: 0.85rem; cursor: pointer; display: inline-flex; gap: 0.4rem; align-items: center; }
     .task-squad-group { border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 0.8rem; display: flex; flex-direction: column; gap: 0.6rem; }
     .task-squad-group label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.85rem; color: var(--muted); }
     .task-squad-group select { border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: var(--text); padding: 0.6rem; }
@@ -367,6 +369,10 @@
             <div class="chip-row" id="detailTaskAgents"></div>
           </div>
           <div>
+            <p style="margin:0 0 0.3rem;font-size:0.75rem;color:var(--muted);">Watchers</p>
+            <div class="chip-row" id="detailWatchers"></div>
+          </div>
+          <div>
             <p style="margin:0 0 0.3rem;font-size:0.75rem;color:var(--muted);">Agent progress</p>
             <div class="sub-status-list" id="detailSubStatus"></div>
             <p style="margin:0.3rem 0 0;font-size:0.75rem;color:var(--muted);" id="detailAgentEffort">—</p>
@@ -470,6 +476,10 @@
           <label>ETA
             <input type="text" id="taskEtaInput" placeholder="e.g. Today · 6:00 PM" />
           </label>
+        </div>
+        <div class="task-squad-group">
+          <p style="margin:0;font-size:0.8rem;color:var(--muted);">Watchers</p>
+          <div id="watcherList" class="watcher-list"></div>
         </div>
         <div class="task-squad-group">
           <label for="taskSquadSelect">Saved squad
@@ -834,14 +844,21 @@ const scheduleCard = document.querySelector('.schedule-card');
       secondaryAgentList.innerHTML = options.map(name => `
         <label><input type="checkbox" value="${name}" />${name}</label>
       `).join('');
+      if (watcherListEl) {
+        watcherListEl.innerHTML = options.map(name => `
+          <label><input type="checkbox" value="${name}" ${watcherSelections.has(name) ? 'checked' : ''} />${name}</label>
+        `).join('');
+      }
     };
 
     renderNewTaskAgents();
 
     const taskSquadSelect = document.getElementById('taskSquadSelect');
     const taskSquadList = document.getElementById('taskSquadList');
+    const watcherListEl = document.getElementById('watcherList');
     const autoAssignToggle = document.getElementById('autoAssignToggle');
     let squadMemberSelections = new Set();
+    let watcherSelections = new Set();
 
     const renderSquadSelect = () => {
       if (!taskSquadSelect) return;
@@ -876,6 +893,16 @@ const scheduleCard = document.querySelector('.schedule-card');
       }
     });
 
+    watcherListEl?.addEventListener('change', event => {
+      if (!event.target.matches('input[type="checkbox"]')) return;
+      const value = event.target.value;
+      if (event.target.checked) {
+        watcherSelections.add(value);
+      } else {
+        watcherSelections.delete(value);
+      }
+    });
+
     taskSquadSelect?.addEventListener('change', event => {
       selectedTeamId = event.target.value;
       const team = savedTeams.find(t => t.id === selectedTeamId);
@@ -905,6 +932,7 @@ const scheduleCard = document.querySelector('.schedule-card');
     const detailTaskTeam = document.getElementById('detailTaskTeam');
     const detailTaskOwner = document.getElementById('detailTaskOwner');
     const detailTaskAgents = document.getElementById('detailTaskAgents');
+    const detailWatchers = document.getElementById('detailWatchers');
     const detailSubStatus = document.getElementById('detailSubStatus');
     const detailAgentEffort = document.getElementById('detailAgentEffort');
     const detailPreviewFrame = document.getElementById('detailPreviewFrame');
