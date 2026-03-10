@@ -646,6 +646,15 @@
       agentWork.unshift(task);
       renderWork();
       showTaskDetail(task);
+
+      const existingLog = JSON.parse(sessionStorage.getItem('operionActivityLog') || '[]');
+      existingLog.unshift({
+        label: `New task • ${task.name} (${task.team?.name || 'Squad'})`,
+        at: new Date().toISOString()
+      });
+      sessionStorage.setItem('operionActivityLog', JSON.stringify(existingLog.slice(0, 20)));
+      renderDashboardActivity();
+
       closeNewTaskModal();
       newTaskForm?.reset();
       squadMemberSelections = new Set();
