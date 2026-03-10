@@ -75,6 +75,13 @@
     .sidebar-link { display: flex; align-items: center; gap: 0.65rem; padding: 0.65rem 1rem; border-radius: 0.9rem; color: #0f172a; text-decoration: none; border: 1px solid transparent; transition: background 0.15s ease, border-color 0.15s ease; }
     .sidebar-link:hover { background: #f3f4f6; border-color: rgba(15,23,42,0.05); }
     .sidebar-link.active { background: #0B152F; border-color: transparent; color: #ffffff; box-shadow: 0 15px 30px rgba(11,21,47,0.25); border-radius: 999px; }
+    .sidebar-link .sidebar-icon { width: 34px; height: 34px; border-radius: 0.9rem; border: 1px solid rgba(15,23,42,0.08); display: inline-flex; align-items: center; justify-content: center; background: #ffffff; color: #0f172a; }
+    .sidebar-link svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+    .sidebar:not(.collapsed) .sidebar-icon { display: none; }
+    .sidebar.collapsed .sidebar-label { display: none; }
+    .sidebar.collapsed .sidebar-link { justify-content: center; }
+    .sidebar.collapsed .sidebar-link .sidebar-icon { display: inline-flex; }
+    .sidebar-link.active .sidebar-icon { background: rgba(255,255,255,0.08); border-color: transparent; color: #ffffff; }
     .main-content { display: flex; flex-direction: column; gap: 2rem; }
     @media (max-width: 960px) { .dashboard-layout { grid-template-columns: 1fr; } .sidebar { flex-direction: row; overflow-x: auto; } }
     .profile-chip { display: flex; align-items: center; gap: 0.8rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; padding: 0.6rem 1rem; background: rgba(255,255,255,0.05); }
@@ -266,11 +273,53 @@
         <button class="collapse-btn has-tooltip" id="collapseSidebar" data-tooltip="Collapse sidebar">⇤</button>
       </div>
       <nav>
-        <a href="dashboard.html" class="sidebar-link active"><span>📊</span><span>Dashboard</span></a>
-        <a href="dashboard-agents.html" class="sidebar-link"><span>🤖</span><span>Agents</span></a>
-        <a href="#work" class="sidebar-link"><span>📋</span><span>Work board</span></a>
-        <a href="#activity" class="sidebar-link"><span>📡</span><span>Activity</span></a>
-        <a href="settings.html" class="sidebar-link"><span>⚙️</span><span>Settings</span></a>
+        <a href="dashboard.html" class="sidebar-link active">
+          <span class="sidebar-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 4h7v7H4z" />
+              <path d="M13 4h7v5h-7z" />
+              <path d="M13 11h7v9h-7z" />
+              <path d="M4 13h7v7H4z" />
+            </svg>
+          </span>
+          <span class="sidebar-label">Dashboard</span>
+        </a>
+        <a href="dashboard-agents.html" class="sidebar-link">
+          <span class="sidebar-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="7" r="3" />
+              <path d="M5 20c0-3.3 2.7-6 6-6h2c3.3 0 6 2.7 6 6" />
+            </svg>
+          </span>
+          <span class="sidebar-label">Agents</span>
+        </a>
+        <a href="#work" class="sidebar-link">
+          <span class="sidebar-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M5 7h14" />
+              <path d="M5 12h14" />
+              <path d="M5 17h10" />
+            </svg>
+          </span>
+          <span class="sidebar-label">Work board</span>
+        </a>
+        <a href="#activity" class="sidebar-link">
+          <span class="sidebar-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <polyline points="4 15 8 11 12 16 16 8 20 12" />
+            </svg>
+          </span>
+          <span class="sidebar-label">Activity</span>
+        </a>
+        <a href="settings.html" class="sidebar-link">
+          <span class="sidebar-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 5 15.4a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 8a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 14 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.44 0 .87.17 1.18.48.31.31.48.74.48 1.18 0 .44-.17.87-.48 1.18a1.65 1.65 0 0 0-1.18.48" />
+            </svg>
+          </span>
+          <span class="sidebar-label">Settings</span>
+        </a>
       </nav>
     </aside>
     <main class="main-content">
