@@ -75,10 +75,16 @@
     .notif-item { margin-bottom: 0.8rem; }
     .notif-item span { display: block; font-size: 0.8rem; color: var(--muted); }
     .top-bar-actions { display: flex; align-items: center; justify-content: flex-end; gap: 0.8rem; }
-    .search-box { display: inline-flex; align-items: center; gap: 0.4rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); padding: 0.35rem 0.9rem; background: rgba(255,255,255,0.05); }
-    .search-box input { border: none; background: transparent; color: var(--text); width: 200px; }
+    .search-box { display: inline-flex; align-items: center; gap: 0.4rem; border-radius: 999px; border: 1px solid rgba(15,23,42,0.12); padding: 0.45rem 1rem; background: #ffffff; box-shadow: 0 10px 20px rgba(15,23,42,0.08); }
+    .search-box span { color: #6b7280; }
+    .search-box input { border: none; background: transparent; color: #111827; width: 220px; font-size: 0.95rem; }
+    .search-box input::placeholder { color: #9ca3af; }
     .search-box input:focus { outline: none; }
-    .icon-btn { position: relative; border: none; border-radius: 999px; width: 36px; height: 36px; background: rgba(255,255,255,0.1); color: var(--text); cursor: pointer; }
+    .action-btn { border-radius: 999px; border: none; padding: 0.75rem 1.4rem; font-weight: 600; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+    .action-btn:hover { transform: translateY(-1px); box-shadow: 0 12px 24px rgba(15,23,42,0.15); }
+    .action-btn.primary { background: #111827; color: #fff; }
+    .action-btn.secondary { background: #ffffff; color: #111827; border: 1px solid rgba(15,23,42,0.12); }
+    .icon-btn { position: relative; border: none; border-radius: 999px; width: 42px; height: 42px; background: #ffffff; color: #111827; cursor: pointer; box-shadow: 0 12px 24px rgba(15,23,42,0.12); }
     .notif-count { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; border-radius: 999px; background: #ef4444; color: #fff; font-size: 0.7rem; display: inline-flex; align-items: center; justify-content: center; padding: 0 5px; }
     header .muted { margin: 0; color: var(--muted); }
     .dashboard-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 2rem; min-height: 100vh; transition: grid-template-columns 0.2s ease, gap 0.2s ease; }
@@ -357,7 +363,7 @@
             <input type="search" placeholder="Search agents, tasks..." aria-label="Search" />
           </div>
           <div class="hero-actions">
-            <button class="action-btn" id="openNewTask">+ New task</button>
+            <button class="action-btn secondary" id="openNewTask">+ New task</button>
             <button class="action-btn primary">+ New action</button>
             <button class="icon-btn has-tooltip" id="notifBtn" data-tooltip="Notifications">🔔<span class="notif-count" id="notifCount">0</span></button>
             <div class="profile-chip compact">
