@@ -657,6 +657,7 @@
         work: desc || `Task created ${new Date().toLocaleTimeString()}`,
         assigned: owner,
         collaborators: [...new Set(secondary)],
+        watchers: [...new Set(watcherSelections)],
         due: dueTime,
         dueTime,
         eta: dueTime,
@@ -690,9 +691,11 @@
       closeNewTaskModal();
       newTaskForm?.reset();
       squadMemberSelections = new Set();
+      watcherSelections = new Set();
       selectedTeamId = '';
       renderSquadSelect();
       renderSquadMembers();
+      watcherListEl?.querySelectorAll('input[type="checkbox"]').forEach(input => input.checked = false);
       autoAssignToggle.checked = false;
       taskSquadList?.classList.remove('disabled');
       secondaryAgentList?.classList.remove('disabled');
@@ -987,6 +990,9 @@ const scheduleCard = document.querySelector('.schedule-card');
       detailTaskTeam.textContent = `${task.team?.name || 'Ad-hoc squad'} · ETA ${task.eta || task.due || 'Soon'}`;
       detailTaskOwner.textContent = task.assigned || 'Unassigned';
       renderDetailAgents(task.collaborators || []);
+      if (detailWatchers) {
+        detailWatchers.innerHTML = (task.watchers?.length ? task.watchers : ['No watchers']).map(item => `<span>${item}</span>`).join('');
+      }
       renderSubStatus(task.subStatus || []);
       document.querySelectorAll('.work-item').forEach(item => {
         item.classList.toggle('active', item.dataset.taskId === task.id);
