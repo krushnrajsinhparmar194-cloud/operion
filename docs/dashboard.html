@@ -360,6 +360,7 @@
           <div>
             <p style="margin:0 0 0.3rem;font-size:0.75rem;color:var(--muted);">Agent progress</p>
             <div class="sub-status-list" id="detailSubStatus"></div>
+            <p style="margin:0.3rem 0 0;font-size:0.75rem;color:var(--muted);" id="detailAgentEffort">—</p>
           </div>
         </div>
       </div>
@@ -875,6 +876,7 @@ const scheduleCard = document.querySelector('.schedule-card');
     const detailTaskOwner = document.getElementById('detailTaskOwner');
     const detailTaskAgents = document.getElementById('detailTaskAgents');
     const detailSubStatus = document.getElementById('detailSubStatus');
+    const detailAgentEffort = document.getElementById('detailAgentEffort');
     let activeTaskId = null;
 
     const renderDetailAgents = (agents = []) => {
@@ -892,6 +894,7 @@ const scheduleCard = document.querySelector('.schedule-card');
       if (!detailSubStatus) return;
       if (!subStatus.length) {
         detailSubStatus.innerHTML = '<div class="sub-status-item"><span>—</span><small>No updates</small></div>';
+        detailAgentEffort.textContent = '0 / 0 agents done';
         return;
       }
       detailSubStatus.innerHTML = subStatus
@@ -902,6 +905,11 @@ const scheduleCard = document.querySelector('.schedule-card');
           </div>
         `)
         .join('');
+      const total = subStatus.length;
+      const completed = subStatus.filter(item => item.state === 'done' || item.state === 'complete').length;
+      if (detailAgentEffort) {
+        detailAgentEffort.textContent = `${completed} / ${total} agents done`;
+      }
     };
 
     const showTaskDetail = (task = null) => {
