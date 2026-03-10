@@ -1226,7 +1226,7 @@ const scheduleCard = document.querySelector('.schedule-card');
         const previewText = actionType === 'quick-reply'
           ? `Quick reply drafted for ${task.name}`
           : `Gathering answer for ${task.name}`;
-        detailPreviewFrame.textContent = previewText;
+        detailPreviewFrame.textContent = `${previewText}\n\n"${task.work.slice(0, 80)}..."`;
         showTaskDetail(task);
         return;
       }
