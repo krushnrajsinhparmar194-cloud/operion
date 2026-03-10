@@ -1131,7 +1131,16 @@ const scheduleCard = document.querySelector('.schedule-card');
       if (!target) return;
       if (action === 'done') {
         target.status = 'done';
+        target.progress = 100;
         renderWork();
+        const existingLog = JSON.parse(sessionStorage.getItem('operionActivityLog') || '[]');
+        existingLog.unshift({
+          label: `Task completed • ${target.name}`,
+          icon: '✅',
+          at: new Date().toISOString()
+        });
+        sessionStorage.setItem('operionActivityLog', JSON.stringify(existingLog.slice(0, 20)));
+        renderDashboardActivity();
         return;
       }
       if (action === 'reassign') {
