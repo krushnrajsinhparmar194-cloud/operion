@@ -839,6 +839,12 @@ const scheduleCard = document.querySelector('.schedule-card');
       localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(agentWork));
     }
 
+    const taskSquadSelect = document.getElementById('taskSquadSelect');
+    const taskSquadList = document.getElementById('taskSquadList');
+    const watcherListEl = document.getElementById('watcherList');
+    const autoAssignToggle = document.getElementById('autoAssignToggle');
+    let squadMemberSelections = new Set();
+    let watcherSelections = new Set();
 
     const renderNewTaskAgents = (agents = null) => {
       if (!primaryAgentSelect || !secondaryAgentList) return;
@@ -856,13 +862,6 @@ const scheduleCard = document.querySelector('.schedule-card');
     };
 
     renderNewTaskAgents();
-
-    const taskSquadSelect = document.getElementById('taskSquadSelect');
-    const taskSquadList = document.getElementById('taskSquadList');
-    const watcherListEl = document.getElementById('watcherList');
-    const autoAssignToggle = document.getElementById('autoAssignToggle');
-    let squadMemberSelections = new Set();
-    let watcherSelections = new Set();
 
     const renderSquadSelect = () => {
       if (!taskSquadSelect) return;
