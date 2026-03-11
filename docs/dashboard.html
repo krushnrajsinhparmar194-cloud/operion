@@ -40,16 +40,65 @@
     .hero-sub strong { color: #111827; }
     .hero-right { display: flex; flex-direction: column; gap: 0.8rem; align-items: flex-end; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
-    .hero-card { border-radius: 1.4rem; padding: 1.6rem; background: linear-gradient(135deg, #0b152f, #1f2b50); color: #eef2ff; display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; box-shadow: 0 25px 50px rgba(11,21,47,0.35); border: 1px solid rgba(255,255,255,0.08); }
+    .hero-card {
+      position: relative;
+      border-radius: 1.4rem;
+      padding: 1.6rem;
+      background: linear-gradient(145deg, rgba(6,10,26,0.85), rgba(0,0,0,0.92));
+      color: #eef2ff;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 35px 60px rgba(0,0,0,0.45);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle at 20% 20%, rgba(77,168,255,0.2), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    .hero-card > * { position: relative; z-index: 1; }
     .hero-card .hero-content { flex: 1; min-width: 240px; }
     .hero-card h2 { margin: 0 0 0.4rem; font-size: 1.6rem; }
     .hero-card p { margin: 0; color: rgba(255,255,255,0.8); }
     .hero-badges { display: flex; flex-wrap: wrap; gap: 0.8rem; }
     .hero-badge { border-radius: 999px; border: 1px solid rgba(255,255,255,0.25); padding: 0.35rem 0.9rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; }
-    .hero-cta { display: flex; gap: 0.8rem; }
-    .hero-cta button { border: none; border-radius: 999px; padding: 0.8rem 1.4rem; cursor: pointer; font-weight: 600; }
-    .hero-cta .primary { background: #ffffff; color: #0b152f; }
-    .hero-cta .ghost { background: transparent; border: 1px solid rgba(255,255,255,0.4); color: #fff; }
+    .hero-cta {
+      display: flex;
+      gap: 0.75rem;
+      margin-left: auto;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .hero-cta button {
+      border-radius: 999px;
+      padding: 0.7rem 1.3rem;
+      cursor: pointer;
+      font-weight: 600;
+      border: 1px solid rgba(248,251,255,0.35);
+      background: transparent;
+      color: #f6f8ff;
+      transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    }
+    .hero-cta button:hover {
+      border-color: rgba(124,107,255,0.8);
+      background: rgba(124,107,255,0.12);
+    }
+    .hero-cta .primary {
+      border-color: rgba(124,107,255,0.6);
+      color: #f8fbff;
+    }
+    .hero-cta .ghost {
+      border-color: rgba(248,251,255,0.3);
+      color: rgba(248,251,255,0.85);
+    }
     .notif-dropdown { position: absolute; top: 70px; right: 0; width: 280px; border-radius: 1rem; border: 1px solid rgba(15,23,42,0.08); background: #ffffff; color: #0f172a; box-shadow: 0 25px 55px rgba(15,23,42,0.35); padding: 1rem; display: none; z-index: 40; }
     .notif-dropdown.open { display: block; }
     .notif-head { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-bottom: 0.6rem; color: #0f172a; }
@@ -75,9 +124,18 @@
     .notif-item { margin-bottom: 0.8rem; }
     .notif-item span { display: block; font-size: 0.8rem; color: var(--muted); }
     .top-bar-actions { display: flex; align-items: center; justify-content: flex-end; gap: 0.8rem; }
-    .search-box { display: inline-flex; align-items: center; gap: 0.4rem; border-radius: 999px; border: 1px solid rgba(15,23,42,0.12); padding: 0.45rem 1rem; background: #ffffff; box-shadow: 0 10px 20px rgba(15,23,42,0.08); }
-    .search-box span { color: #6b7280; }
-    .search-box input { border: none; background: transparent; color: #111827; width: 220px; font-size: 0.95rem; }
+    .search-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 999px;
+      border: 1px solid rgba(17,24,39,0.18);
+      padding: 0.35rem 0.85rem;
+      background: transparent;
+      box-shadow: none;
+    }
+    .search-box .search-icon { width: 14px; height: 14px; color: #6b7280; flex-shrink: 0; }
+    .search-box input { border: none; background: transparent; color: #111827; width: 200px; font-size: 0.95rem; }
     .search-box input::placeholder { color: #9ca3af; }
     .search-box input:focus { outline: none; }
     .action-btn { border-radius: 999px; border: none; padding: 0.75rem 1.4rem; font-weight: 600; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; }
@@ -116,15 +174,31 @@
     .profile-chip .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .summaries { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
     .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
-    .metric-card { border-radius: 1.2rem; border: 1px solid rgba(15,23,42,0.08); padding: 1.2rem; background: #ffffff; display: flex; flex-direction: column; gap: 0.6rem; box-shadow: 0 18px 30px rgba(15,23,42,0.08); }
+    .metric-card {
+      position: relative;
+      border-radius: 10px;
+      border: 1px solid rgba(17,24,39,0.2);
+      padding: 1.2rem 1.3rem;
+      background: rgba(249,250,251,0.92);
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
     .metric-card span.label { font-size: 0.78rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; }
-    .metric-card strong { font-size: 2rem; color: #111827; }
-    .metric-chart { display: flex; align-items: flex-end; gap: 0.25rem; height: 48px; }
-    .metric-chart span { flex: 1; border-radius: 0.4rem; background: linear-gradient(180deg, rgba(59,130,246,0.6), rgba(59,130,246,0.2)); }
-    .metric-chart span.alt { background: linear-gradient(180deg, rgba(244,114,182,0.6), rgba(244,114,182,0.2)); }
-    .metric-change { font-size: 0.8rem; padding: 0.2rem 0.6rem; border-radius: 999px; width: fit-content; }
+    .metric-card strong { font-size: 2.6rem; color: #0f172a; margin: 0.4rem 0 0.2rem; }
+    .metric-card .metric-meta { margin: 0; font-size: 0.85rem; color: #6b7280; }
+    .metric-change { position: absolute; top: 1rem; right: 1rem; font-size: 0.8rem; border-radius: 999px; padding: 0.25rem 0.55rem; text-transform: uppercase; letter-spacing: 0.08em; }
     .metric-change.up { background: rgba(16,185,129,0.15); color: #047857; }
     .metric-change.down { background: rgba(239,68,68,0.15); color: #b91c1c; }
+    .metric-sparkline { margin-top: auto; height: 40px; width: 100%; }
+    .metric-sparkline svg { width: 100%; height: 100%; }
+    .metric-sparkline .sparkline-path { fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: 0.9; }
+    .metric-sparkline--blue .sparkline-path { stroke: #2563eb; }
+    .metric-sparkline--green .sparkline-path { stroke: #10b981; }
+    .metric-sparkline--pink .sparkline-path { stroke: #ec4899; }
+    .metric-sparkline--indigo .sparkline-path { stroke: #7c3aed; }
     .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
     .card { border-radius: 1.35rem; border: 1px solid rgba(255,255,255,0.08); background: var(--card); padding: 1.4rem; }
     .card h3 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
@@ -373,7 +447,9 @@
         </div>
         <div class="hero-right">
           <div class="search-box" role="search">
-            <span>🔍</span>
+            <svg class="search-icon" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M11.25 10.5l3.1 3.1-0.75 0.75-3.1-3.1a5 5 0 1 1 0.75-0.75zM6.5 3a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z" fill="currentColor" fill-rule="evenodd"/>
+            </svg>
             <input type="search" placeholder="Search agents, tasks..." aria-label="Search" />
           </div>
           <div class="hero-actions">
@@ -408,51 +484,47 @@
   <section class="metrics" id="metricsCards">
     <div class="metric-card">
       <span class="label">Active agents</span>
-      <div class="metric-chart">
-        <span style="height:30%"></span>
-        <span style="height:60%"></span>
-        <span style="height:45%"></span>
-        <span style="height:80%"></span>
-        <span style="height:65%"></span>
-      </div>
+      <span class="metric-change up">+18%</span>
       <strong>12</strong>
-      <span class="metric-change up">+18% vs yesterday</span>
+      <p class="metric-meta">vs yesterday</p>
+      <div class="metric-sparkline metric-sparkline--blue">
+        <svg viewBox="0 0 100 40" preserveAspectRatio="none" role="presentation" aria-hidden="true">
+          <polyline class="sparkline-path" points="0,32 15,30 35,26 55,18 75,14 100,10" />
+        </svg>
+      </div>
     </div>
     <div class="metric-card">
       <span class="label">Tasks today</span>
-      <div class="metric-chart">
-        <span class="alt" style="height:25%"></span>
-        <span class="alt" style="height:55%"></span>
-        <span class="alt" style="height:40%"></span>
-        <span class="alt" style="height:70%"></span>
-        <span class="alt" style="height:50%"></span>
-      </div>
+      <span class="metric-change up">+12%</span>
       <strong>248</strong>
-      <span class="metric-change up">+12% vs avg</span>
+      <p class="metric-meta">vs daily avg</p>
+      <div class="metric-sparkline metric-sparkline--green">
+        <svg viewBox="0 0 100 40" preserveAspectRatio="none" role="presentation" aria-hidden="true">
+          <polyline class="sparkline-path" points="0,28 20,22 40,20 60,15 80,12 100,8" />
+        </svg>
+      </div>
     </div>
     <div class="metric-card">
       <span class="label">Escalations</span>
-      <div class="metric-chart">
-        <span style="height:15%"></span>
-        <span style="height:25%"></span>
-        <span style="height:20%"></span>
-        <span style="height:35%"></span>
-        <span style="height:18%"></span>
-      </div>
+      <span class="metric-change down">-1</span>
       <strong>3</strong>
-      <span class="metric-change down">-1 vs avg</span>
+      <p class="metric-meta">vs rolling avg</p>
+      <div class="metric-sparkline metric-sparkline--pink">
+        <svg viewBox="0 0 100 40" preserveAspectRatio="none" role="presentation" aria-hidden="true">
+          <polyline class="sparkline-path" points="0,12 20,18 40,20 60,24 80,22 100,26" />
+        </svg>
+      </div>
     </div>
     <div class="metric-card">
       <span class="label">System health</span>
-      <div class="metric-chart">
-        <span style="height:70%"></span>
-        <span style="height:90%"></span>
-        <span style="height:85%"></span>
-        <span style="height:95%"></span>
-        <span style="height:88%"></span>
-      </div>
+      <span class="metric-change up">+0.4%</span>
       <strong>99%</strong>
-      <span class="metric-change up">+0.4% uptime</span>
+      <p class="metric-meta">uptime last 24h</p>
+      <div class="metric-sparkline metric-sparkline--indigo">
+        <svg viewBox="0 0 100 40" preserveAspectRatio="none" role="presentation" aria-hidden="true">
+          <polyline class="sparkline-path" points="0,18 20,12 40,10 60,8 80,12 100,6" />
+        </svg>
+      </div>
     </div>
   </section>
   <section class="panel-row activity-row">
@@ -466,14 +538,29 @@
       </div>
       <div class="see-all"><a href="dashboard-agents.html">See all</a></div>
     </div>
-    <div class="card">
-      <h3>Work board</h3>
-      <div class="work-tabs">
-        <button class="work-tab active" data-tab="backlog">Backlog</button>
-        <button class="work-tab" data-tab="progress">In progress</button>
-        <button class="work-tab" data-tab="done">Done</button>
+        <aside class="activity-feed-card">
+      <h3>Live activity</h3>
+      <div id="activityFeed" class="activity-feed">Loading…</div>
+    </aside>
+  </section>
+  <div id="actionStatus" class="action-status">Ready</div>
+  <section class="quick-actions">
+    <button class="action-btn primary">🚀 Launch agent</button>
+    <button class="action-btn">⏸️ Pause notifications</button>
+    <button class="action-btn">🤝 Invite teammate</button>
+  </section>
+
+  <section class="ops-grid">
+    <div class="card panel-card work-board-card">
+      <div class="ops-card-header">
+        <h3>Work board</h3>
+        <div class="segmented-control" role="tablist" aria-label="Task status">
+          <button class="work-tab active" data-tab="backlog">Backlog</button>
+          <button class="work-tab" data-tab="progress">In progress</button>
+          <button class="work-tab" data-tab="done">Done</button>
+        </div>
       </div>
-      <div class="work-tabs" style="margin-top:0.6rem;">
+      <div class="work-view-toggle" role="toolbar" aria-label="Task filters">
         <button class="work-tab" data-filter="all">All tasks</button>
         <button class="work-tab" data-filter="mine">My tasks</button>
       </div>
@@ -506,17 +593,17 @@
             <span id="detailTaskOwner">—</span>
           </div>
           <div>
-            <p style="margin:0 0 0.3rem;font-size:0.75rem;color:var(--muted);">Collaborators</p>
+            <p class="detail-label">Collaborators</p>
             <div class="chip-row" id="detailTaskAgents"></div>
           </div>
           <div>
-            <p style="margin:0 0 0.3rem;font-size:0.75rem;color:var(--muted);">Watchers</p>
+            <p class="detail-label">Watchers</p>
             <div class="chip-row" id="detailWatchers"></div>
           </div>
           <div>
-            <p style="margin:0 0 0.3rem;font-size:0.75rem;color:var(--muted);">Agent progress</p>
+            <p class="detail-label">Agent progress</p>
             <div class="sub-status-list" id="detailSubStatus"></div>
-            <p style="margin:0.3rem 0 0;font-size:0.75rem;color:var(--muted);" id="detailAgentEffort">—</p>
+            <p class="detail-note" id="detailAgentEffort">—</p>
           </div>
           <div class="preview-slot">
             <h5>Preview</h5>
@@ -525,24 +612,11 @@
         </div>
       </div>
     </div>
-    <aside class="activity-feed-card">
-      <h3>Live activity</h3>
-      <div id="activityFeed" class="activity-feed">Loading…</div>
-    </aside>
-  </section>
-  <div id="actionStatus" class="action-status">Ready</div>
-  <section class="quick-actions">
-    <button class="action-btn primary">🚀 Launch agent</button>
-    <button class="action-btn">⏸️ Pause notifications</button>
-    <button class="action-btn">🤝 Invite teammate</button>
-  </section>
-
-  <section class="ai-grid">
-    <div class="card ai-card">
+    <div class="card panel-card ai-card">
       <h3>AI task suggestions</h3>
       <div id="aiTaskList"></div>
     </div>
-    <div class="card ai-card">
+    <div class="card panel-card ai-card">
       <h3>Smart alerts</h3>
       <div class="alert-list" id="smartAlertList"></div>
     </div>
