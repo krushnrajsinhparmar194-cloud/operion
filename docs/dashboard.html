@@ -831,13 +831,6 @@
       <div id="agentModalList">Loading agents…</div>
     </div>
   </div>
-  <section class="chat" id="chatPanel">
-    <div class="chat-log" id="chatLog"></div>
-    <form id="chatForm">
-      <input type="text" id="chatInput" placeholder="Ask your agent anything…" />
-      <button type="submit">Send</button>
-    </form>
-  </section>
   <script>
     let lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
     let langs = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
