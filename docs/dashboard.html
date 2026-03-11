@@ -436,7 +436,6 @@
     .chat-entry span { font-size: 0.85rem; color: var(--muted); }
     .chat form { display: flex; gap: 0.8rem; }
     .chat input { flex: 1; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: var(--text); padding: 0.85rem 1rem; }
-    .chat button { border: none; border-radius: 1rem;; padding: 0.9rem 1.3rem; background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; font-weight: 600; cursor: pointer; }
     .chat.chat-hidden { opacity: 0; pointer-events: none; transform: translateY(20px); transition: opacity 0.35s ease, transform 0.35s ease; }
     .chat-toggle {
       position: fixed;
@@ -831,6 +830,26 @@
       <div id="agentModalList">Loading agents…</div>
     </div>
   </div>
+  <section class="chat-overlay chat-hidden" id="chatPanel" aria-live="polite">
+    <div class="chat-header">
+      <strong>Operion AI Assistant</strong>
+      <div class="chat-status"><span></span>Online</div>
+      <div class="chat-actions">
+        <button type="button" id="chatMin" aria-label="Minimize chat">—</button>
+        <button type="button" id="chatClose" aria-label="Close chat">×</button>
+      </div>
+    </div>
+    <div class="chat-body">
+      <div class="chat-log" id="chatLog" role="log"></div>
+      <form id="chatForm" class="chat-form">
+        <input type="text" id="chatInput" placeholder="Type a message…" autocomplete="off" />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </section>
+  <button class="chat-toggle" id="chatToggle" aria-label="Toggle assistant chat" aria-pressed="false">
+    <span class="icon">✨</span>
+  </button>
   <script>
     let lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
     let langs = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
@@ -1690,6 +1709,56 @@ const actionStatus = document.getElementById('actionStatus');
     inviteBtn?.addEventListener('click', () => {
       setActionStatus('Invite dialog opened (placeholder)');
     });
+    const chatPanel = document.getElementById('chatPanel');
+    const chatToggle = document.getElementById('chatToggle');
+    const chatClose = document.getElementById('chatClose');
+    const chatMin = document.getElementById('chatMin');
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+    const chatLog = document.getElementById('chatLog');
+
+    const addChatMessage = (author, message, type = 'ai') => {
+      if (!chatLog) return;
+      const bubble = document.createElement('div');
+      bubble.className = `chat-message ${type}`;
+      bubble.innerHTML = `<strong>${author}</strong><br>${message}`;
+      chatLog.appendChild(bubble);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    };
+
+    const setChatVisible = visible => {
+      if (!chatPanel || !chatToggle) return;
+      chatPanel.classList.toggle('chat-hidden', !visible);
+      chatToggle.setAttribute('aria-pressed', String(visible));
+      chatToggle.classList.toggle('active', visible);
+    };
+
+    chatToggle?.addEventListener('click', () => {
+      const isHidden = chatPanel?.classList.contains('chat-hidden');
+      setChatVisible(isHidden);
+    });
+
+    chatClose?.addEventListener('click', () => {
+      setChatVisible(false);
+    });
+
+    chatMin?.addEventListener('click', () => {
+      if (!chatPanel) return;
+      chatPanel.classList.toggle('chat-minimized');
+    });
+
+    chatForm?.addEventListener('submit', event => {
+      event.preventDefault();
+      const value = chatInput?.value.trim();
+      if (!value) return;
+      addChatMessage(userName || 'You', value, 'user');
+      chatInput.value = '';
+      setTimeout(() => addChatMessage('Operion AI', "I noted that. Let me log it."), 500);
+    });
+
+    if (chatLog) {
+      addChatMessage('Operion AI', 'Ready whenever you need support.');
+    }
     document.getElementById('chatForm').addEventListener('submit', e => {
       e.preventDefault();
       const input = document.getElementById('chatInput');
