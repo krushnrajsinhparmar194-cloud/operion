@@ -453,10 +453,10 @@
       position: fixed;
       bottom: 6rem;
       right: 2.5rem;
-      width: 350px;
+      width: 360px;
       max-width: calc(100vw - 2rem);
-      height: 400px;
-      border-radius: 1.25rem;
+      height: 440px;
+      border-radius: 12px;
       background: #ffffff;
       border: 1px solid rgba(15,23,42,0.12);
       box-shadow: 0 30px 60px rgba(15,23,42,0.25);
@@ -465,6 +465,7 @@
       font-size: 13px;
       z-index: 80;
       overflow: hidden;
+      transform-origin: bottom right;
       transition: opacity 0.3s ease, transform 0.3s ease;
     }
     .chat-overlay.chat-hidden {
@@ -959,10 +960,7 @@
       </div>
     </div>
     <div class="chat-body">
-      <div class="chat-log" id="chatLog" role="log">
-        <div class="chat-message ai">Morning, Krushnaraj. Need anything summarized?</div>
-        <div class="chat-message user">Give me active agents.</div>
-      </div>
+      <div class="chat-log" id="chatLog" role="log"></div>
       <div class="chat-typing" id="chatTyping" aria-live="polite">
         <span></span><span></span><span></span>
       </div>
@@ -1838,7 +1836,17 @@ const actionStatus = document.getElementById('actionStatus');
     const chatClose = document.getElementById('chatClose');
     const chatMin = document.getElementById('chatMin');
     const chatLog = document.getElementById('chatLog');
-    const addChatMessage = (text, type = 'ai') => {
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+    const chatTyping = document.getElementById('chatTyping');
+    const chatPills = document.querySelectorAll('.chat-pill');
+
+    const toggleTyping = (show) => {
+      if (!chatTyping) return;
+      chatTyping.classList.toggle('visible', show);
+    };
+
+    const appendChatMessage = (text, type = 'ai') => {
       if (!chatLog) return;
       const bubble = document.createElement('div');
       bubble.className = `chat-message ${type}`;
@@ -1846,35 +1854,51 @@ const actionStatus = document.getElementById('actionStatus');
       chatLog.appendChild(bubble);
       chatLog.scrollTop = chatLog.scrollHeight;
     };
-    const setChatVisible = visible => {
+
+    const simulateAiReply = (prompt) => {
+      toggleTyping(true);
+      setTimeout(() => {
+        toggleTyping(false);
+        appendChatMessage(`Noted. I'll handle: ${prompt}`, 'ai');
+      }, 700);
+    };
+
+    const setChatVisible = (visible) => {
       if (!chatPanel || !chatToggle) return;
       chatPanel.classList.toggle('chat-hidden', !visible);
       chatToggle.setAttribute('aria-pressed', String(visible));
       chatToggle.classList.toggle('active', visible);
       if (visible) chatPanel.classList.remove('chat-minimized');
     };
+
     chatToggle?.addEventListener('click', () => {
       const isHidden = chatPanel?.classList.contains('chat-hidden');
       setChatVisible(isHidden);
     });
+
     chatClose?.addEventListener('click', () => setChatVisible(false));
     chatMin?.addEventListener('click', () => chatPanel?.classList.toggle('chat-minimized'));
-    document.querySelectorAll('.chat-pill').forEach(btn => {
+
+    chatPills.forEach(btn => {
       btn.addEventListener('click', () => {
+        const message = btn.dataset.message || btn.textContent || '';
+        if (!message) return;
         setChatVisible(true);
-        addChatMessage(btn.dataset.message || btn.textContent || '');
+        appendChatMessage(message, 'user');
+        simulateAiReply(message);
       });
     });
-    addChatMessage('Morning, Krushnaraj. Need anything summarized?');
-    document.getElementById('chatForm').addEventListener('submit', e => {
-      e.preventDefault();
-      const input = document.getElementById('chatInput');
-      const message = input.value.trim();
-      if (!message) return;
-      addMessage(userName || 'You', message);
-      setTimeout(() => addMessage(lead.name || 'Command agent', "Got it! I'll queue that up."), 600);
-      input.value = '';
+
+    chatForm?.addEventListener('submit', event => {
+      event.preventDefault();
+      const value = chatInput?.value.trim();
+      if (!value) return;
+      appendChatMessage(value, 'user');
+      chatInput.value = '';
+      simulateAiReply(value);
     });
+
+    appendChatMessage('Morning, Krushnaraj. Need anything summarized?');
   </script>
     </main>
   </div>
