@@ -261,7 +261,12 @@
     .log-badge.log-critical { background: rgba(239,68,68,0.16); border-color: rgba(239,68,68,0.45); color: #fecaca; }
     .log-badge.log-warn { background: rgba(251,191,36,0.16); border-color: rgba(251,191,36,0.45); color: #fcd34d; }
     .log-badge.alert-info { background: rgba(59,130,246,0.16); border-color: rgba(59,130,246,0.4); color: #bfdbfe; }
-    .analytics-card { border-radius: 1.2rem; border: 1px solid rgba(255,255,255,0.08); padding: 1rem; background: rgba(255,255,255,0.03); }
+    .analytics-console { border-radius: 1rem; }
+    .analytics-console .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+    .analytics-console .analytics-grid strong { font-size: 2rem; color: #f8fafc; }
+    .analytics-console .analytics-grid p { margin: 0.2rem 0 0; color: #9ca3af; font-size: 0.85rem; }
+    .console-sparkline { height: 60px; border-radius: 0.8rem; background: linear-gradient(120deg, rgba(77,168,255,0.12), rgba(124,107,255,0.08)); position: relative; overflow: hidden; }
+    .console-sparkline::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent); animation: shimmer 6s infinite; opacity: 0.6; }
 
     @media (max-width: 960px) { .ai-grid { grid-template-columns: 1fr; } }
     .schedule-item span { font-size: 0.85rem; color: var(--muted); }
@@ -654,24 +659,24 @@
         <h3>System console</h3>
         <div class="log-viewer" id="logViewer">Loading logs…</div>
       </div>
-      <section class="analytics-card">
-          <h3>Agent analytics</h3>
-          <div class="analytics-grid">
-            <div>
-              <strong id="agentActiveCount">—</strong>
-              <p class="muted">Agents active</p>
-            </div>
-            <div>
-              <strong id="tasksResolved">—</strong>
-              <p class="muted">Tasks resolved today</p>
-            </div>
-            <div>
-              <strong id="avgHandle">—</strong>
-              <p class="muted">Avg. handle time</p>
-            </div>
+      <div class="card console-card analytics-console">
+        <h3>Agent analytics</h3>
+        <div class="analytics-grid">
+          <div>
+            <strong id="agentActiveCount">—</strong>
+            <p>Agents active</p>
           </div>
-          <div class="sparkline" aria-hidden="true"></div>
-        </section>
+          <div>
+            <strong id="tasksResolved">—</strong>
+            <p>Tasks resolved today</p>
+          </div>
+          <div>
+            <strong id="avgHandle">—</strong>
+            <p>Avg. handle time</p>
+          </div>
+        </div>
+        <div class="sparkline console-sparkline" aria-hidden="true"></div>
+      </div>
 
     </div>
   </section>
