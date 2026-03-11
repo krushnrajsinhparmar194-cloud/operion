@@ -265,9 +265,11 @@
     .chat-status span { width: 8px; height: 8px; border-radius: 50%; background: #34d399; display: inline-block; }
     .chat-actions { margin-left: auto; display: inline-flex; gap: 0.35rem; }
     .chat-actions button { border: none; background: rgba(248,250,252,0.15); color: #f8fafc; width: 26px; height: 26px; border-radius: 50%; font-size: 0.8rem; cursor: pointer; }
+    .chat-avatar { width: 36px; height: 36px; border-radius: 12px; background: #0f172a; color: #f8fafc; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1); }
+    .chat-title { display: flex; flex-direction: column; gap: 0.1rem; color: #f8fafc; }
     .chat-body { flex: 1; display: flex; flex-direction: column; background: #ffffff; }
     .chat-log { flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; background: #fff; }
-    .chat-message { max-width: 85%; padding: 0.55rem 0.75rem; border-radius: 1rem; line-height: 1.35; }
+    .chat-message { max-width: 85%; padding: 0.55rem 0.75rem; border-radius: 12px; line-height: 1.35; }
     .chat-message.ai { align-self: flex-start; background: #f1f5f9; color: #0f172a; }
     .chat-message.user { align-self: flex-end; background: #1a1a1a; color: #f8fafc; }
     .chat-typing { display: none; padding: 0 1rem 0.5rem; color: #475569; font-size: 0.78rem; gap: 0.25rem; align-items: center; }
@@ -944,17 +946,13 @@
       <div id="agentModalList">Loading agents…</div>
     </div>
   </div>
-  <section class="chat">
-    <div class="chat-log" id="chatLog"></div>
-    <form id="chatForm">
-      <input type="text" id="chatInput" placeholder="Ask your agent anything…" />
-      <button type="submit">Send</button>
-    </form>
-  </section>
   <section class="chat-overlay chat-hidden" id="chatPanel" aria-live="polite">
     <div class="chat-header">
-      <strong>Operion AI Assistant</strong>
-      <div class="chat-status"><span></span>Online</div>
+      <div class="chat-avatar">🤖</div>
+      <div class="chat-title">
+        <strong>Operion AI Assistant</strong>
+        <div class="chat-status"><span></span>Online</div>
+      </div>
       <div class="chat-actions">
         <button type="button" id="chatMin" aria-label="Minimize chat">—</button>
         <button type="button" id="chatClose" aria-label="Close chat">×</button>
