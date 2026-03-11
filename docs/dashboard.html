@@ -437,6 +437,41 @@
     .chat form { display: flex; gap: 0.8rem; }
     .chat input { flex: 1; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: var(--text); padding: 0.85rem 1rem; }
     .chat button { border: none; border-radius: 1rem;; padding: 0.9rem 1.3rem; background: linear-gradient(120deg, #4da8ff, #7c6bff); color: #041021; font-weight: 600; cursor: pointer; }
+    .chat.chat-hidden { opacity: 0; pointer-events: none; transform: translateY(20px); transition: opacity 0.35s ease, transform 0.35s ease; }
+    .chat-toggle {
+      position: fixed;
+      bottom: 2.5rem;
+      right: 2.5rem;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: none;
+      background: #1a1a1a;
+      color: #f8fafc;
+      box-shadow: 0 18px 36px rgba(0,0,0,0.35);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      z-index: 90;
+      animation: fabPulse 2.8s ease-in-out infinite;
+    }
+    .chat-toggle::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.12);
+      pointer-events: none;
+    }
+    .chat-toggle.active { background: #2563eb; }
+    .chat-toggle:focus-visible { outline: 2px solid #93c5fd; outline-offset: 4px; }
+    @keyframes fabPulse {
+      0% { box-shadow: 0 12px 24px rgba(0,0,0,0.25); transform: scale(1); }
+      50% { box-shadow: 0 18px 36px rgba(37,99,235,0.35); transform: scale(1.04); }
+      100% { box-shadow: 0 12px 24px rgba(0,0,0,0.25); transform: scale(1); }
+    }
     @media (max-width: 960px) {
       .panel-row { grid-template-columns: 1fr; }
     }
@@ -796,7 +831,7 @@
       <div id="agentModalList">Loading agents…</div>
     </div>
   </div>
-  <section class="chat">
+  <section class="chat" id="chatPanel">
     <div class="chat-log" id="chatLog"></div>
     <form id="chatForm">
       <input type="text" id="chatInput" placeholder="Ask your agent anything…" />
@@ -1671,8 +1706,28 @@ const actionStatus = document.getElementById('actionStatus');
       setTimeout(() => addMessage(lead.name || 'Command agent', "Got it! I'll queue that up."), 600);
       input.value = '';
     });
+
+    const chatPanel = document.getElementById('chatPanel');
+    const chatToggle = document.getElementById('chatToggle');
+    const updateChatToggleState = () => {
+      if (!chatToggle || !chatPanel) return;
+      const isHidden = chatPanel.classList.contains('chat-hidden');
+      chatToggle.setAttribute('aria-pressed', String(!isHidden));
+      chatToggle.classList.toggle('active', !isHidden);
+      const icon = chatToggle.querySelector('.icon');
+      if (icon) icon.textContent = isHidden ? '💬' : '✨';
+    };
+    chatToggle?.addEventListener('click', () => {
+      if (!chatPanel) return;
+      chatPanel.classList.toggle('chat-hidden');
+      updateChatToggleState();
+    });
+    updateChatToggleState();
   </script>
     </main>
   </div>
+  <button class="chat-toggle" id="chatToggle" aria-label="Toggle assistant chat" aria-pressed="true">
+    <span class="icon">✨</span>
+  </button>
 </body>
 </html>
