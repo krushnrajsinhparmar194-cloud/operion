@@ -481,6 +481,13 @@
     .chat-actions button { border: none; background: rgba(248,250,252,0.15); color: #f8fafc; width: 26px; height: 26px; border-radius: 50%; font-size: 0.8rem; cursor: pointer; }
     .chat-body { flex: 1; display: flex; flex-direction: column; background: #fff; }
     .chat-log { flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; }
+    .chat-quick-actions { display: flex; gap: 0.4rem; padding: 0 1rem 0.5rem; flex-wrap: wrap; }
+    .chat-pill { border-radius: 999px; border: 1px solid rgba(15,23,42,0.12); padding: 0.2rem 0.7rem; font-size: 12px; background: #f8fafc; color: #0f172a; cursor: pointer; }
+    .chat-form { padding: 0.5rem 1rem 0.8rem; border-top: 1px solid rgba(15,23,42,0.08); display: flex; gap: 0.5rem; background: #fff; align-items: center; }
+    .chat-input-shell { flex: 1; display: flex; align-items: center; border-radius: 999px; border: 1px solid rgba(15,23,42,0.15); padding: 0.4rem 0.7rem; gap: 0.35rem; }
+    .chat-input-shell input { flex: 1; border: none; font-size: 13px; padding: 0; background: transparent; }
+    .chat-icon-btn { border: none; background: none; color: #475569; font-size: 1rem; cursor: pointer; }
+    .chat-send { border: none; border-radius: 999px; padding: 0.45rem 1rem; background: #111827; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem; }
     .chat-message { max-width: 85%; padding: 0.55rem 0.75rem; border-radius: 1rem; line-height: 1.35; }
     .chat-message.ai { align-self: flex-start; background: #f1f5f9; color: #0f172a; }
     .chat-message.user { align-self: flex-end; background: #1a1a1a; color: #f8fafc; }
@@ -952,6 +959,19 @@
         <div class="chat-message ai">Morning, Krushnaraj. Need anything summarized?</div>
         <div class="chat-message user">Give me active agents.</div>
       </div>
+      <div class="chat-quick-actions">
+        <button type="button" class="chat-pill" data-message="Check system health">Check system health</button>
+        <button type="button" class="chat-pill" data-message="List active agents">List active agents</button>
+        <button type="button" class="chat-pill" data-message="Summarize today">Summarize today</button>
+      </div>
+      <form id="chatForm" class="chat-form">
+        <div class="chat-input-shell">
+          <button type="button" class="chat-icon-btn" aria-label="Attach file">📎</button>
+          <input type="text" id="chatInput" placeholder="Type your command..." autocomplete="off" />
+          <button type="button" class="chat-icon-btn" aria-label="Insert emoji">😊</button>
+        </div>
+        <button type="submit" class="chat-send">Send ➤</button>
+      </form>
     </div>
   </section>
   <button class="chat-toggle" id="chatToggle" aria-label="Toggle assistant chat" aria-pressed="false">
@@ -1843,6 +1863,12 @@ const actionStatus = document.getElementById('actionStatus');
     });
     chatClose?.addEventListener('click', () => setChatVisible(false));
     chatMin?.addEventListener('click', () => chatPanel?.classList.toggle('chat-minimized'));
+    document.querySelectorAll('.chat-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        setChatVisible(true);
+        addChatMessage(btn.dataset.message || btn.textContent || '');
+      });
+    });
     addChatMessage('Morning, Krushnaraj. Need anything summarized?');
     document.getElementById('chatForm').addEventListener('submit', e => {
       e.preventDefault();
