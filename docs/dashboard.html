@@ -280,13 +280,14 @@
     .status-online { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.4); }
     .status-paused { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.4); }
     .status-offline { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.4); }
-    .work-tabs { display: flex; gap: 0.6rem; margin-bottom: 1rem; }
-    .work-tab { border-radius: 999px; border: 1px solid rgba(15,23,42,0.1); background: #fff; color: #111827; padding: 0.45rem 1rem; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease; }
-    .work-tab.active { background: #111827; color: #fff; }
-    .work-table-wrap { border: 1px solid rgba(15,23,42,0.08); border-radius: 1.1rem; background: #fff; box-shadow: 0 18px 32px rgba(15,23,42,0.08); overflow-x: auto; }
-    .work-table { width: 100%; border-collapse: collapse; min-width: 520px; }
-    .work-table th { text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9ca3af; padding: 0.8rem 1rem; border-bottom: 1px solid rgba(15,23,42,0.08); }
-    .work-table td { padding: 0.9rem 1rem; border-bottom: 1px solid rgba(15,23,42,0.06); vertical-align: middle; }
+    .work-tabs { display: inline-flex; gap: 0.4rem; margin-bottom: 1rem; padding: 0.2rem; border-radius: 999px; background: #edf2ff; border: 1px solid rgba(37,99,235,0.15); }
+    .work-tab { border-radius: 999px; border: none; background: transparent; color: #1f2937; padding: 0.45rem 1.15rem; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+    .work-tab:hover { color: #1d4ed8; }
+    .work-tab.active { background: #1d4ed8; color: #fff; box-shadow: 0 10px 20px rgba(29,78,216,0.25); }
+    .work-table-wrap { border: 1px solid rgba(15,23,42,0.08); border-radius: 1.2rem; background: #fff; box-shadow: 0 20px 36px rgba(15,23,42,0.08); overflow-x: auto; }
+    .work-table { width: 100%; border-collapse: collapse; min-width: 520px; font-size: 0.92rem; color: #1f2937; }
+    .work-table th { text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: #94a3b8; padding: 0.75rem 1rem; border-bottom: 1px solid rgba(148,163,184,0.35); }
+    .work-table td { padding: 0.95rem 1rem; border-bottom: 1px solid rgba(226,232,240,0.9); vertical-align: middle; }
     .work-row strong { color: #0f172a; }
     .work-row.active td { background: #f5f6ff; }
     .task-name-cell { display: flex; justify-content: space-between; gap: 1rem; align-items: center; }
