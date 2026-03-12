@@ -84,12 +84,33 @@
     .profile-btn { border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; padding: 0.35rem 0.9rem; text-decoration: none; color: var(--text); background: rgba(124,107,255,0.2); font-size: 0.85rem; }
     .profile-chip .avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; }
     .summaries { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
-    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
-    .metric-card { border-radius: 1.4rem; border: 1px solid rgba(255,255,255,0.12); padding: 1.2rem; background: rgba(255,255,255,0.04); display: flex; flex-direction: column; gap: 0.3rem; }
-    .metric-card strong { font-size: 2rem; }
-    .metric-card span { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-    .metric-card p { margin: 0; font-size: 0.95rem; color: var(--muted); }
-    .metric-trend { display: inline-block; margin-top: 0.4rem; color: rgba(255,255,255,0.7); font-size: 0.85rem; }
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem; }
+    .metric-card {
+      position: relative;
+      border-radius: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 1.4rem;
+      background: linear-gradient(160deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
+      box-shadow: 0 18px 40px rgba(4,6,15,0.45);
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      backdrop-filter: blur(16px) saturate(140%);
+    }
+    .metric-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.6rem; }
+    .metric-label { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(234,239,255,0.8); }
+    .metric-tag { font-size: 0.75rem; border-radius: 999px; padding: 0.2rem 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; border: 1px solid transparent; }
+    .metric-tag.status-positive { background: rgba(16,185,129,0.15); color: #6ee7b7; border-color: rgba(16,185,129,0.4); }
+    .metric-tag.status-warn { background: rgba(251,191,36,0.15); color: #fcd34d; border-color: rgba(251,191,36,0.4); }
+    .metric-tag.status-neutral { background: rgba(148,163,184,0.2); color: #e2e8f0; border-color: rgba(148,163,184,0.3); }
+    .metric-card strong { font-size: 2.5rem; line-height: 1.1; color: #fff; }
+    .metric-detail { margin: 0; font-size: 1rem; font-weight: 500; color: #f4f7ff; }
+    .metric-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem; font-size: 0.85rem; }
+    .metric-trend { border-radius: 999px; padding: 0.25rem 0.7rem; background: rgba(79,70,229,0.25); color: #c4b5fd; }
+    .metric-trend.trend-positive { background: rgba(16,185,129,0.2); color: #6ee7b7; }
+    .metric-trend.trend-warn { background: rgba(251,113,133,0.2); color: #fda4af; }
+    .metric-trend.trend-neutral { background: rgba(148,163,184,0.25); color: #e2e8f0; }
+    .metric-delta { color: rgba(226,232,240,0.9); font-weight: 500; }
     .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
     .card { border-radius: 1.35rem; border: 1px solid rgba(255,255,255,0.08); background: var(--card); padding: 1.4rem; }
     .card h3 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
@@ -567,18 +588,60 @@ const scheduleCard = document.querySelector('.schedule-card');
     const metricsEl = document.getElementById('metricsCards');
     const runMetrics = () => {
       const metrics = [
-        { label: 'Active agents', value: 12, hint: 'Live now', trend: '+2 vs. yesterday' },
-        { label: 'Tasks today', value: 248, hint: 'Queued assignments', trend: '+18%' },
-        { label: 'Escalations', value: 3, hint: 'Need attention', trend: '-1 vs. avg' },
-        { label: 'System health', value: '99%', hint: 'Uptime last 24h', trend: 'Stable' }
+        {
+          label: 'Active agents',
+          value: 12,
+          detail: 'Live now',
+          delta: '+2 vs yesterday',
+          trend: 'Stable load',
+          trendTone: 'trend-positive',
+          status: 'Healthy',
+          statusTone: 'status-positive'
+        },
+        {
+          label: 'Tasks today',
+          value: 248,
+          detail: 'Queued assignments',
+          delta: '+18% vs avg',
+          trend: 'Spike expected by 18:00',
+          trendTone: 'trend-positive',
+          status: 'High load',
+          statusTone: 'status-warn'
+        },
+        {
+          label: 'Escalations',
+          value: 3,
+          detail: 'Need attention',
+          delta: 'Owners notified',
+          trend: '−1 vs weekly avg',
+          trendTone: 'trend-warn',
+          status: 'Watchlist',
+          statusTone: 'status-warn'
+        },
+        {
+          label: 'System health',
+          value: '99%',
+          detail: 'Uptime last 24h',
+          delta: 'Stable',
+          trend: 'Last incident 9d ago',
+          trendTone: 'trend-neutral',
+          status: 'Nominal',
+          statusTone: 'status-neutral'
+        }
       ];
       if (metricsEl) {
         metricsEl.innerHTML = metrics.map(item => `
           <div class="metric-card">
-            <span>${item.label}</span>
+            <div class="metric-card-top">
+              <span class="metric-label">${item.label}</span>
+              <span class="metric-tag ${item.statusTone}">${item.status}</span>
+            </div>
             <strong>${item.value}</strong>
-            <p>${item.hint}</p>
-            <small class="metric-trend">${item.trend}</small>
+            <p class="metric-detail">${item.detail}</p>
+            <div class="metric-meta">
+              <span class="metric-trend ${item.trendTone}">${item.trend}</span>
+              <span class="metric-delta">${item.delta}</span>
+            </div>
           </div>
         `).join('');
       }
