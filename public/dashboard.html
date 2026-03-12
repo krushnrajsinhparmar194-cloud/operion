@@ -86,31 +86,36 @@
     .summaries { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
     .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.25rem; }
     .metric-card {
+      --chart-color: #7c6bff;
       position: relative;
-      border-radius: 1.5rem;
-      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 1.4rem;
+      border: 1px solid rgba(15,23,42,0.08);
       padding: 1.4rem;
-      background: linear-gradient(160deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
-      box-shadow: 0 18px 40px rgba(4,6,15,0.45);
+      background: linear-gradient(160deg, rgba(248, 250, 255, 0.96), rgba(233, 238, 255, 0.92));
+      box-shadow: 0 25px 45px rgba(3,5,11,0.25);
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
-      backdrop-filter: blur(16px) saturate(140%);
+      color: #0f172a;
     }
     .metric-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.6rem; }
-    .metric-label { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(234,239,255,0.8); }
-    .metric-tag { font-size: 0.75rem; border-radius: 999px; padding: 0.2rem 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; border: 1px solid transparent; }
-    .metric-tag.status-positive { background: rgba(16,185,129,0.15); color: #6ee7b7; border-color: rgba(16,185,129,0.4); }
-    .metric-tag.status-warn { background: rgba(251,191,36,0.15); color: #fcd34d; border-color: rgba(251,191,36,0.4); }
-    .metric-tag.status-neutral { background: rgba(148,163,184,0.2); color: #e2e8f0; border-color: rgba(148,163,184,0.3); }
-    .metric-card strong { font-size: 2.5rem; line-height: 1.1; color: #fff; }
-    .metric-detail { margin: 0; font-size: 1rem; font-weight: 500; color: #f4f7ff; }
-    .metric-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem; font-size: 0.85rem; }
-    .metric-trend { border-radius: 999px; padding: 0.25rem 0.7rem; background: rgba(79,70,229,0.25); color: #c4b5fd; }
-    .metric-trend.trend-positive { background: rgba(16,185,129,0.2); color: #6ee7b7; }
-    .metric-trend.trend-warn { background: rgba(251,113,133,0.2); color: #fda4af; }
-    .metric-trend.trend-neutral { background: rgba(148,163,184,0.25); color: #e2e8f0; }
-    .metric-delta { color: rgba(226,232,240,0.9); font-weight: 500; }
+    .metric-label { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.08em; color: #0f172a; font-weight: 600; }
+    .metric-tag { font-size: 0.76rem; border-radius: 999px; padding: 0.2rem 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; border: 1px solid transparent; font-weight: 600; }
+    .metric-tag.status-positive { background: rgba(16,185,129,0.12); color: #047857; border-color: rgba(16,185,129,0.3); }
+    .metric-tag.status-warn { background: rgba(250,204,21,0.15); color: #92400e; border-color: rgba(250,204,21,0.35); }
+    .metric-tag.status-neutral { background: rgba(148,163,184,0.18); color: #1e293b; border-color: rgba(148,163,184,0.4); }
+    .metric-card strong { font-size: 2.4rem; line-height: 1.1; color: #0b1121; font-weight: 700; }
+    .metric-detail { margin: 0; font-size: 1rem; font-weight: 600; color: #1e293b; }
+    .metric-chart { width: 100%; height: 52px; margin-top: 0.2rem; }
+    .metric-chart svg { width: 100%; height: 100%; }
+    .metric-chart polyline { fill: none; stroke: var(--chart-color); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .metric-chart polygon { stroke: none; }
+    .metric-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.4rem; font-size: 0.86rem; align-items: center; }
+    .metric-trend { border-radius: 999px; padding: 0.25rem 0.7rem; background: rgba(79,70,229,0.18); color: #4338ca; font-weight: 600; }
+    .metric-trend.trend-positive { background: rgba(16,185,129,0.15); color: #0f766e; }
+    .metric-trend.trend-warn { background: rgba(251,113,133,0.18); color: #be123c; }
+    .metric-trend.trend-neutral { background: rgba(148,163,184,0.2); color: #1e293b; }
+    .metric-delta { color: #0f172a; font-weight: 600; }
     .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
     .card { border-radius: 1.35rem; border: 1px solid rgba(255,255,255,0.08); background: var(--card); padding: 1.4rem; }
     .card h3 { margin: 0 0 0.5rem; font-size: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
@@ -586,6 +591,26 @@ const scheduleCard = document.querySelector('.schedule-card');
     }));
 
     const metricsEl = document.getElementById('metricsCards');
+    const buildSparkline = (values = [], fill = 'rgba(124,107,255,0.12)') => {
+      if (!values.length) return '';
+      const max = Math.max(...values);
+      const min = Math.min(...values);
+      const denominator = max === min ? 1 : (max - min);
+      const points = values.map((val, idx) => {
+        const x = values.length === 1 ? 100 : (idx / (values.length - 1)) * 100;
+        const y = 100 - (((val - min) / denominator) * 100);
+        return `${x.toFixed(2)},${y.toFixed(2)}`;
+      });
+      const polygonPoints = [...points, '100,100', '0,100'].join(' ');
+      return `
+        <div class="metric-chart" aria-hidden="true">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+            <polygon points="${polygonPoints}" fill="${fill}"></polygon>
+            <polyline points="${points.join(' ')}"></polyline>
+          </svg>
+        </div>
+      `;
+    };
     const runMetrics = () => {
       const metrics = [
         {
@@ -596,7 +621,10 @@ const scheduleCard = document.querySelector('.schedule-card');
           trend: 'Stable load',
           trendTone: 'trend-positive',
           status: 'Healthy',
-          statusTone: 'status-positive'
+          statusTone: 'status-positive',
+          chartColor: '#0ea5e9',
+          chartFill: 'rgba(14,165,233,0.18)',
+          chartValues: [8, 9, 11, 10, 12, 12, 13]
         },
         {
           label: 'Tasks today',
@@ -606,7 +634,10 @@ const scheduleCard = document.querySelector('.schedule-card');
           trend: 'Spike expected by 18:00',
           trendTone: 'trend-positive',
           status: 'High load',
-          statusTone: 'status-warn'
+          statusTone: 'status-warn',
+          chartColor: '#f97316',
+          chartFill: 'rgba(249,115,22,0.18)',
+          chartValues: [120, 150, 140, 190, 205, 248]
         },
         {
           label: 'Escalations',
@@ -616,7 +647,10 @@ const scheduleCard = document.querySelector('.schedule-card');
           trend: '−1 vs weekly avg',
           trendTone: 'trend-warn',
           status: 'Watchlist',
-          statusTone: 'status-warn'
+          statusTone: 'status-warn',
+          chartColor: '#ef4444',
+          chartFill: 'rgba(239,68,68,0.18)',
+          chartValues: [4, 5, 5, 4, 3, 3]
         },
         {
           label: 'System health',
@@ -626,18 +660,22 @@ const scheduleCard = document.querySelector('.schedule-card');
           trend: 'Last incident 9d ago',
           trendTone: 'trend-neutral',
           status: 'Nominal',
-          statusTone: 'status-neutral'
+          statusTone: 'status-neutral',
+          chartColor: '#10b981',
+          chartFill: 'rgba(16,185,129,0.18)',
+          chartValues: [97.2, 98.1, 98.4, 98.9, 99, 99]
         }
       ];
       if (metricsEl) {
         metricsEl.innerHTML = metrics.map(item => `
-          <div class="metric-card">
+          <div class="metric-card" style="--chart-color:${item.chartColor || '#7c6bff'};">
             <div class="metric-card-top">
               <span class="metric-label">${item.label}</span>
               <span class="metric-tag ${item.statusTone}">${item.status}</span>
             </div>
             <strong>${item.value}</strong>
             <p class="metric-detail">${item.detail}</p>
+            ${buildSparkline(item.chartValues, item.chartFill)}
             <div class="metric-meta">
               <span class="metric-trend ${item.trendTone}">${item.trend}</span>
               <span class="metric-delta">${item.delta}</span>
@@ -758,7 +796,7 @@ const scheduleCard = document.querySelector('.schedule-card');
             </div>
           `;
         }).join('');
-        runMetrics(list);
+        runMetrics();
       })
       .catch(() => {
         agentListEl.innerHTML = 'Unable to load agents.';
