@@ -369,10 +369,16 @@
       padding: 1.5rem;
       gap: 1rem;
     }
-    .drawer-head { display: flex; justify-content: space-between; align-items: center; }
-    .drawer-head h3 { margin: 0; font-size: 1.2rem; color: #0f172a; }
+    .drawer-head { display: flex; justify-content: space-between; align-items: center; gap: 0.8rem; }
+    .drawer-head h3 { margin: 0; font-size: 1.2rem; color: #0f172a; display: flex; align-items: center; gap: 0.4rem; }
+    .drawer-head h3 svg { width: 18px; height: 18px; color: #4f46e5; }
     .drawer-close { border: none; background: transparent; font-size: 1.5rem; cursor: pointer; color: #475467; }
-    .drawer-form { display: flex; flex-direction: column; gap: 1rem; flex: 1; }
+    .drawer-form { display: none; flex-direction: column; gap: 1rem; flex: 1; }
+    .drawer-form.ready { display: flex; }
+    .drawer-skeleton { display: flex; flex-direction: column; gap: 0.6rem; }
+    .skeleton-bar { height: 14px; border-radius: 999px; background: #e2e8f0; position: relative; overflow: hidden; }
+    .skeleton-bar::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent); animation: shimmer 1.2s infinite; }
+    @keyframes shimmer { 100% { transform: translateX(100%); } }
     .drawer-form label { font-size: 0.88rem; font-weight: 600; color: #0f172a; display: flex; flex-direction: column; gap: 0.4rem; }
     .drawer-form input, .drawer-form select {
       border-radius: 0.7rem;
@@ -600,8 +606,15 @@
   <div class="drawer-overlay" id="configureDrawer" aria-hidden="true">
     <div class="config-drawer" role="dialog" aria-modal="true">
       <div class="drawer-head">
-        <h3 id="drawerTitle">Configure agent</h3>
+        <h3 id="drawerTitle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 5 15.4a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 8a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 14 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9"/></svg>Configure agent</h3>
         <button class="drawer-close" id="closeDrawer" aria-label="Close configure drawer">×</button>
+      </div>
+      <div class="drawer-skeleton" id="drawerSkeleton">
+        <span class="skeleton-bar" style="width: 40%; height: 18px;"></span>
+        <span class="skeleton-bar" style="width: 80%;"></span>
+        <span class="skeleton-bar" style="width: 70%;"></span>
+        <span class="skeleton-bar" style="width: 65%;"></span>
+        <span class="skeleton-bar" style="width: 90%; height: 52px;"></span>
       </div>
       <form class="drawer-form" id="drawerForm">
         <label>
@@ -975,6 +988,8 @@
     const drawerSave = document.getElementById('drawerSave');
     const closeDrawerBtn = document.getElementById('closeDrawer');
     const selectAllBtn = document.getElementById('selectAll');
+    const drawerForm = document.getElementById('drawerForm');
+    const drawerSkeleton = document.getElementById('drawerSkeleton');
 
     const stored = new Set(JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]'));
     let currentSearchTerm = '';
@@ -1132,15 +1147,24 @@
     function openDrawer(agentName = 'Agent') {
       if (!configureDrawer) return;
       currentConfigureAgent = agentName;
-      drawerTitle.textContent = `Configure ${agentName}`;
+      drawerTitle.querySelector('span')?.remove();
+      drawerTitle.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 5 15.4a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 8a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 14 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9"/></svg>Configure ${agentName}`;
+      drawerSkeleton.style.display = 'flex';
+      drawerForm.classList.remove('ready');
       configureDrawer.classList.add('open');
       configureDrawer.setAttribute('aria-hidden', 'false');
+      setTimeout(() => {
+        drawerSkeleton.style.display = 'none';
+        drawerForm.classList.add('ready');
+      }, 600);
     }
 
     function closeDrawer() {
       if (!configureDrawer) return;
       configureDrawer.classList.remove('open');
       configureDrawer.setAttribute('aria-hidden', 'true');
+      drawerForm.classList.remove('ready');
+      drawerSkeleton.style.display = 'flex';
     }
 
     function applyFilters(term) {
