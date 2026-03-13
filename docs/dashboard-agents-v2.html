@@ -678,6 +678,7 @@
       label.card input { position: static; align-self: flex-start; }
     }
   </style>
+<!-- build bump for deploy -->
 </head>
 <body>
   <div class="wrap">
@@ -1499,17 +1500,6 @@
       closeDrawer();
     });
     closeDrawerBtn?.addEventListener('click', closeDrawer);
-
-    verifyApiBtn?.addEventListener('click', () => {
-      verifyApiBtn.disabled = true;
-      verifyApiBtn.textContent = 'Verifying…';
-      verifyApiBtn.classList.remove('success');
-      setTimeout(() => {
-        verifyApiBtn.textContent = 'Verified';
-        verifyApiBtn.classList.add('success');
-        verifyApiBtn.disabled = false;
-      }, 600);
-    });
 
     const syncSliders = () => {
       if (tempSlider && tempValue) tempValue.textContent = Number(tempSlider.value).toFixed(2);
