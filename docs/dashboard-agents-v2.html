@@ -405,6 +405,18 @@
     .capability-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.4rem; }
     .capability-list li { display: flex; gap: 0.4rem; align-items: center; color: #475467; font-size: 0.9rem; }
     .capability-list li span.icon { width: 20px; height: 20px; border-radius: 50%; background: rgba(15,23,42,0.1); display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #0f172a; }
+    .command-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .command-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(15,23,42,0.15);
+      background: #ffffff;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: #0f172a;
+      transition: all 0.2s ease;
+    }
+    .command-pill:hover { background: #0f172a; color: #fff; }
     .drawer-section h4 {
       margin: 0;
       font-size: 0.95rem;
@@ -740,6 +752,14 @@
             <li><span class="icon">✔</span>Generate incident briefs for stakeholders.</li>
             <li><span class="icon">✔</span>Auto-tag tickets based on system telemetry.</li>
           </ul>
+        </section>
+        <section class="drawer-section">
+          <h4>Quick commands</h4>
+          <div class="command-pills" id="commandPills">
+            <button type="button" class="command-pill" data-command="Show last 5 errors">Show last 5 errors</button>
+            <button type="button" class="command-pill" data-command="Run system health check">Run system health check</button>
+            <button type="button" class="command-pill" data-command="Summarize today's tasks">Summarize today's tasks</button>
+          </div>
         </section>
         <section class="drawer-section">
           <h4>AI core</h4>
@@ -1173,6 +1193,7 @@
     const tempValue = document.getElementById('tempValue');
     const memorySlider = document.getElementById('memorySlider');
     const memoryValue = document.getElementById('memoryValue');
+    const commandPills = document.querySelectorAll('.command-pill');
 
     const stored = new Set(JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]'));
     let currentSearchTerm = '';
@@ -1465,6 +1486,17 @@
     tempSlider?.addEventListener('input', syncSliders);
     memorySlider?.addEventListener('input', syncSliders);
     syncSliders();
+
+    commandPills.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const text = btn.dataset.command;
+        const chatInput = document.getElementById('chatInput');
+        if (chatInput && text) {
+          chatInput.value = text;
+          chatInput.focus();
+        }
+      });
+    });
 
     document.addEventListener('click', event => {
       if (cardMenuPopover && !cardMenuPopover.contains(event.target) && event.target !== openMenuTarget) {
