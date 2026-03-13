@@ -529,9 +529,18 @@
     }
     .switch input:checked + .slider { background: #0f172a; }
     .switch input:checked + .slider::after { transform: translateX(16px); }
+    .connection-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.82rem;
+      color: #16a34a;
+    }
+    .connection-badge span { width: 8px; height: 8px; border-radius: 50%; background: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.25); display: inline-block; }
     .drawer-footer {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       gap: 0.6rem;
       margin-top: auto;
       padding: 1rem 0 0;
@@ -863,8 +872,11 @@
         </section>
       </form>
       <div class="drawer-footer">
-        <button type="button" class="secondary" id="drawerCancel">Cancel</button>
-        <button type="button" class="primary" id="drawerSave">Save changes</button>
+        <div class="connection-badge"><span></span>Connected via Global API Key</div>
+        <div style="display:flex; gap:0.6rem;">
+          <button type="button" class="secondary" id="drawerCancel">Reset to default</button>
+          <button type="button" class="primary" id="drawerSave">Save configuration</button>
+        </div>
       </div>
     </div>
   </div>
