@@ -385,7 +385,58 @@
     .drawer-close { border: none; background: transparent; font-size: 1.5rem; cursor: pointer; color: #475467; }
     .drawer-form { display: none; flex-direction: column; gap: 1rem; flex: 1; }
     .drawer-form.ready { display: flex; }
-    .drawer-skeleton { display: flex; flex-direction: column; gap: 0.6rem; }
+    .drawer-section {
+      border: 1px solid rgba(148,163,184,0.35);
+      border-radius: 1rem;
+      padding: 1rem;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .drawer-section h4 {
+      margin: 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #475467;
+    }
+    .drawer-row { display: flex; gap: 0.8rem; align-items: center; }
+    .drawer-row label { flex: 1; }
+    .identity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.8rem; }
+    .status-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(15,23,42,0.1);
+      border-radius: 0.9rem;
+      padding: 0.7rem 1rem;
+      background: #ffffff;
+    }
+    .status-toggle strong { font-size: 1rem; }
+    .status-toggle span { font-size: 0.82rem; color: #6b7280; }
+    .big-switch { position: relative; width: 58px; height: 30px; }
+    .big-switch input { opacity: 0; position: absolute; inset: 0; margin: 0; cursor: pointer; }
+    .big-slider { position: absolute; inset: 0; border-radius: 999px; background: #e2e8f0; transition: background 0.2s ease; }
+    .big-slider::after { content: ''; position: absolute; top: 3px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: #ffffff; box-shadow: 0 2px 6px rgba(15,23,42,0.25); transition: transform 0.2s ease; }
+    .big-switch input:checked + .big-slider { background: linear-gradient(120deg, #111827, #000000); }
+    .big-switch input:checked + .big-slider::after { transform: translateX(26px); }
+    .input-with-icon { position: relative; }
+    .input-with-icon input { width: 100%; padding-right: 2.2rem; }
+    .input-with-icon button {
+      position: absolute;
+      right: 0.4rem;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: #6b7280;
+    }
+    .slider-field { display: flex; flex-direction: column; gap: 0.3rem; }
+    .slider-field input[type="range"] { width: 100%; }
+    .slider-value { font-size: 0.82rem; color: #475467; text-align: right; }
+    .switch-list { display: flex; flex-direction: column; gap: 0.6rem; }
     .skeleton-bar { height: 14px; border-radius: 999px; background: #e2e8f0; position: relative; overflow: hidden; }
     .skeleton-bar::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent); animation: shimmer 1.2s infinite; }
     @keyframes shimmer { 100% { transform: translateX(100%); } }
@@ -624,25 +675,94 @@
         <span class="skeleton-bar" style="width: 90%; height: 52px;"></span>
       </div>
       <form class="drawer-form" id="drawerForm">
-        <label>
-          API key
-          <input type="text" id="configApiKey" placeholder="sk-live-XXXX" />
-        </label>
-        <label>
-          Priority level
-          <select id="configPriority">
-            <option value="low">Low</option>
-            <option value="medium" selected>Medium</option>
-            <option value="high">High</option>
-          </select>
-        </label>
-        <div class="toggle-field">
-          <span>Auto-restart on error</span>
-          <label class="switch">
-            <input type="checkbox" id="configAutoRestart" checked />
-            <span class="slider"></span>
+        <section class="drawer-section">
+          <h4>Identity & Status</h4>
+          <div class="identity-grid">
+            <label>
+              Agent name
+              <input type="text" id="configName" value="Command bridge" />
+            </label>
+            <label>
+              Version
+              <input type="text" id="configVersion" value="v2.4" />
+            </label>
+          </div>
+          <div class="status-toggle">
+            <div>
+              <strong>Active</strong>
+              <span>Agent will respond immediately</span>
+            </div>
+            <label class="big-switch">
+              <input type="checkbox" id="configActive" checked />
+              <span class="big-slider"></span>
+            </label>
+          </div>
+        </section>
+        <section class="drawer-section">
+          <h4>AI core</h4>
+          <label class="input-with-icon">
+            API key
+            <input type="password" id="configApiKey" value="sk-live-XXXX" />
+            <button type="button" id="toggleApiKey" aria-label="Show API key">👁</button>
           </label>
-        </div>
+          <div class="drawer-row">
+            <label>
+              Provider
+              <select id="configProvider">
+                <option>OpenAI</option>
+                <option>Anthropic</option>
+                <option>Google</option>
+              </select>
+            </label>
+            <label>
+              Model
+              <select id="configModel">
+                <option>GPT-4o</option>
+                <option>Claude 3 Opus</option>
+                <option>Gemini 2.0</option>
+              </select>
+            </label>
+          </div>
+        </section>
+        <section class="drawer-section">
+          <h4>Capabilities</h4>
+          <div class="switch-list">
+            <div class="toggle-field">
+              <span>Autonomous mode</span>
+              <label class="switch">
+                <input type="checkbox" id="capAuto" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="toggle-field">
+              <span>Human-in-the-loop</span>
+              <label class="switch">
+                <input type="checkbox" id="capHuman" />
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="toggle-field">
+              <span>API access</span>
+              <label class="switch">
+                <input type="checkbox" id="capApi" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </section>
+        <section class="drawer-section">
+          <h4>Fine tuning</h4>
+          <div class="slider-field">
+            <label for="tempSlider">Temperature</label>
+            <input type="range" id="tempSlider" min="0" max="1" step="0.05" value="0.4" />
+            <div class="slider-value" id="tempValue">0.40</div>
+          </div>
+          <div class="slider-field">
+            <label for="memorySlider">Memory depth</label>
+            <input type="range" id="memorySlider" min="1" max="10" value="6" />
+            <div class="slider-value" id="memoryValue">6 turns</div>
+          </div>
+        </section>
       </form>
       <div class="drawer-footer">
         <button type="button" class="secondary" id="drawerCancel">Cancel</button>
@@ -997,6 +1117,11 @@
     const selectAllBtn = document.getElementById('selectAll');
     const drawerForm = document.getElementById('drawerForm');
     const drawerSkeleton = document.getElementById('drawerSkeleton');
+    const toggleApiKeyBtn = document.getElementById('toggleApiKey');
+    const tempSlider = document.getElementById('tempSlider');
+    const tempValue = document.getElementById('tempValue');
+    const memorySlider = document.getElementById('memorySlider');
+    const memoryValue = document.getElementById('memoryValue');
 
     const stored = new Set(JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]'));
     let currentSearchTerm = '';
@@ -1262,6 +1387,22 @@
       closeDrawer();
     });
     closeDrawerBtn?.addEventListener('click', closeDrawer);
+
+    toggleApiKeyBtn?.addEventListener('click', () => {
+      const input = document.getElementById('configApiKey');
+      if (!input) return;
+      const isPassword = input.getAttribute('type') === 'password';
+      input.setAttribute('type', isPassword ? 'text' : 'password');
+      toggleApiKeyBtn.textContent = isPassword ? '🙈' : '👁';
+    });
+
+    const syncSliders = () => {
+      if (tempSlider && tempValue) tempValue.textContent = Number(tempSlider.value).toFixed(2);
+      if (memorySlider && memoryValue) memoryValue.textContent = `${memorySlider.value} turns`;
+    };
+    tempSlider?.addEventListener('input', syncSliders);
+    memorySlider?.addEventListener('input', syncSliders);
+    syncSliders();
 
     document.addEventListener('click', event => {
       if (cardMenuPopover && !cardMenuPopover.contains(event.target) && event.target !== openMenuTarget) {
