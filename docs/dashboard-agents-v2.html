@@ -268,6 +268,7 @@
       border-color: #0f172a;
       box-shadow: inset 0 0 0 2px #fff;
     }
+    label.card.selected { border-width: 2px; border-color: #1D4ED8; }
     label.card:hover input,
     label.card input:focus-visible { opacity: 1; }
     .agent-icon {
@@ -300,7 +301,11 @@
       padding: 0.35rem 1.1rem;
       cursor: pointer;
       transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
     }
+    .configure-btn svg { width: 16px; height: 16px; }
     .configure-btn:hover {
       background: #0f172a;
       color: #fff;
@@ -318,7 +323,24 @@
       cursor: pointer;
       color: #475467;
       transition: all 0.2s ease;
+      position: relative;
     }
+    .card-menu::after {
+      content: 'More options';
+      position: absolute;
+      bottom: calc(100% + 6px);
+      right: 0;
+      background: #111827;
+      color: #fff;
+      font-size: 0.72rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.4rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+      white-space: nowrap;
+    }
+    .card-menu:hover::after { opacity: 1; }
     .card-menu:hover {
       background: #111827;
       color: #fff;
@@ -999,6 +1021,7 @@
 
     function renderCatalog(filter = '') {
       catalogEl.innerHTML = '';
+      const selections = new Set(stored);
       const fragment = document.createDocumentFragment();
       const lowerFilter = filter.trim().toLowerCase();
 
@@ -1020,6 +1043,7 @@
           (filteredAgents.length ? filteredAgents : category.agents).forEach(agent => {
             const label = document.createElement('label');
             label.className = 'card';
+            if (selections.has(title)) label.classList.add('selected');
             const [title, desc] = agent.split(' — ');
             const iconEmoji = title.includes('Agent') ? '🤖' : '✨';
             const statusClass = stored.has(title) ? 'online' : 'offline';
@@ -1046,7 +1070,7 @@
                   </div>
                 </div>
                 <div class="card-actions">
-                  <button type="button" class="configure-btn" data-config="${title}">Configure</button>
+                  <button type="button" class="configure-btn" data-config="${title}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 5 15.4a1.65 1.65 0 0 0-1.51-1H3"/></svg>Configure</button>
                   <button type="button" class="card-menu" aria-label="More actions for ${title}"><span>⋮</span></button>
                 </div>
               </div>
@@ -1063,6 +1087,9 @@
               }
               updateSelected();
               applyFilters();
+            });
+            input.addEventListener('change', () => {
+              label.classList.toggle('selected', input.checked);
             });
             label.appendChild(input);
             grid.appendChild(label);
