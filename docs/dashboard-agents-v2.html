@@ -513,10 +513,20 @@
     }
     .switch input:checked + .slider { background: #0f172a; }
     .switch input:checked + .slider::after { transform: translateX(16px); }
-    .drawer-footer { display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: auto; }
-    .drawer-footer button { border-radius: 999px; border: none; padding: 0.55rem 1.2rem; font-weight: 600; cursor: pointer; }
-    .drawer-footer .secondary { background: #f1f5f9; color: #0f172a; }
-    .drawer-footer .primary { background: #0f172a; color: #ffffff; }
+    .drawer-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.6rem;
+      margin-top: auto;
+      padding: 1rem 0 0;
+      border-top: 1px solid rgba(148,163,184,0.4);
+      background: linear-gradient(180deg, transparent, #ffffff 45%);
+      position: sticky;
+      bottom: 0;
+    }
+    .drawer-footer button { border-radius: 0.9rem; border: none; padding: 0.7rem 1.4rem; font-weight: 600; cursor: pointer; }
+    .drawer-footer .secondary { background: #fee2e2; color: #b91c1c; }
+    .drawer-footer .primary { background: #0f172a; color: #ffffff; flex: 1; }
     .card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
     .card-title { margin: 0; font-size: 1rem; font-weight: 600; color: #0f172a; }
     .status-pill {
