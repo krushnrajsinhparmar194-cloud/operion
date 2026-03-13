@@ -242,6 +242,42 @@
     .progress-label { font-size: 0.75rem; color: #94a3b8; display: flex; justify-content: space-between; margin-bottom: 0.2rem; }
     .progress-bar { width: 100%; height: 6px; border-radius: 999px; background: #e2e8f0; overflow: hidden; }
     .progress-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #111827, #000000); }
+    .card-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 0.6rem; }
+    .configure-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(15,23,42,0.25);
+      background: transparent;
+      color: #0f172a;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.35rem 1.1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .configure-btn:hover {
+      background: #0f172a;
+      color: #fff;
+      border-color: #0f172a;
+    }
+    .card-menu {
+      border: 1px solid rgba(148,163,184,0.5);
+      background: transparent;
+      border-radius: 0.75rem;
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #475467;
+      transition: all 0.2s ease;
+    }
+    .card-menu:hover {
+      background: #111827;
+      color: #fff;
+      border-color: #111827;
+    }
+    .card-menu span { font-size: 1.2rem; line-height: 1; }
     .card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
     .card-title { margin: 0; font-size: 1rem; font-weight: 600; color: #0f172a; }
     .status-pill {
@@ -755,6 +791,9 @@
             const [title, desc] = agent.split(' — ');
             const iconEmoji = title.includes('Agent') ? '🤖' : '✨';
             const statusClass = stored.has(title) ? 'online' : 'offline';
+            const successRate = 90 + Math.floor(Math.random() * 10);
+            const lastActive = Math.floor(Math.random() * 6) + 1;
+            const loadPercent = 60 + Math.floor(Math.random() * 35);
             label.innerHTML = `
               <span class="agent-icon">${iconEmoji}</span>
               <div class="card-content">
@@ -763,16 +802,20 @@
                   <span class="status-pill ${statusClass}">${stored.has(title) ? 'Online' : 'Offline'}</span>
                 </div>
                 <p>${desc || ''}</p>
-                <span class="card-metric">Success rate · ${90 + Math.floor(Math.random()*10)}%</span>
-                <span class="card-meta">Last active · ${Math.floor(Math.random()*6)+1}h ago</span>
+                <span class="card-metric">Success rate · ${successRate}%</span>
+                <span class="card-meta">Last active · ${lastActive}h ago</span>
                 <div class="progress-wrap">
                   <div class="progress-label">
                     <span>Current load</span>
-                    <span>${60 + Math.floor(Math.random()*35)}%</span>
+                    <span>${loadPercent}%</span>
                   </div>
                   <div class="progress-bar">
-                    <div class="progress-fill" style="width:${60 + Math.floor(Math.random()*35)}%"></div>
+                    <div class="progress-fill" style="width:${loadPercent}%"></div>
                   </div>
+                </div>
+                <div class="card-actions">
+                  <button type="button" class="configure-btn" data-config="${title}">Configure</button>
+                  <button type="button" class="card-menu" aria-label="More actions for ${title}"><span>⋮</span></button>
                 </div>
               </div>
             `;
