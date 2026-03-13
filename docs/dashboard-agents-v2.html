@@ -552,7 +552,8 @@
     }
     .drawer-footer button { border-radius: 0.9rem; border: none; padding: 0.7rem 1.4rem; font-weight: 600; cursor: pointer; }
     .drawer-footer .secondary { background: #fee2e2; color: #b91c1c; }
-    .drawer-footer .primary { background: #0f172a; color: #ffffff; flex: 1; }
+    .drawer-footer .primary { background: #0f172a; color: #ffffff; }
+    .footer-actions { display: flex; gap: 0.6rem; }
     .card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
     .card-title { margin: 0; font-size: 1rem; font-weight: 600; color: #0f172a; }
     .status-pill {
@@ -875,7 +876,7 @@
       </form>
       <div class="drawer-footer">
         <div class="connection-badge"><span></span>Connected via Global API Key</div>
-        <div style="display:flex; gap:0.6rem;">
+        <div class="footer-actions">
           <button type="button" class="secondary" id="drawerCancel">Reset to default</button>
           <button type="button" class="primary" id="drawerSave">Save configuration</button>
         </div>
