@@ -1499,14 +1499,6 @@
     });
     closeDrawerBtn?.addEventListener('click', closeDrawer);
 
-    toggleApiKeyBtn?.addEventListener('click', () => {
-      const input = document.getElementById('configApiKey');
-      if (!input) return;
-      const isPassword = input.getAttribute('type') === 'password';
-      input.setAttribute('type', isPassword ? 'text' : 'password');
-      toggleApiKeyBtn.textContent = isPassword ? '🙈' : '👁';
-    });
-
     verifyApiBtn?.addEventListener('click', () => {
       verifyApiBtn.disabled = true;
       verifyApiBtn.textContent = 'Verifying…';
