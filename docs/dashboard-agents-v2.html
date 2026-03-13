@@ -112,7 +112,6 @@
       transition: all 0.2s ease;
     }
     .select-all:hover { background: #0f172a; color: #fff; }
-    .sticky-search { display: none !important; }
     .hero-search-shell svg { width: 16px; height: 16px; color: #94a3b8; }
     .hero-search {
       border: none;
@@ -605,9 +604,6 @@
     </div>
     <div class="layout">
       <div class="main-column">
-        <div class="sticky-search">
-          <input type="search" class="search" id="search" placeholder="Search agents or categories" />
-        </div>
         <div class="list-scroll">
           <section class="suggested" id="suggested"></section>
           <div id="catalog"></div>
@@ -999,7 +995,7 @@
     ];
 
     const catalogEl = document.getElementById('catalog');
-    const searchEl = document.getElementById('search');
+    const searchEl = document.getElementById('search') || document.getElementById('heroSearch');
     const countEl = document.getElementById('selectedCount');
     const selectedListEl = document.getElementById('selectedList');
     const suggestedEl = document.getElementById('suggested');
@@ -1045,8 +1041,8 @@
           (filteredAgents.length ? filteredAgents : category.agents).forEach(agent => {
             const label = document.createElement('label');
             label.className = 'card';
-            if (selections.has(title)) label.classList.add('selected');
             const [title, desc] = agent.split(' — ');
+            if (selections.has(title)) label.classList.add('selected');
             const iconEmoji = title.includes('Agent') ? '🤖' : '✨';
             const statusClass = stored.has(title) ? 'online' : 'offline';
             const successRate = 90 + Math.floor(Math.random() * 10);
@@ -1246,14 +1242,16 @@
     });
 
     heroSearch?.addEventListener('input', e => {
-      if (searchEl) searchEl.value = e.target.value;
+      if (searchEl && searchEl !== heroSearch) searchEl.value = e.target.value;
       applyFilters(e.target.value);
     });
 
-    searchEl?.addEventListener('input', e => {
-      if (heroSearch) heroSearch.value = e.target.value;
-      applyFilters(e.target.value);
-    });
+    if (searchEl && searchEl !== heroSearch) {
+      searchEl.addEventListener('input', e => {
+        if (heroSearch) heroSearch.value = e.target.value;
+        applyFilters(e.target.value);
+      });
+    }
 
     selectAllBtn?.addEventListener('click', () => {
       document.querySelectorAll('.card input[type="checkbox"]').forEach(cb => {
