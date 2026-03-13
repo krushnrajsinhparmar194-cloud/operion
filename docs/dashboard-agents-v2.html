@@ -25,23 +25,35 @@
       color: var(--text);
       padding: 2rem;
     }
-    .nav-top {
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-      z-index: 30;
+    .breadcrumb {
       display: inline-flex;
       align-items: center;
       gap: 0.6rem;
-      padding: 0.5rem 1.1rem;
-      border-radius: 999px;
-      border: 1px solid rgba(15,23,42,0.08);
-      background: #ffffff;
-      text-decoration: none;
-      color: #0f172a;
-      font-weight: 500;
-      box-shadow: 0 8px 18px rgba(15,23,42,0.12);
+      font-size: 0.9rem;
+      color: #475467;
+      margin-bottom: 1rem;
     }
+    .breadcrumb a {
+      color: #475467;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-weight: 500;
+    }
+    .breadcrumb a:hover { color: #0f172a; }
+    .breadcrumb .divider {
+      color: #cbd5f5;
+      font-size: 0.8rem;
+    }
+    .breadcrumb .current {
+      color: #0f172a;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .breadcrumb .current svg { width: 14px; height: 14px; }
     .nav-top .icon {
       width: 1.1rem;
       height: 1.1rem;
@@ -534,8 +546,12 @@
   </style>
 </head>
 <body>
-  <a href="dashboard.html" class="nav-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="label">Back</span></a>
   <div class="wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="dashboard.html">Dashboard</a>
+      <span class="divider">›</span>
+      <span class="current"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l4 4-4 4"/></svg>Agents</span>
+    </nav>
     <div class="page-hero">
       <div class="hero-copy">
         <p class="hero-kicker">agents library</p>
