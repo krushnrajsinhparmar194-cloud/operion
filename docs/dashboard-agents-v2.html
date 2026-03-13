@@ -394,6 +394,17 @@
       flex-direction: column;
       gap: 0.8rem;
     }
+    .profile-card {
+      border-radius: 0.9rem;
+      background: #F8F9FA;
+      border: 1px solid #E2E8F0;
+      padding: 0.9rem;
+      color: #475467;
+      line-height: 1.4;
+    }
+    .capability-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+    .capability-list li { display: flex; gap: 0.4rem; align-items: center; color: #475467; font-size: 0.9rem; }
+    .capability-list li span.icon { width: 20px; height: 20px; border-radius: 50%; background: rgba(15,23,42,0.1); display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #0f172a; }
     .drawer-section h4 {
       margin: 0;
       font-size: 0.95rem;
@@ -422,31 +433,6 @@
     .big-switch input:checked + .big-slider { background: linear-gradient(120deg, #111827, #000000); }
     .big-switch input:checked + .big-slider::after { transform: translateX(26px); }
     .input-with-icon { position: relative; }
-    .input-with-icon input { width: 100%; padding-right: 2.2rem; }
-    .input-with-icon button.toggle-visibility {
-      position: absolute;
-      right: 0.4rem;
-      top: 50%;
-      transform: translateY(-50%);
-      border: none;
-      background: none;
-      cursor: pointer;
-      color: #6b7280;
-    }
-    .api-row { display: flex; flex-direction: column; gap: 0.4rem; }
-    .api-actions { display: flex; gap: 0.6rem; align-items: center; }
-    .verify-btn {
-      border-radius: 0.8rem;
-      border: 1px solid #cbd5f5;
-      background: #ffffff;
-      padding: 0.4rem 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      color: #0f172a;
-      transition: all 0.2s ease;
-    }
-    .verify-btn.success { border-color: #16a34a; background: #dcfce7; color: #166534; }
-    .api-hint { font-size: 0.8rem; color: #4f46e5; text-decoration: none; }
     .slider-field { display: flex; flex-direction: column; gap: 0.3rem; }
     .slider-shell { position: relative; }
     .slider-field input[type="range"] { width: 100%; }
@@ -740,18 +726,23 @@
           </div>
         </section>
         <section class="drawer-section">
-          <h4>AI core</h4>
-          <div class="api-row">
-            <label class="input-with-icon">
-              API key
-              <input type="password" id="configApiKey" value="sk-live-XXXX" />
-              <button type="button" class="toggle-visibility" id="toggleApiKey" aria-label="Show API key">👁</button>
-            </label>
-            <div class="api-actions">
-              <button type="button" class="verify-btn" id="verifyApi">Verify connection</button>
-              <a href="#" class="api-hint">Where do I find my API key?</a>
-            </div>
+          <h4>Role & Expertise</h4>
+          <div class="profile-card" id="agentProfile">
+            <p id="agentSummary">Command bridge monitors ops dashboards, triages anomalies, and keeps you ahead of escalation. Expect proactive context, crisp handoffs, and system health nudges.</p>
           </div>
+        </section>
+        <section class="drawer-section">
+          <h4>Capabilities & Tasks</h4>
+          <ul class="capability-list" id="capabilityList">
+            <li><span class="icon">✔</span>Monitor logs and surface critical alerts.</li>
+            <li><span class="icon">✔</span>Summarize deployment health every hour.</li>
+            <li><span class="icon">✔</span>Coordinate handoffs between Ops agents.</li>
+            <li><span class="icon">✔</span>Generate incident briefs for stakeholders.</li>
+            <li><span class="icon">✔</span>Auto-tag tickets based on system telemetry.</li>
+          </ul>
+        </section>
+        <section class="drawer-section">
+          <h4>AI core</h4>
           <div class="drawer-row">
             <label>
               Provider
@@ -1177,8 +1168,7 @@
     const selectAllBtn = document.getElementById('selectAll');
     const drawerForm = document.getElementById('drawerForm');
     const drawerSkeleton = document.getElementById('drawerSkeleton');
-    const toggleApiKeyBtn = document.getElementById('toggleApiKey');
-    const verifyApiBtn = document.getElementById('verifyApi');
+    const agentSummary = document.getElementById('agentSummary');
     const tempSlider = document.getElementById('tempSlider');
     const tempValue = document.getElementById('tempValue');
     const memorySlider = document.getElementById('memorySlider');
