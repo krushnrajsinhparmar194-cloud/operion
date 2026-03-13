@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operion · Common Agents Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, sans-serif;
+      color-scheme: dark;
+      --bg: #04060e;
+      --card: rgba(255, 255, 255, 0.03);
+      --text: #f6f8ff;
+      --muted: #9badcf;
+      --accent: #7c6bff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, rgba(124, 107, 255, 0.25), transparent 55%),
+                  radial-gradient(circle at 80% 10%, rgba(77, 168, 255, 0.22), transparent 50%),
+                  var(--bg);
+      color: var(--text);
+      padding: 2rem;
+    }
+    .nav-top {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 30;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(4, 6, 14, 0.95);
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .nav-top .icon {
+      width: 1.1rem;
+      height: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: inherit;
+    }
+    .nav-top .icon svg {
+      width: 100%;
+      height: 100%;
+    }
+    .wrap {
+      width: min(1400px, 100%);
+      min-height: calc(100vh - 4rem);
+      padding: 3.5rem 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+    h1 { margin: 0 0 0.2rem; }
+    p.lede { margin: 0 0 1.2rem; color: var(--muted); max-width: 720px; }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .sticky-search {
+      position: sticky;
+      top: 0;
+      padding-bottom: 1rem;
+      z-index: 5;
+      backdrop-filter: blur(20px);
+    }
+    .search {
+      width: 100%;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(5, 8, 20, 0.6);
+      color: var(--text);
+      padding: 0.95rem 1rem;
+      font-size: 1rem;
+    }
+    .count-pill {
+      padding: 0.3rem 0.7rem;
+      border-radius: 0.9rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      font-size: 0.8rem;
+      color: var(--text);
+      text-align: center;
+    }
+    .suggested {
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 1.5rem;
+      padding: 1.4rem;
+      background: rgba(255,255,255,0.02);
+    }
+    .suggested h3 {
+      margin: 0 0 0.6rem;
+      font-size: 1rem;
+    }
+    .suggested p {
+      margin: 0 0 1rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .suggested-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+    }
+    .suggested button {
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 1rem;
+      padding: 0.85rem 1rem;
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .suggested button span { font-size: 0.85rem; color: var(--muted); }
+    .suggested button.picked {
+      border-color: rgba(124,107,255,0.7);
+      background: rgba(124,107,255,0.12);
+    }
+    details.category {
+      border-radius: 1.6rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.02);
+      margin-bottom: 1.2rem;
+      overflow: hidden;
+    }
+    summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 1.4rem 1.6rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    summary::-webkit-details-marker { display: none; }
+    .badge { font-size: 0.85rem; color: var(--muted); }
+    .agents {
+      padding: 0 1.6rem 1.6rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    label.card {
+      border-radius: 1.2rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: var(--card);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      cursor: pointer;
+      position: relative;
+      min-height: 140px;
+    }
+    label.card input {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      transform: scale(1.15);
+    }
+    .card p { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.4; }
+    .layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 270px;
+      gap: 1.5rem;
+    }
+    .main-column {
+      display: flex;
+      flex-direction: column;
+      padding-right: 0.75rem;
+      padding-top: 0.5rem;
+      height: 100%;
+    }
+    .list-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+    .side-panel {
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 1rem;
+      padding: 0.7rem;
+      background: rgba(0,0,0,0.55);
+      position: sticky;
+      top: 1rem;
+      height: calc(100vh - 2rem);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .side-panel h3 { margin: 0; font-size: 1rem; }
+    .side-note { margin: 0; font-size: 0.85rem; color: var(--muted); }
+    .selected-list {
+      flex: 1;
+      min-height: 0;
+      max-height: calc(100vh - 360px);
+      border: 1px dashed rgba(255,255,255,0.15);
+      border-radius: 0.75rem;
+      padding: 0.35rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+      overflow-y: auto;
+    }
+    .selected-list .empty { color: var(--muted); }
+    .selected-card {
+      border-radius: 1.1rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      padding: 0.65rem 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+    }
+    .selected-card.muted {
+      justify-content: center;
+      color: var(--muted);
+    }
+    .selected-card button {
+      border: none;
+      background: rgba(255,255,255,0.12);
+      color: var(--text);
+      border-radius: 0.8rem;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .primary {
+      border: none;
+      border-radius: 0.95rem;
+      padding: 0.65rem 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.18), transparent 55%),
+                  linear-gradient(120deg, #4da8ff, #7c6bff);
+      color: #041021;
+      cursor: pointer;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      margin-top: 0.2rem;
+    }
+    .primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 25px 55px rgba(0,0,0,0.4);
+    }
+    .primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .side-panel { position: static; }
+    }
+    @media (max-width: 768px) {
+      body { padding: 4rem 1rem 2rem; }
+      .wrap { padding: 2.5rem 1.5rem; }
+      summary { flex-direction: column; align-items: flex-start; }
+      label.card input { position: static; align-self: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <a href="dashboard.html" class="nav-top"><span class="icon" aria-hidden="true"><svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M12.5 4l-6 6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="label">Back</span></a>
+  <div class="wrap">
+    <h1>Common agent packs</h1>
+    <p class="lede">Mix and match from Operion's ready-made AI teammates. Filter by category, skim their responsibilities, and stack as many as you need.</p>
+    <div class="layout">
+      <div class="main-column">
+        <div class="sticky-search">
+          <input type="search" class="search" id="search" placeholder="Search agents or categories" />
+        </div>
+        <div class="list-scroll">
+          <section class="suggested" id="suggested"></section>
+          <div id="catalog"></div>
+        </div>
+      </div>
+      <aside class="side-panel">
+        <h3>Your picks</h3>
+        <p class="side-note">Tap to unselect any agent</p>
+        <div class="selected-list" id="selectedList"></div>
+        <div class="count-pill" id="selectedCount">0 selected</div>
+        <button class="primary" id="commonContinue">Back to dashboard</button>
+      </aside>
+    </div>
+  </div>
+  <script>
+    const suggestionPool = [
+      { title: 'Daily News Summary Agent', desc: 'Morning briefing in under a minute.' },
+      { title: 'Calendar Scheduling Agent', desc: 'Auto-books meetings without back-and-forth.' },
+      { title: 'Expense Tracking Agent', desc: 'Keeps a live view of your spend.' },
+      { title: 'Trip Planning Agent', desc: 'Builds travel plans from flights to food.' },
+      { title: 'Habit Building Agent', desc: 'Keeps personal routines on track.' }
+    ];
+
+    const categories = [
+      { name: 'Astrology, Spiritual & Cultural', agents: [
+        'Daily Horoscope Agent — Personalized daily predictions.',
+        'Birth Chart / Kundli Analysis Agent — Generates detailed charts.',
+        'Compatibility / Matchmaking Agent — Compares charts for relationships.',
+        'Planetary Transit Agent — Explains planetary movements.',
+        'Numerology Insight Agent — Interprets numbers and dates.',
+        'Lucky Day & Muhurat Agent — Finds auspicious timings.',
+        'Gemstone Recommendation Agent — Suggests stones from zodiac.',
+        'Tarot Reading Agent — Pulls and interprets tarot cards.',
+        'Palm Reading Agent — Reads palm lines virtually.',
+        'Spiritual Guidance Agent — Offers spiritual routines.',
+        'Meditation & Mantra Agent — Shares guided practices.',
+        'Festival & Cultural Guide Agent — Highlights festivals & rituals.',
+        'Ritual & Puja Guide Agent — Step-by-step ceremony guidance.',
+        'Yearly Horoscope Agent — Long-term astrological outlooks.',
+        'Spiritual Q&A Agent — Answers cultural/spiritual questions.'
+      ]},
+      { name: 'News', agents: [
+        'Daily News Summary Agent — Morning briefings.',
+        'Breaking News Alert Agent — Instant alerts.',
+        'Personalized News Agent — Interest-based curation.',
+        'Local News Agent — City and regional stories.',
+        'Global News Agent — International coverage.',
+        'Business & Finance News Agent — Markets + economy.',
+        'Technology News Agent — AI and startup beat.',
+        'Sports News Agent — Scores and recaps.',
+        'Political News Agent — Policy + government updates.',
+        'Entertainment News Agent — Pop culture drops.',
+        'Trending News Agent — Internet buzz tracker.',
+        'Fact-Check News Agent — Debunks misinformation.',
+        'News Explanation Agent — Simplifies complex topics.',
+        'Industry News Agent — Sector-specific briefs.',
+        'Morning News Brief Agent — Coffee-length digest.'
+      ]},
+      { name: 'Lifestyle', agents: [
+        'Fitness Coach Agent — Tailored workouts.',
+        'Diet & Nutrition Agent — Meal planning.',
+        'Habit Tracker Agent — Daily streaks.',
+        'Personal Grooming Advisor Agent — Self-care tips.',
+        'Fashion & Style Agent — Outfit curation.',
+        'Travel Lifestyle Agent — Experience ideas.',
+        'Hobby Discovery Agent — Find new hobbies.',
+        'Relationship Advice Agent — Better communication.',
+        'Home Organization Agent — Declutter routines.',
+        'Shopping Lifestyle Agent — Product finds.',
+        'Event & Celebration Planner Agent — Party planning.',
+        'Daily Motivation Agent — Quotes + nudges.'
+      ]},
+      { name: 'Calendar & Scheduling', agents: [
+        'Calendar Scheduling Agent — Books meetings automatically.',
+        'Smart Meeting Planner Agent — Finds best time slots.',
+        'Event Reminder Agent — Nudges before events.',
+        'Daily Schedule Organizer Agent — Plans each day.',
+        'Weekly Planner Agent — High-level week view.',
+        'Task Deadline Tracker Agent — Watches due dates.',
+        'Appointment Booking Agent — Handles bookings.',
+        'Meeting Summary Agent — Captures notes automatically.',
+        'Time Management Agent — Suggests focus blocks.',
+        'Holiday & Event Tracker Agent — Important dates list.'
+      ]},
+      { name: 'Health & Wellness', agents: [
+        'Health Monitoring Agent — Logs vitals & activity.',
+        'Symptom Checker Agent — Basic triage guidance.',
+        'Medication Reminder Agent — Pill schedule alerts.',
+        'Doctor Appointment Agent — Books and tracks visits.',
+        'Fitness Activity Tracker Agent — Workout log.',
+        'Nutrition Advisor Agent — Balanced diet ideas.',
+        'Mental Health Support Agent — Coping tools.',
+        'Meditation & Breathing Coach Agent — Guided sessions.',
+        'Sleep Health Agent — Sleep hygiene tips.',
+        'Hydration Reminder Agent — Drink-water pings.',
+        'Weight Management Agent — Goal tracking.',
+        'Preventive Health Tips Agent — Daily advice.',
+        'Chronic Disease Management Agent — Condition checklists.',
+        'Health Report Analysis Agent — Simplifies lab reports.',
+        'Wellness Goal Tracker Agent — Progress dashboards.'
+      ]},
+      { name: 'Business & Professional Ops', agents: [
+        'HR Management Agent — People records and PTO.',
+        'Recruitment Assistant Agent — Resume triage.',
+        'CRM Agent — Customer history tracker.',
+        'Customer Support Agent — Ticket handling.',
+        'Project Management Agent — Task + timeline control.',
+        'Meeting Scheduler Agent — Team calendars.',
+        'Document Management Agent — Organizes files.',
+        'Workflow Automation Agent — Removes manual steps.',
+        'Business Analytics Agent — KPI dashboards.',
+        'Invoice & Billing Agent — Sends invoices + reminders.',
+        'Client Communication Agent — Handles updates.',
+        'Business Strategy Advisor Agent — Suggests growth plays.',
+        'Team Productivity Agent — Performance snapshots.',
+        'Business Research Agent — Market intelligence.'
+      ]},
+      { name: 'Sales & Marketing', agents: [
+        'Lead Generation Agent — Finds prospects.',
+        'Sales Outreach Agent — Drafts personalized reach-outs.',
+        'Sales Follow-Up Agent — Timely nudges.',
+        'CRM Management Agent — Pipeline hygiene.',
+        'Sales Forecasting Agent — Predicts revenue.',
+        'Proposal & Quotation Agent — Creates decks & quotes.',
+        'Customer Engagement Agent — Chat + retention loops.',
+        'Social Media Marketing Agent — Schedules content.',
+        'Content Marketing Agent — Blogs + copy.',
+        'Email Marketing Agent — Campaign automation.',
+        'Ad Campaign Management Agent — Runs paid ads.',
+        'Market Research Agent — Competitor intel.',
+        'Sales Analytics Agent — Conversion tracking.',
+        'Product Promotion Agent — Launch playbooks.',
+        'Customer Feedback Analysis Agent — Review mining.',
+        'SEO Optimization Agent — Search ranking boosts.',
+        'Brand Strategy Agent — Narrative + positioning.',
+        'Influencer Marketing Agent — Finds partners.',
+        'Campaign Performance Agent — Reporting dashboards.',
+        'Landing Page Optimization Agent — Improves conversions.'
+      ]},
+      { name: 'Finance', agents: [
+        'Expense Tracking Agent — Categorizes spend.',
+        'Budget Planning Agent — Monthly/annual plans.',
+        'Invoice & Billing Agent — Payment workflows.',
+        'Personal Finance Advisor Agent — Saving guidance.',
+        'Investment Analysis Agent — Portfolio signals.',
+        'Tax Preparation Agent — Organizes filings.',
+        'Subscription Management Agent — Monitors renewals.',
+        'Bill Payment Reminder Agent — Due-date alerts.',
+        'Financial Goal Planning Agent — Goal roadmaps.',
+        'Loan & EMI Calculator Agent — Repayment schedules.',
+        'Credit Score Monitoring Agent — Insights + alerts.',
+        'Financial Report Analysis Agent — Plain-language summaries.',
+        'Fraud Detection Agent — Suspicious activity alerts.',
+        'Savings Optimization Agent — Finds extra savings.',
+        'Portfolio Management Agent — Tracks holdings.'
+      ]},
+      { name: 'Developer & Tech', agents: [
+        'Coding Assistant Agent — Helps write code.',
+        'Code Review Agent — Enforces standards.',
+        'Bug Detection Agent — Spots issues.',
+        'API Integration Agent — Connects services.',
+        'Automation Script Agent — Builds scripts.',
+        'DevOps Assistant Agent — Manages pipelines.',
+        'Database Management Agent — Optimizes DBs.',
+        'Software Testing Agent — Generates tests.',
+        'Cybersecurity Monitoring Agent — Watches vulnerabilities.',
+        'System Monitoring Agent — Keeps infra healthy.',
+        'Data Analysis Agent — Crunches datasets.',
+        'AI Model Assistant Agent — Helps with ML lifecycle.',
+        'Documentation Generator Agent — Writes docs.',
+        'Version Control Assistant Agent — Git hygiene.',
+        'Cloud Management Agent — Manages cloud infra.'
+      ]},
+      { name: 'Travel', agents: [
+        'Trip Planning Agent — End-to-end itineraries.',
+        'Flight Search Agent — Finds best fares.',
+        'Hotel Recommendation Agent — Stay suggestions.',
+        'Local Attraction Guide Agent — Things to do.',
+        'Travel Budget Planner Agent — Cost planning.',
+        'Weather Travel Advisor Agent — Destination weather.',
+        'Visa & Travel Document Agent — Requirements guidance.',
+        'Transportation Guide Agent — Local commute tips.',
+        'Restaurant Recommendation Agent — Food hotspots.',
+        'Language Translation Travel Agent — Real-time phrases.',
+        'Travel Safety Advisor Agent — Alerts & tips.',
+        'Packing Checklist Agent — Personalized packing list.',
+        'Travel Deal Finder Agent — Discounts & offers.',
+        'Cultural Etiquette Guide Agent — Do’s & don’ts.',
+        'Real-Time Travel Update Agent — Flight & route alerts.'
+      ]},
+      { name: 'Shopping & Household', agents: [
+        'Product Recommendation Agent — Suggests products based on user needs.',
+        'Price Comparison Agent — Compares prices across stores.',
+        'Deal & Discount Finder Agent — Surfaces coupons and offers.',
+        'Smart Shopping Assistant Agent — Helps choose the best item.',
+        'Grocery List Management Agent — Builds and syncs grocery lists.',
+        'Household Inventory Agent — Tracks home supplies and alerts lows.',
+        'Order Tracking Agent — Monitors deliveries in one view.',
+        'Home Budget Shopping Agent — Keeps spend inside limits.',
+        'Product Review Analysis Agent — Summarizes trustworthy reviews.',
+        'Subscription & Reorder Agent — Auto-reorders repeat items.',
+        'Smart Home Supply Agent — Manages cleaning/utility stock.',
+        'Home Maintenance Reminder Agent — Nudges repairs and upkeep.',
+        'Furniture & Home Decor Advisor Agent — Suggests decor ideas.',
+        'Energy & Utility Monitoring Agent — Tracks electricity/water usage.',
+        'Household Task Organizer Agent — Assigns chores and reminders.'
+      ]},
+      { name: 'Entertainment & Media', agents: [
+        'Movie Recommendation Agent — Picks films you’ll like.',
+        'Music Recommendation Agent — Curates playlists and songs.',
+        'TV Show Discovery Agent — Finds trending series.',
+        'Streaming Guide Agent — Shows where content is available.',
+        'Gaming Recommendation Agent — Suggests games by genre.',
+        'Content Summary Agent — Recaps long-form content quickly.',
+        'Celebrity News Agent — Shares celeb + pop news.',
+        'Trending Media Agent — Spots viral content.',
+        'Podcast Recommendation Agent — Finds shows by topic.',
+        'Event & Concert Finder Agent — Lists concerts and shows.',
+        'Video Content Creator Agent — Drafts scripts + concepts.',
+        'Media Review Agent — Digests critic/user reviews.',
+        'Fan Community Agent — Surfaces forums and discussions.',
+        'Entertainment News Summary Agent — Daily highlights.',
+        'Watchlist Management Agent — Saves what to watch later.'
+      ]},
+      { name: 'Education & Learning', agents: [
+        'Study Planner Agent — Builds study timetables.',
+        'Homework Assistant Agent — Helps solve questions.',
+        'Language Learning Agent — Conversational practice.',
+        'Exam Preparation Agent — Mock tests + quizzes.',
+        'Research Assistant Agent — Collects references + notes.',
+        'Concept Explanation Agent — Simplifies tough topics.',
+        'Skill Development Agent — Suggests learning paths.',
+        'Reading & Book Summary Agent — Summarizes books.',
+        'Career Guidance Agent — Matches skills to careers.',
+        'Online Course Recommendation Agent — Finds relevant courses.',
+        'Learning Progress Tracker Agent — Visualizes progress.',
+        'Coding Learning Agent — Teaches programming basics.',
+        'Knowledge Quiz Generator Agent — Creates revision quizzes.',
+        'Educational Content Creator Agent — Helps teachers prep material.',
+        'Student Productivity Agent — Keeps assignments on track.'
+      ]},
+      { name: 'Weather', agents: [
+        'Daily Weather Forecast Agent — Everyday outlook.',
+        'Real-Time Weather Update Agent — Live conditions.',
+        'Severe Weather Alert Agent — Storm warnings.',
+        'Weekly Weather Planner Agent — 7/10-day view.',
+        'Travel Weather Advisor Agent — Destination weather.',
+        'Outdoor Activity Weather Agent — Best time to step out.',
+        'Rain Prediction Agent — Precip chances + timing.',
+        'Air Quality Monitoring Agent — AQI alerts.',
+        'Agriculture Weather Agent — Farm-ready forecasts.',
+        'Clothing Recommendation Agent — Outfit guidance.',
+        'Sunrise & Sunset Tracker Agent — Golden hour times.',
+        'Weather Notification Agent — Sudden-change alerts.',
+        'Seasonal Climate Insight Agent — Seasonal patterns.',
+        'Location-Based Weather Agent — Geo-aware updates.',
+        'Disaster Preparedness Weather Agent — Safety guidance.'
+      ]},
+      { name: 'Food & Kitchen', agents: [
+        'Recipe Recommendation Agent — Suggests dishes from ingredients.',
+        'Meal Planning Agent — Weekly meal grids.',
+        'Cooking Assistant Agent — Step-by-step chef.',
+        'Nutrition Information Agent — Calorie + macros.',
+        'Grocery List Generator Agent — Auto shopping lists.',
+        'Food Diet Planner Agent — Diet-specific menus.',
+        'Ingredient Substitute Agent — Finds alternatives.',
+        'Food Expiry Tracker Agent — Warns before spoilage.',
+        'Restaurant Finder Agent — Nearby food spots.',
+        'Healthy Recipe Agent — Balanced meals.',
+        'Cuisine Discovery Agent — World cuisine explorer.',
+        'Cooking Time & Portion Agent — Adjusts servings.',
+        'Food Waste Reduction Agent — Uses leftovers smartly.',
+        'Kitchen Inventory Agent — Tracks pantry stock.',
+        'Food Trend Discovery Agent — Viral recipes + dishes.'
+      ]},
+      { name: 'Parenting & Kids', agents: [
+        'Parenting Advice Agent — Guidance for everyday parenting.',
+        'Child Development Tracker Agent — Milestone logging.',
+        'Kids Learning Assistant Agent — Interactive lessons.',
+        'Homework Help Agent — Assignment helper.',
+        'Storytelling Agent — Custom bedtime stories.',
+        'Kids Activity Planner Agent — Fun, educational plans.',
+        'Screen Time Management Agent — Usage balance.',
+        'Health & Vaccination Reminder Agent — Shots + checkups.',
+        'Behavior Guidance Agent — Habit/behavior tips.',
+        'Family Schedule Organizer Agent — Shared family calendar.',
+        'Kids Safety Advisor Agent — Safety playbook.',
+        'Educational Game Recommendation Agent — Learning games.',
+        'Nutrition for Kids Agent — Child-friendly meals.',
+        'School Communication Agent — Teacher updates hub.',
+        'Creative Learning Agent — Music/art/story prompts.'
+      ]},
+      { name: 'Beauty & Personal Care', agents: [
+        'Skincare Advisor Agent — Routine builder by skin type.',
+        'Hair Care Advisor Agent — Regimens + fixes.',
+        'Beauty Product Recommendation Agent — Product picks.',
+        'Makeup Guide Agent — Step-by-step tutorials.',
+        'Personal Grooming Advisor Agent — Hygiene reminders.',
+        'Skin Problem Analysis Agent — Spots issues like acne.',
+        'Hair Style Recommendation Agent — Styles per face shape.',
+        'Beauty Routine Planner Agent — Weekly schedules.',
+        'Cosmetic Ingredient Analyzer Agent — Ingredient breakdowns.',
+        'Salon & Spa Finder Agent — Nearby services.',
+        'Anti-Aging Care Advisor Agent — Preventive routines.',
+        'Natural Beauty Tips Agent — DIY remedies.',
+        'Makeup Product Comparison Agent — Product comparisons.',
+        'Beauty Trend Discovery Agent — Trending looks.',
+        'Personal Style & Appearance Advisor Agent — Overall styling tips.'
+      ]},
+      { name: 'Self-Growth & Motivation', agents: [
+        'Goal Setting Agent — Defines and tracks goals.',
+        'Daily Motivation Agent — Quotes + pep talks.',
+        'Habit Building Agent — Builds new routines.',
+        'Productivity Improvement Agent — Focus boosters.',
+        'Personal Development Coach Agent — Growth plans.',
+        'Time Management Advisor Agent — Prioritization help.',
+        'Mindset Coaching Agent — Positive thinking.',
+        'Confidence Building Agent — Self-belief nudges.',
+        'Success Strategy Agent — Strategic planning.',
+        'Reflection & Journaling Agent — Daily journaling cues.',
+        'Stress Management Agent — Calm techniques.',
+        'Life Balance Advisor Agent — Work/life harmony.',
+        'Learning & Growth Planner Agent — Skill roadmap.',
+        'Challenge & Progress Tracker Agent — Milestone tracking.',
+        'Inspiration Story Agent — Inspiring anecdotes.'
+      ]},
+      { name: 'Language & Communication', agents: [
+        'Language Translation Agent — Instant translations.',
+        'Grammar Correction Agent — Fixes grammar + tone.',
+        'Writing Assistant Agent — Drafts docs + emails.',
+        'Speech Practice Agent — Pronunciation coach.',
+        'Conversation Practice Agent — Chat simulations.',
+        'Email Drafting Agent — Professional drafts.',
+        'Public Speaking Coach Agent — Presentation tips.',
+        'Text Summarization Agent — Shortens long text.',
+        'Communication Skills Coach Agent — Soft skill boosts.',
+        'Voice-to-Text Agent — Dictation.',
+        'Text-to-Speech Agent — Natural narration.',
+        'Meeting Communication Assistant Agent — Talking points.',
+        'Message Tone Improvement Agent — Friendly/formal tone.',
+        'Multilingual Chat Agent — Chats in many languages.',
+        'Cultural Communication Advisor Agent — Cross-cultural cues.'
+      ]}
+    ];
+
+    const catalogEl = document.getElementById('catalog');
+    const searchEl = document.getElementById('search');
+    const countEl = document.getElementById('selectedCount');
+    const selectedListEl = document.getElementById('selectedList');
+    const suggestedEl = document.getElementById('suggested');
+
+    const stored = new Set(JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]'));
+
+    function renderCatalog(filter = '') {
+      catalogEl.innerHTML = '';
+      const fragment = document.createDocumentFragment();
+      const lowerFilter = filter.trim().toLowerCase();
+
+      categories.forEach(category => {
+        const matchesCategory = category.name.toLowerCase().includes(lowerFilter);
+        const filteredAgents = category.agents.filter(agent => agent.toLowerCase().includes(lowerFilter));
+        if (!filter || matchesCategory || filteredAgents.length) {
+          const details = document.createElement('details');
+          details.className = 'category';
+          details.open = filteredAgents.length > 0 || filter ? true : false;
+
+          const summary = document.createElement('summary');
+          summary.innerHTML = `<span>${category.name}</span><span class="badge">${category.agents.length} agents</span>`;
+          details.appendChild(summary);
+
+          const grid = document.createElement('div');
+          grid.className = 'agents';
+
+          (filteredAgents.length ? filteredAgents : category.agents).forEach(agent => {
+            const label = document.createElement('label');
+            label.className = 'card';
+            const [title, desc] = agent.split(' — ');
+            label.innerHTML = `
+              <strong>${title}</strong>
+              <p>${desc || ''}</p>
+            `;
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.value = title;
+            if (stored.has(title)) input.checked = true;
+            input.addEventListener('change', () => {
+              if (input.checked) {
+                stored.add(title);
+              } else {
+                stored.delete(title);
+              }
+              updateSelected();
+            });
+            label.appendChild(input);
+            grid.appendChild(label);
+          });
+
+          details.appendChild(grid);
+          fragment.appendChild(details);
+        }
+      });
+
+      catalogEl.appendChild(fragment);
+      updateSelected();
+    }
+
+    function renderSuggestions() {
+      if (!suggestedEl) return;
+      suggestedEl.innerHTML = '<h3>Recommended for you</h3><p>Popular staples most teams enable on day one.</p>';
+      const grid = document.createElement('div');
+      grid.className = 'suggested-grid';
+      suggestionPool.forEach(item => {
+        const btn = document.createElement('button');
+        btn.dataset.title = item.title;
+        btn.innerHTML = `<strong>${item.title}</strong><span>${item.desc}</span>`;
+        if (stored.has(item.title)) btn.classList.add('picked');
+        btn.addEventListener('click', () => {
+          if (stored.has(item.title)) {
+            stored.delete(item.title);
+          } else {
+            stored.add(item.title);
+          }
+          updateSelected();
+          renderCatalog(searchEl.value);
+        });
+        grid.appendChild(btn);
+      });
+      suggestedEl.appendChild(grid);
+    }
+
+    function updateSelected() {
+      const arr = Array.from(stored);
+      countEl.textContent = `${arr.length} selected`;
+      if (arr.length) {
+        selectedListEl.innerHTML = arr.map(name => `
+          <div class="selected-card">
+            <span>${name}</span>
+            <button type="button" data-name="${name}">Remove</button>
+          </div>
+        `).join('');
+      } else {
+        selectedListEl.innerHTML = '<span class="empty">No agents selected yet.</span>';
+      }
+      selectedListEl.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const name = btn.dataset.name;
+          stored.delete(name);
+          updateSelected();
+          renderCatalog(searchEl.value);
+        });
+      });
+      sessionStorage.setItem('operionCommonAgents', JSON.stringify(arr));
+      renderSuggestions();
+    }
+
+    searchEl.addEventListener('input', e => {
+      renderCatalog(e.target.value);
+    });
+
+    document.getElementById('commonContinue').addEventListener('click', () => {
+      const arr = Array.from(stored);
+      if (!arr.length) {
+        alert('Select at least one common agent.');
+        return;
+      }
+      window.location.href = 'dashboard.html';
+    });
+
+    renderCatalog();
+  </script>
+</body>
+</html>
