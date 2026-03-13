@@ -483,6 +483,24 @@
     .toggle-copy { display: flex; flex-direction: column; gap: 0.15rem; }
     .toggle-copy strong { font-size: 0.9rem; color: #0f172a; }
     .toggle-copy span { font-size: 0.75rem; color: #6b7280; }
+    .info-icon { width: 18px; height: 18px; border-radius: 50%; background: rgba(15,23,42,0.08); color: #0f172a; font-size: 0.7rem; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+    .info-icon::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111827;
+      color: #fff;
+      font-size: 0.72rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.4rem;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+    }
+    .info-icon:hover::after { opacity: 1; }
     .switch input:checked + .slider { background: #0f172a; }
     .switch {
       position: relative;
@@ -787,7 +805,10 @@
           <div class="switch-list">
             <div class="toggle-field">
               <div class="toggle-copy">
-                <strong>Autonomous mode</strong>
+                <div style="display:flex; gap:0.35rem; align-items:center;">
+                  <strong>Autonomous mode</strong>
+                  <span class="info-icon" data-tip="Allows the agent to execute tasks without manual approval.">i</span>
+                </div>
                 <span>Agent acts without manual approval.</span>
               </div>
               <label class="switch">
@@ -797,7 +818,10 @@
             </div>
             <div class="toggle-field">
               <div class="toggle-copy">
-                <strong>Human-in-the-loop</strong>
+                <div style="display:flex; gap:0.35rem; align-items:center;">
+                  <strong>Human-in-the-loop</strong>
+                  <span class="info-icon" data-tip="Requires your approval before sensitive steps.">i</span>
+                </div>
                 <span>Requires review before critical actions.</span>
               </div>
               <label class="switch">
@@ -807,7 +831,10 @@
             </div>
             <div class="toggle-field">
               <div class="toggle-copy">
-                <strong>API access</strong>
+                <div style="display:flex; gap:0.35rem; align-items:center;">
+                  <strong>API access</strong>
+                  <span class="info-icon" data-tip="Enables outbound API/webhook calls on your behalf.">i</span>
+                </div>
                 <span>Allows outbound API calls + webhooks.</span>
               </div>
               <label class="switch">
