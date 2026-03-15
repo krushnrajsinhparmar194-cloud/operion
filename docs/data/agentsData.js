@@ -656,6 +656,33 @@ const agentsData = [
       load: 60
     }
   },
+  {
+    id: "news-global",
+    name: "Global News Agent",
+    category: "news",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Monitors international wires, foreign press, and global organizations for broad coverage.",
+      "Explains how worldwide events and policies ripple into the user's region."
+    ],
+    capabilities: [
+      "Cover geopolitical events such as wars, summits, UN decisions, and trade deals",
+      "Provide regional breakdowns for Asia, Europe, Middle East, Africa, and the Americas",
+      "Translate foreign-language reports into English or the user's local language",
+      "Maintain crisis timelines showing day-by-day developments",
+      "Highlight underreported global stories and their impact on the user's country"
+    ],
+    suggestedPrompts: [
+      "Give me today's global headlines with regional breakdowns.",
+      "Explain how the latest Fed decision affects India's markets.",
+      "Share three underreported stories from Africa this week."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
   // Lifestyle Section
   {
     id: "life-fitness-coach",
