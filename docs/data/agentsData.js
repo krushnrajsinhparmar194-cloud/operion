@@ -1172,6 +1172,35 @@ const agentsData = [
     metrics: { successRate: 95, load: 60 }
   },
   {
+    id: "life-shopping",
+    name: "Shopping Lifestyle Agent",
+    category: "lifestyle",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Acts as a personal shopping assistant tuned to needs, preferences, budget, and life stage.",
+      "Builds curated bundles, compares options, and tracks wishlist sales."
+    ],
+    capabilities: [
+      "Recommend exact products with reasoning for a described need",
+      "Compare categories (premium vs budget, durability vs price, brand vs generic)",
+      "Build bundles for life events (new home, baby, home gym, WFH setup)",
+      "Track seasonal sales and alert when wishlist items discount",
+      "Suggest eco-friendly and sustainable alternatives",
+      "Adapt suggestions to life changes (new city, job, fitness goal, hobby)",
+      "Analyze shopping history to flag redundant or impulse buys"
+    ],
+    suggestedPrompts: [
+      "I want to start journaling—what should I buy?",
+      "Build a minimalist home gym setup under ₹20k.",
+      "Alert me when my saved blender drops below ₹5k."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
     id: "life-travel-lifestyle",
     name: "Travel Lifestyle Agent",
     category: "lifestyle",
