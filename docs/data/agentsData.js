@@ -907,6 +907,34 @@ const agentsData = [
     temperature: 0.3,
     metrics: { successRate: 95, load: 60 }
   },
+  {
+    id: "news-morning-brief",
+    name: "Morning News Brief Agent",
+    category: "news",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Compiles overnight and early-morning news into a structured briefing.",
+      "Delivers a 3-minute digest with text and optional audio before the user starts the day."
+    ],
+    capabilities: [
+      "Send morning briefs between 6-8 AM at the user's preferred time",
+      "Cover five fixed sections: Top Story, Business, World, Sports, Good News",
+      "Provide text and audio versions for commuting or getting ready",
+      "Personalize content based on interests and location",
+      "Include 'Today to Watch' events (market openings, matches, announcements)",
+      "Allow tapping any headline to expand into the full story"
+    ],
+    suggestedPrompts: [
+      "Send me a 3-minute brief at 7am every day.",
+      "Play the audio version of today's brief.",
+      "What events should I watch today?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
   // Lifestyle Section
   {
     id: "life-fitness-coach",
