@@ -683,6 +683,34 @@ const agentsData = [
     temperature: 0.3,
     metrics: { successRate: 95, load: 60 }
   },
+  {
+    id: "news-business",
+    name: "Business & Finance News Agent",
+    category: "news",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Aggregates financial news from markets, companies, regulators, and macro indicators.",
+      "Explains complex moves in plain language with impact analysis."
+    ],
+    capabilities: [
+      "Deliver real-time updates on indices, sectors, and commodity moves",
+      "Track user-selected companies and alert on major news or filings",
+      "Break down quarterly earnings reports into simple summaries",
+      "Cover central bank (RBI, SEBI, Fed, etc.) announcements with context",
+      "Report startup ecosystem news (funding, IPOs, acquisitions, unicorns)",
+      "Send weekly economy health reports covering GDP, inflation, employment"
+    ],
+    suggestedPrompts: [
+      "Give me today's market summary with top gainers/losers.",
+      "Explain Infosys' quarterly results in simple terms.",
+      "Alert me when RBI or Fed announcements affect rates."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
   // Lifestyle Section
   {
     id: "life-fitness-coach",
