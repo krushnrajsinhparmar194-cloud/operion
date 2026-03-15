@@ -988,7 +988,7 @@
   </div>
   <script src="./data/agentsData.js"></script>
   <script>
-    const agentsData = (window.agentsData && JSON.parse(JSON.stringify(window.agentsData))) || [];
+    const catalogAgents = (window.agentsData && JSON.parse(JSON.stringify(window.agentsData))) || [];
 
     const catalogEl = document.getElementById('catalog');
     const heroSearch = document.getElementById('heroSearch');
@@ -1042,7 +1042,7 @@
       dev: { label: 'Development', chipClass: 'ops-theme', iconClass: 'code-icon' },
       default: { label: 'Agent', chipClass: 'default-theme', iconClass: 'sparkles-icon' }
     };
-    const agentLookup = new Map(agentsData.map(agent => [agent.id, agent]));
+    const agentLookup = new Map(catalogAgents.map(agent => [agent.id, agent]));
 
     const AGENT_CONFIG_KEY = 'operionAgentConfigs';
     let agentConfigs = {};
@@ -1082,7 +1082,7 @@
     }
 
     function getResolvedAgents() {
-      return agentsData.map(resolveAgent);
+      return catalogAgents.map(resolveAgent);
     }
 
     function showToast(message = 'Configuration saved') {
