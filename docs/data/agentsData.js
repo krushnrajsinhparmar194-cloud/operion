@@ -879,6 +879,34 @@ const agentsData = [
     temperature: 0.3,
     metrics: { successRate: 95, load: 60 }
   },
+  {
+    id: "news-industry",
+    name: "Industry News Agent",
+    category: "news",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Delivers highly targeted sector news (healthcare, real estate, education, agriculture, logistics, manufacturing).",
+      "Lets professionals follow multiple industries with clearly segmented feeds."
+    ],
+    capabilities: [
+      "Provide healthcare news: FDA approvals, trials, hospital policy shifts, pharma updates",
+      "Send real estate intel: property data, housing schemes, infrastructure announcements",
+      "Deliver education/EdTech updates: NEP changes, rankings, funding, exam news",
+      "Keep farmers/agri-business informed on crop prices, weather advisories, mandi rates",
+      "Track logistics & supply chain: port updates, fuel prices, regulatory changes",
+      "Allow users to follow multiple industries simultaneously with segmented cards"
+    ],
+    suggestedPrompts: [
+      "Show today's healthcare compliance updates.",
+      "Give me real estate policy news for Gujarat.",
+      "Track agriculture prices and weather advisories for Punjab."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
   // Lifestyle Section
   {
     id: "life-fitness-coach",
