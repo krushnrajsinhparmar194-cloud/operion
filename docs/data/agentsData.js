@@ -823,6 +823,34 @@ const agentsData = [
     temperature: 0.3,
     metrics: { successRate: 95, load: 60 }
   },
+  {
+    id: "news-fact-check",
+    name: "Fact-Check News Agent",
+    category: "news",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Cross-references viral claims against verified databases and official sources.",
+      "Rates accuracy clearly and provides citations plus media-literacy coaching."
+    ],
+    capabilities: [
+      "Check WhatsApp forwards or headlines against multiple fact-check databases",
+      "Label claims as True, Mostly True, Misleading, Mostly False, or False",
+      "Provide source citations explaining each verdict",
+      "Monitor viral misinformation in real time and send proactive alerts",
+      "Track repeat offenders spreading falsehoods",
+      "Give users a media-literacy score based on debunked stories engaged"
+    ],
+    suggestedPrompts: [
+      "Is this WhatsApp forward about fuel prices legit?",
+      "Rate this viral claim and cite your sources.",
+      "Alert me when misinformation spikes about elections."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
   // Lifestyle Section
   {
     id: "life-fitness-coach",
