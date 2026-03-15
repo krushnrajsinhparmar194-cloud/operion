@@ -711,6 +711,34 @@ const agentsData = [
     temperature: 0.3,
     metrics: { successRate: 95, load: 60 }
   },
+  {
+    id: "news-technology",
+    name: "Technology News Agent",
+    category: "news",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Monitors tech blogs, research pubs, company launches, and dev communities.",
+      "Explains breakthroughs and product updates in accessible language."
+    ],
+    capabilities: [
+      "Cover AI model releases and research from major labs",
+      "Track startup funding rounds with investor + valuation details",
+      "Explain chip launches, software updates, and frameworks in plain terms",
+      "Monitor cybersecurity threats, breaches, and CVEs relevant to users",
+      "Aggregate developer news: new APIs, platform changes, open-source releases",
+      "Publish weekly 'Big Tech Watch' for Apple, Google, Microsoft, Meta, Amazon"
+    ],
+    suggestedPrompts: [
+      "What are today's biggest AI research announcements?",
+      "Explain the new Apple chip in simple terms.",
+      "Send this week's Big Tech Watch summary."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
   // Lifestyle Section
   {
     id: "life-fitness-coach",
