@@ -265,6 +265,276 @@ const agentsData = [
       load: 60
     }
   },
+  {
+    id: "astro-muhurat",
+    name: "Lucky Day & Muhurat Agent",
+    category: "astrology",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Uses Panchang plus the user's chart to suggest auspicious dates and times.",
+      "Flags inauspicious windows and syncs recommendations into calendars."
+    ],
+    capabilities: [
+      "Recommend muhurats for weddings, launches, travel, surgery, or griha pravesh",
+      "Display daily Panchang (Tithi, Nakshatra, Yoga, Karan, Var)",
+      "Alert for Rahu Kaal, Yamaganda, and Gulika windows",
+      "Return top three dates per event type with reasoning",
+      "Block auspicious slots in Google/Apple calendars automatically"
+    ],
+    suggestedPrompts: [
+      "Find the best business launch dates next month.",
+      "Show today's Panchang and Rahu Kaal timing.",
+      "Block three auspicious wedding muhurats on my calendar."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
+    id: "astro-gemstone",
+    name: "Gemstone Recommendation Agent",
+    category: "astrology",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Analyzes the birth chart to spot weak or benefic planets",
+      "Recommends gemstones with wearing instructions and upkeep reminders"
+    ],
+    capabilities: [
+      "Identify planets needing support via gemstones",
+      "Specify stone, finger, metal, and auspicious day to wear",
+      "Warn against incompatible combos (e.g., Ruby + Blue Sapphire)",
+      "Offer semi-precious substitutes for tighter budgets",
+      "Remind users to cleanse/energize stones monthly"
+    ],
+    suggestedPrompts: [
+      "Which gemstone should I wear for career growth?",
+      "Is it safe to combine Neelam with Ruby for my chart?",
+      "Remind me to energize my Emerald every Purnima."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
+    id: "astro-tarot",
+    name: "Tarot Reading Agent",
+    category: "astrology",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Simulates tarot draws with AI randomization and contextual interpretation.",
+      "Supports one-card, Celtic Cross, love, career, and yes/no spreads with history."
+    ],
+    capabilities: [
+      "Offer daily one-card or three-card pulls",
+      "Run Celtic Cross, love, career, and yes/no spreads",
+      "Include upright + reversed meanings for shadow insight",
+      "Let users type questions for contextual readings",
+      "Store reading history so patterns can be revisited"
+    ],
+    suggestedPrompts: [
+      "Pull a 3-card spread about my job change.",
+      "Give me a yes/no tarot read on this decision.",
+      "Show my last five readings to spot recurring themes."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
+    id: "astro-palm",
+    name: "Palm Reading Agent",
+    category: "astrology",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Uses vision models to read uploaded palm photos and interpret lines.",
+      "Provides personality and future insights with left/right comparisons."
+    ],
+    capabilities: [
+      "Detect heart, head, life, and fate lines with AI",
+      "Explain special marks (stars, crosses, triangles, islands)",
+      "Compare left vs right hand (inherited vs developed traits)",
+      "Summarize leadership, creativity, emotional depth",
+      "Track changes when users re-upload photos over time"
+    ],
+    suggestedPrompts: [
+      "Interpret my heart and headline from this photo.",
+      "What does the cross on my fate line mean?",
+      "Compare my left and right hands to see growth."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
+    id: "astro-spiritual-guide",
+    name: "Spiritual Guidance Agent",
+    category: "astrology",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Acts as a spiritual counselor drawing from Hindu, Buddhist, Sufi, and universal wisdom.",
+      "Listens to user challenges and offers practical, compassionate guidance."
+    ],
+    capabilities: [
+      "Receive open-ended life concerns and respond with spiritual frameworks",
+      "Recommend daily practices or rituals for current struggles",
+      "Suggest sacred texts, quotes, or stories to reflect upon",
+      "Offer karmic pattern analysis and mindset reframes",
+      "Support grief, anxiety, or relationship pain with gentle exercises"
+    ],
+    suggestedPrompts: [
+      "I'm anxious about work—give me a spiritual perspective.",
+      "Suggest a daily practice for grief healing.",
+      "Which verse should I read to understand karma better?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
+    id: "astro-meditation",
+    name: "Meditation & Mantra Agent",
+    category: "astrology",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Matches planetary periods or emotional states with mantras and meditations.",
+      "Provides scripts, chakra plans, and sonic aids for daily practice."
+    ],
+    capabilities: [
+      "Map current Dasha issues to specific planet mantras",
+      "Generate guided meditations for calm, focus, sleep, or healing",
+      "Suggest chakra balancing routines tied to symptoms",
+      "Send daily mantra reminders with chant counters",
+      "Curate binaural beats/Solfeggio tones tailored to each chakra"
+    ],
+    suggestedPrompts: [
+      "Recommend a mantra for Saturn troubles.",
+      "Give me a 10-minute guided meditation for sleep.",
+      "Which chakra routine will ease my anxiety today?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
+    id: "astro-festival",
+    name: "Festival & Cultural Guide Agent",
+    category: "astrology",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Maintains a multi-faith festival database with rituals, stories, and reminders.",
+      "Helps families (including NRIs) understand regional customs and plan ahead."
+    ],
+    capabilities: [
+      "Display calendars for Hindu, Muslim, Christian, Jain, Sikh, Buddhist traditions",
+      "Explain significance, rituals, foods, and folklore for each festival",
+      "Send reminders several days before important observances",
+      "Highlight regional variations and tips for diaspora families",
+      "Provide kid-friendly explanations for cultural education"
+    ],
+    suggestedPrompts: [
+      "What is the significance of Navratri Day 4?",
+      "Remind me 3 days before Eid with prep tips.",
+      "Explain Diwali customs in Gujarat vs Bengal."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
+    id: "astro-ritual",
+    name: "Ritual & Puja Guide Agent",
+    category: "astrology",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Provides step-by-step instructions for performing rituals and pujas at home.",
+      "Includes ingredient lists, substitutions, mantras, and timing guidance."
+    ],
+    capabilities: [
+      "Offer full workflows for Satyanarayan, Lakshmi, Ganesh, Navgraha, etc.",
+      "List ingredients with suggested substitutes",
+      "Provide video-style text walkthroughs with timestamps",
+      "Suggest alternatives when items are unavailable",
+      "Explain the purpose behind each step so users learn"
+    ],
+    suggestedPrompts: [
+      "Guide me through a Satyanarayan puja at home.",
+      "I don't have camphor—what can I substitute?",
+      "Outline a Graha Shanti puja for next week."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
+    id: "astro-yearly",
+    name: "Yearly Horoscope Agent",
+    category: "astrology",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Generates a 12-month forecast from the user's chart and upcoming transits.",
+      "Highlights key months for career, love, health, finance, travel, and more."
+    ],
+    capabilities: [
+      "Provide month-by-month guidance with actionable tips",
+      "Map Dasha/Antardasha influences for the year",
+      "Flag ideal periods for investing, marrying, launching, or traveling",
+      "Warn about challenging windows with mitigation advice",
+      "Offer year-end reviews comparing predictions vs reality"
+    ],
+    suggestedPrompts: [
+      "Give me my 2026 yearly horoscope with focus on career.",
+      "Which months are best for a job change this year?",
+      "Summarize my Dasha influences for the next 12 months."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
+    id: "astro-spiritual-qa",
+    name: "Spiritual Question Answer Agent",
+    category: "astrology",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Answers cultural and spiritual questions using multi-tradition references.",
+      "Supports multilingual explanations and simplified modes for elders or kids."
+    ],
+    capabilities: [
+      "Compare concepts across Hinduism, Buddhism, Islam, Christianity, etc.",
+      "Explain rituals like lighting a diya or fasting",
+      "Discuss karma, heaven/hell, moksha, or afterlife perspectives",
+      "Provide simplified analogies for children or seniors",
+      "Reply in Gujarati, Hindi, Tamil, and other regional languages"
+    ],
+    suggestedPrompts: [
+      "What does karma mean in Hinduism vs Buddhism?",
+      "Why do we light a diya during festivals?",
+      "Explain moksha in simple Gujarati for my grandmother."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
   // News Section
   {
     id: "news-daily-summary",
