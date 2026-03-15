@@ -1201,6 +1201,35 @@ const agentsData = [
     metrics: { successRate: 95, load: 60 }
   },
   {
+    id: "life-event-planner",
+    name: "Event & Celebration Planner Agent",
+    category: "lifestyle",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Generates end-to-end event planning guides from type, guest count, budget, date, and theme.",
+      "Provides timelines, vendor ideas, checklists, and day-of runbooks."
+    ],
+    capabilities: [
+      "Build booking/prep timelines (30 days, 2 weeks, 3 days prior)",
+      "Suggest themes, decor, colour palettes, and DIY ideas by budget",
+      "Manage guest lists with RSVPs and dietary preferences",
+      "Generate shopping lists with quantity estimates",
+      "Recommend entertainment (games, activities, playlists, performers)",
+      "Adapt logic for corporate events, kids birthdays, weddings, housewarmings, farewells",
+      "Provide day-of checklists for smooth execution"
+    ],
+    suggestedPrompts: [
+      "Plan a beach-themed baby shower for 30 guests under ₹30k.",
+      "Give me a 2-week countdown checklist for a housewarming.",
+      "What entertainment fits a 10-year-old's birthday party?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
     id: "life-travel-lifestyle",
     name: "Travel Lifestyle Agent",
     category: "lifestyle",
