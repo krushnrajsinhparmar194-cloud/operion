@@ -795,6 +795,34 @@ const agentsData = [
     temperature: 0.3,
     metrics: { successRate: 95, load: 60 }
   },
+  {
+    id: "news-trending",
+    name: "Trending News Agent",
+    category: "news",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Scans social platforms, search trends, and spike data to surface what the internet talks about.",
+      "Explains why each topic is trending and tracks its momentum."
+    ],
+    capabilities: [
+      "Display real-time trending topics with context explanations",
+      "Separate organic trends from suspicious/bot-driven spikes",
+      "Provide background 'Trend Explainer' blurbs for complex topics",
+      "Track trend lifecycle (rising, peaking, cooling)",
+      "Filter by country, language, or platform (X, Instagram, YouTube, Google)",
+      "Generate a daily Top 10 Trending Stories digest"
+    ],
+    suggestedPrompts: [
+      "What are today's top trending topics globally?",
+      "Explain why #MarsMission is trending right now.",
+      "Send me the daily top 10 trending stories digest."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
   // Lifestyle Section
   {
     id: "life-fitness-coach",
