@@ -1085,6 +1085,35 @@ const agentsData = [
     metrics: { successRate: 95, load: 60 }
   },
   {
+    id: "life-hobby",
+    name: "Hobby Discovery Agent",
+    category: "lifestyle",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Assesses personality, time, budget, ability, and interests to recommend new hobbies.",
+      "Provides starter guides, low-cost trials, and re-entry plans for lapsed hobbies."
+    ],
+    capabilities: [
+      "Ask discovery quiz and suggest five matched hobbies",
+      "Provide beginner roadmaps (first steps, tools, time to proficiency)",
+      "Distinguish between indoor/outdoor, creative, skill-building hobbies",
+      "Suggest low-cost trial methods before investing",
+      "Help users restart abandoned hobbies with structured plans",
+      "Connect related hobbies (e.g., drawing → animation/pottery)",
+      "Track progress and suggest next steps as users advance"
+    ],
+    suggestedPrompts: [
+      "I have 30 minutes nightly—suggest hobbies that fit.",
+      "Give me a starter kit plan for learning pottery.",
+      "Help me restart guitar after pausing for two years."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
     id: "life-travel-lifestyle",
     name: "Travel Lifestyle Agent",
     category: "lifestyle",
