@@ -417,9 +417,11 @@
     }
     .capability-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.4rem; }
     .capability-option { list-style: none; }
-    .capability-option label { display: flex; gap: 0.45rem; align-items: center; color: #475467; font-size: 0.9rem; }
-    .capability-option input { accent-color: #0f172a; }
-    .capability-option.muted { color: #94a3b8; font-style: italic; }
+    .capability-option label { display: flex; gap: 0.6rem; align-items: flex-start; color: #475467; font-size: 0.9rem; padding: 0.45rem 0.6rem; border: 1px solid rgba(148,163,184,0.4); border-radius: 0.65rem; background: #fff; box-shadow: 0 2px 6px rgba(15,23,42,0.08); }
+    .capability-option label span { flex: 1; line-height: 1.35; }
+    .capability-option input { margin-top: 0.15rem; accent-color: #0f172a; }
+    .capability-option + .capability-option { margin-top: 0.35rem; }
+    .capability-option.muted { color: #94a3b8; font-style: italic; border: none; box-shadow: none; background: transparent; padding: 0.2rem 0; }
     .command-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
     .command-pill {
       border-radius: 999px;
