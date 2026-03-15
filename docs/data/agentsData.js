@@ -1056,6 +1056,35 @@ const agentsData = [
     metrics: { successRate: 95, load: 60 }
   },
   {
+    id: "life-fashion",
+    name: "Fashion & Style Agent",
+    category: "lifestyle",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Learns body type, colour preferences, lifestyle, and budget to suggest outfits.",
+      "Builds capsule wardrobes, fills gaps, and adapts to trends plus weather."
+    ],
+    capabilities: [
+      "Design personalized capsule wardrobes that mix and match",
+      "Suggest outfits from clothes already owned based on occasion and weather",
+      "Recommend new pieces to fill wardrobe gaps",
+      "Provide styling guidance for office, casual, formal, weddings, travel",
+      "Explain colour theory and which tones suit the user's skin",
+      "Alert about trending styles and how to integrate them subtly",
+      "Adjust outfit suggestions based on local forecast"
+    ],
+    suggestedPrompts: [
+      "Plan five outfits for a Dubai work trip using what I own.",
+      "Which colours suit my warm undertone?",
+      "How do I add this season's trend without a full wardrobe overhaul?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
     id: "life-travel-lifestyle",
     name: "Travel Lifestyle Agent",
     category: "lifestyle",
