@@ -1027,6 +1027,35 @@ const agentsData = [
     }
   },
   {
+    id: "life-grooming",
+    name: "Personal Grooming Advisor Agent",
+    category: "lifestyle",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Analyzes skin type, hair type, lifestyle, climate, and budget to build grooming routines.",
+      "Keeps routines updated seasonally and answers troubleshooting questions."
+    ],
+    capabilities: [
+      "Build morning/night skincare steps for oily, dry, combo, or sensitive skin",
+      "Suggest haircare routines for specific textures, scalp needs, and styling habits",
+      "Recommend products by budget tier (drugstore, mid-range, premium)",
+      "Alert users when seasons change so routines can adjust",
+      "Provide beard, nail, and body grooming plans for men",
+      "Track product start dates and remind when items are running low",
+      "Answer grooming questions such as breakout troubleshooting"
+    ],
+    suggestedPrompts: [
+      "Create a monsoon skincare routine for combination skin.",
+      "Recommend budget-friendly beard care for sensitive skin.",
+      "My skin is breaking out—what tweaks should I make?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
     id: "life-travel-lifestyle",
     name: "Travel Lifestyle Agent",
     category: "lifestyle",
