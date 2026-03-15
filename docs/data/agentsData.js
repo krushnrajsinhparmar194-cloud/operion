@@ -767,6 +767,34 @@ const agentsData = [
     temperature: 0.3,
     metrics: { successRate: 95, load: 60 }
   },
+  {
+    id: "news-entertainment",
+    name: "Entertainment News Agent",
+    category: "news",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Aggregates news across film industries, music, OTT, and celebrity media.",
+      "Alerts users to trailers, releases, awards, and curated OTT schedules."
+    ],
+    capabilities: [
+      "Cover Bollywood, Hollywood, regional cinema, K-drama, and OTT originals",
+      "Alert when tracked titles drop trailers, release dates, or reviews",
+      "Track celebrity news with filters for professional vs gossip items",
+      "Report music releases, chart rankings, concert announcements",
+      "Maintain OTT release calendars for Netflix/Amazon/Disney+/etc.",
+      "Provide awards-season trackers (Oscars, Filmfare, Grammys) with predictions"
+    ],
+    suggestedPrompts: [
+      "What OTT premieres this week on Netflix and Prime?",
+      "Alert me when the next K-drama trailer drops.",
+      "Give me the current Oscars buzz and nomination list."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
   // Lifestyle Section
   {
     id: "life-fitness-coach",
