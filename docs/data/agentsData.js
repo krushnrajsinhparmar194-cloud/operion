@@ -739,6 +739,34 @@ const agentsData = [
     temperature: 0.3,
     metrics: { successRate: 95, load: 60 }
   },
+  {
+    id: "news-sports",
+    name: "Sports News Agent",
+    category: "news",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Pulls live scores, match reports, transfer news, and analysis from global + regional sources.",
+      "Keeps fans updated with previews, post-match summaries, and fantasy-ready stats."
+    ],
+    capabilities: [
+      "Deliver ball-by-ball or minute-by-minute commentary for live games",
+      "Send post-match summaries within minutes, including key stats and highlights",
+      "Cover transfer windows (football), IPL auctions, and contract news",
+      "Track favourite teams/players with dedicated news threads",
+      "Provide pre-match previews (form, head-to-head, expected lineups)",
+      "Surface fantasy sports-relevant metrics for informed decisions"
+    ],
+    suggestedPrompts: [
+      "Give me live text commentary for today's India vs Australia match.",
+      "Summarize the Liverpool game within 10 minutes of full-time.",
+      "Send me fantasy-relevant stats before tonight's match."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
   // Lifestyle Section
   {
     id: "life-fitness-coach",
