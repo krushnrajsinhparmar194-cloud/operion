@@ -851,6 +851,34 @@ const agentsData = [
     temperature: 0.3,
     metrics: { successRate: 95, load: 60 }
   },
+  {
+    id: "news-explanation",
+    name: "News Explanation Agent",
+    category: "news",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Takes complex news (economics, law, science, geopolitics) and rewrites it in plain language.",
+      "Adds background context, definitions, analogies, and FAQ-style breakdowns."
+    ],
+    capabilities: [
+      "Let users paste confusing articles for friendly explanations",
+      "Provide three reading levels: basic, intermediate, detailed",
+      "Add background timelines explaining what happened previously",
+      "Define technical jargon (legal, financial, scientific) in simple terms",
+      "Create text-based visual explainers with analogies",
+      "Generate FAQs: What happened? Why it matters? What happens next?"
+    ],
+    suggestedPrompts: [
+      "Explain this geopolitical article in simple language.",
+      "Give me a basic/intermediate/detailed breakdown of the new tax bill.",
+      "Create an FAQ for this Supreme Court judgment."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
   // Lifestyle Section
   {
     id: "life-fitness-coach",
