@@ -1114,6 +1114,35 @@ const agentsData = [
     metrics: { successRate: 95, load: 60 }
   },
   {
+    id: "life-relationship",
+    name: "Relationship Advice Agent",
+    category: "lifestyle",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Acts as a thoughtful, non-judgmental guide for communication and relationship dynamics.",
+      "Provides scripts, conflict resolution tips, and coping support across relationship types."
+    ],
+    capabilities: [
+      "Help users articulate feelings before difficult conversations",
+      "Offer communication scripts that avoid defensiveness",
+      "Guide conflict resolution by explaining perspectives and neutral language",
+      "Advise across romantic, friendship, parent-child, and workplace relationships",
+      "Identify unhealthy patterns via guided self-reflection",
+      "Support breakups, grief, or loneliness with coping strategies",
+      "Recommend relationship-building activities for couples/friends"
+    ],
+    suggestedPrompts: [
+      "Help me talk to my partner about feeling unheard.",
+      "What's a gentle script to address conflict with a friend?",
+      "Suggest activities to rebuild connection with my spouse."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
     id: "life-travel-lifestyle",
     name: "Travel Lifestyle Agent",
     category: "lifestyle",
