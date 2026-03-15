@@ -1143,6 +1143,35 @@ const agentsData = [
     metrics: { successRate: 95, load: 60 }
   },
   {
+    id: "life-home-org",
+    name: "Home Organization Agent",
+    category: "lifestyle",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Helps users declutter, organize, and maintain living spaces with structured systems.",
+      "Builds cleaning schedules, storage plans, and inventory trackers."
+    ],
+    capabilities: [
+      "Guide room-by-room decluttering with KonMari/minimalist frameworks",
+      "Create weekly home maintenance checklists tailored to home size/type",
+      "Build balanced cleaning schedules across the week",
+      "Recommend smart storage solutions for small spaces",
+      "Organize kitchens (pantry labels, meal prep zones, expiry tracking)",
+      "Provide seasonal deep-clean guides (gutter clearing, curtains, wardrobes)",
+      "Track household inventory and suggest restocking lists"
+    ],
+    suggestedPrompts: [
+      "Walk me through decluttering my bedroom step by step.",
+      "Build a weekly cleaning schedule for a 2BHK apartment.",
+      "Suggest storage ideas for a tiny pantry and track staples."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: { successRate: 95, load: 60 }
+  },
+  {
     id: "life-travel-lifestyle",
     name: "Travel Lifestyle Agent",
     category: "lifestyle",
