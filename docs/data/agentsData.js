@@ -3446,6 +3446,38 @@ const agentsData = [
       load: 40
     }
   },
+  {
+    id: "fin-fraud-detection",
+    name: "Fraud Detection Agent",
+    category: "finance",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Monitors transactions and account events in real time to spot unauthorized activity, alert users instantly, and walk them through remediation.",
+      "Learns normal behavior so anomalies stand out fast."
+    ],
+    capabilities: [
+      "Build behavioral baselines (amounts, merchants, locations, timing)",
+      "Alert on fraud patterns: test charges, rapid bursts, unusual geos",
+      "Detect account takeover signals (new devices, payees, profile changes)",
+      "Flag potential phishing attempts by cross-referencing known scams",
+      "Monitor card-not-present activity for anomalies",
+      "Guide users through freeze/dispute/report workflows",
+      "Track dispute resolution progress until charges are reversed"
+    ],
+    suggestedPrompts: [
+      "This transaction looks unfamiliar—does it match my normal behavior?",
+      "I got a message asking me to update banking info; is this a known scam?",
+      "Walk me through freezing my card and filing a dispute for this charge."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
