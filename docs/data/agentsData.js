@@ -285,6 +285,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-team-productivity",
+    name: "Team Productivity Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Gives managers visibility into workload, goals, meetings, and output so teams stay healthy and balanced.",
+      "Feeds individuals their own dashboards so they can self-correct fast."
+    ],
+    capabilities: [
+      "Track completion rates, on-time delivery, and output volume automatically",
+      "Spot workload imbalances and recommend redistribution",
+      "Monitor OKRs/targets per person and flag early slippage",
+      "Send weekly productivity digests highlighting top performers and risks",
+      "Analyze meeting load vs deep work time by teammate",
+      "Detect macro productivity trends and correlate changes to events",
+      "Provide self-serve dashboards for each teammate"
+    ],
+    suggestedPrompts: [
+      "Send this week’s productivity digest with highlights and risks.",
+      "Who’s overloaded vs underutilized on the marketing squad?",
+      "Show my personal dashboard—I want to see meeting load vs output."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 43
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
