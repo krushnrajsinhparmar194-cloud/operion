@@ -93,6 +93,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-crm-agent",
+    name: "CRM Intelligence Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Keeps every customer touchpoint, deal stage, and relationship signal in one intelligent workspace for revenue teams.",
+      "Highlights risks, surfaces context before meetings, and automates nurturing moments."
+    ],
+    capabilities: [
+      "Auto-log emails, calls, meetings, and chats to the right account without manual entry",
+      "Track deals through each pipeline stage and alert when follow-up stalls",
+      "Generate pre-meeting briefs with full purchase history, conversations, and open issues",
+      "Flag at-risk customers based on declining engagement or unresolved tickets",
+      "Produce sales forecasts using pipeline value, stage probability, and historical win rates",
+      "Segment accounts by revenue, industry, region, behavior, and engagement",
+      "Trigger nurture touchpoints for renewals, anniversaries, and post-support follow-ups"
+    ],
+    suggestedPrompts: [
+      "Show me idle deals over 10 days in stage 3 and ping reps to follow up.",
+      "What’s the full history for Acme Corp before tomorrow’s EBR?",
+      "Build a renewal nurture sequence for customers coming up next month."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 95,
+      load: 58
+    }
+  },
+  {
     id: "qa-product-analyst",
     name: "Product QA Analyst",
     category: "qa",
