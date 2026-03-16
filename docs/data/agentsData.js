@@ -4246,6 +4246,40 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "travel-visa-document",
+    name: "Visa & Travel Document Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Delivers up-to-date visa, passport, and entry requirement guidance for any nationality/destination combo and tracks applications end-to-end.",
+      "Ensures multi-country trips have a realistic visa timeline."
+    ],
+    capabilities: [
+      "Determine visa requirements (visa-free, VOA, e-visa, embassy) with stay durations",
+      "Generate document checklists with detailed specs",
+      "Validate passport expiry vs destination rules and recommend renewals",
+      "Guide e-visa applications step by step including payments and processing times",
+      "Track application status and notify when action is needed",
+      "Flag entry requirements beyond visas (insurance, onward travel, vaccinations, customs forms)",
+      "Plan visa sequencing for complex itineraries"
+    ],
+    suggestedPrompts: [
+      "What visa do Indian passport holders need for Argentina and how long can we stay?",
+      "Create a document checklist for a Schengen business visa with specs.",
+      "My passport expires in eight months—can I visit Japan and Australia this fall?",
+      "Walk me through the Kenya e-visa process and expected timelines.",
+      "Plan a visa strategy for a UK→EU→USA trip and tell me when to apply for each." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 38
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
