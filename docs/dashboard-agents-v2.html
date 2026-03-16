@@ -678,6 +678,7 @@
     .chip-icon.megaphone-icon::before { content: '📣'; }
     .chip-icon.coin-icon::before { content: '💰'; }
     .chip-icon.brackets-icon::before { content: '</>'; font-family: 'Inter', system-ui, sans-serif; font-size: 0.65rem; font-weight: 600; }
+    .chip-icon.travel-icon::before { content: '✈️'; }
     .chip-icon.gear-icon::before { content: '⚙️'; }
     .chip-icon.check-icon::before { content: '✔️'; }
     .chip-icon.code-icon::before { content: '</>'; font-family: 'Inter', system-ui, sans-serif; font-size: 0.65rem; font-weight: 600; }
@@ -690,6 +691,7 @@
     .category-chip.sales-theme { color: #ec4899; border-color: rgba(236,72,153,0.35); background: rgba(236,72,153,0.12); }
     .category-chip.finance-theme { color: #0f766e; border-color: rgba(15,118,110,0.35); background: rgba(15,118,110,0.12); }
     .category-chip.dev-theme { color: #2563eb; border-color: rgba(37,99,235,0.35); background: rgba(37,99,235,0.12); }
+    .category-chip.travel-theme { color: #d97706; border-color: rgba(217,119,6,0.35); background: rgba(217,119,6,0.12); }
     .category-chip.ops-theme { color: #475467; border-color: rgba(71,84,103,0.35); background: rgba(71,84,103,0.12); }
     .category-chip.default-theme { color: #475467; border-color: rgba(148,163,184,0.4); background: rgba(148,163,184,0.12); }
     .layout {
@@ -832,6 +834,7 @@
             <div class="filter-dropdown-menu" id="filterDropdownMenu" role="menu">
               <button class="filter-tab" data-filter="finance" role="menuitem">Finance</button>
               <button class="filter-tab" data-filter="dev" role="menuitem">Developer &amp; Tech</button>
+              <button class="filter-tab" data-filter="travel" role="menuitem">Travel</button>
               <button class="filter-tab" data-filter="calendar" role="menuitem">Calendar</button>
             </div>
           </div>
@@ -1100,6 +1103,7 @@
       sales: { label: 'Sales & Marketing', chipClass: 'sales-theme', iconClass: 'megaphone-icon' },
       finance: { label: 'Finance', chipClass: 'finance-theme', iconClass: 'coin-icon' },
       dev: { label: 'Developer & Tech', chipClass: 'dev-theme', iconClass: 'brackets-icon' },
+      travel: { label: 'Travel', chipClass: 'travel-theme', iconClass: 'travel-icon' },
       ops: { label: 'Operations', chipClass: 'ops-theme', iconClass: 'gear-icon' },
       qa: { label: 'Quality', chipClass: 'ops-theme', iconClass: 'check-icon' },
       dev: { label: 'Development', chipClass: 'ops-theme', iconClass: 'code-icon' },

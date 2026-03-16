@@ -4043,6 +4043,39 @@ const agentsData = [
       load: 42
     }
   },
+  {
+    id: "travel-trip-planning",
+    name: "Trip Planning Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Builds end-to-end travel itineraries tailored to travelers’ preferences, budgets, and schedules.",
+      "Adapts on the fly when plans change so the trip stays smooth."
+    ],
+    capabilities: [
+      "Generate day-by-day plans grouped by proximity to minimize transit",
+      "Offer traveler-type variants (family, backpacker, honeymoon, adventure)",
+      "Balance iconic landmarks with local experiences",
+      "Account for opening hours, peak times, and booking lead times",
+      "Provide budget, mid-range, and premium itinerary options",
+      "Replan in real time when flights/attractions change",
+      "Output printable and mobile-friendly itineraries with maps, contacts, and costs"
+    ],
+    suggestedPrompts: [
+      "Plan a 7-day Kyoto trip for a foodie couple with mid-range budget.",
+      "Build budget/mid/premium versions of a Dubai itinerary for 4 friends.",
+      "My flight to Paris is delayed—rework Day 1 and shift museum bookings.",
+      "Create a printable itinerary plus mobile view with maps and booking links." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 41
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
