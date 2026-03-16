@@ -4315,6 +4315,40 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "travel-restaurant-recommendation",
+    name: "Restaurant Recommendation Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Curates dining experiences across price tiers and dietary needs, highlighting authentic local dishes, reservation tips, and food adventures beyond restaurants.",
+      "Helps travelers avoid tourist traps and build balanced dining plans."
+    ],
+    capabilities: [
+      "Recommend street food, mid-range, and fine-dining options per destination",
+      "Highlight must-try local dishes and where to eat them authentically",
+      "Handle dietary requirements (vegetarian, vegan, halal, kosher, allergen-safe)",
+      "Flag restaurants requiring advance reservations with booking guidance",
+      "Curate food experiences (cooking classes, market tours, home dining)",
+      "Warn about tourist-trap dining zones and suggest better nearby alternatives",
+      "Build trip-long dining plans that showcase diverse cuisines without repeats"
+    ],
+    suggestedPrompts: [
+      "Find vegetarian-friendly restaurants in Barcelona across budget/mid/premium tiers.",
+      "Where can I eat the best authentic pho in Hanoi that locals recommend?",
+      "Book-worthy restaurants in Tokyo that need reservations weeks ahead?",
+      "Suggest cooking classes and market tours in Oaxaca focused on mole dishes.",
+      "Plan a 5-day dining itinerary in Singapore balancing street food and rooftop spots." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
