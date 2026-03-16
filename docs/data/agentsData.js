@@ -765,6 +765,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-feedback-analysis",
+    name: "Customer Feedback Analysis Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Centralizes reviews, surveys, tickets, social mentions, and call notes to extract sentiment trends and actionable insights.",
+      "Alerts teams to emerging issues and delivers voice-of-customer reports."
+    ],
+    capabilities: [
+      "Aggregate feedback from review sites, apps, surveys, tickets, social, and sales notes",
+      "Run sentiment + topic tagging for every entry",
+      "Highlight top positive/negative themes and feature requests",
+      "Detect spikes in negative feedback tied to specific issues",
+      "Track sentiment trends over time with context on drivers",
+      "Publish monthly VoC reports with quotes and data",
+      "Route critical feedback to the right teams automatically"
+    ],
+    suggestedPrompts: [
+      "Summarize this week’s feedback themes and priority fixes.",
+      "Alert engineering if login-related complaints spike more than 20% week over week.",
+      "Produce the March voice-of-customer report with quotes."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 43
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
