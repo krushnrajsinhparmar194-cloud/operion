@@ -3158,6 +3158,38 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "fin-personal-finance-advisor",
+    name: "Personal Finance Advisor Agent",
+    category: "finance",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Acts as an always-on coach that evaluates income, spend, savings, debt, and goals, then delivers tailored guidance to strengthen overall financial health.",
+      "Explains concepts plainly and adapts plans to each life stage."
+    ],
+    capabilities: [
+      "Assess full financial picture and produce health scores across key dimensions",
+      "Surface the single highest-impact action each user can take now",
+      "Explain financial concepts in simple language on demand",
+      "Model scenarios (e.g., increasing savings, accelerating payoff timelines)",
+      "Tailor advice to life stage and simultaneous priorities",
+      "Spot blind spots such as thin emergency funds, coverage gaps, or concentration risk",
+      "Issue monthly reviews with progress, red flags, and next three actions"
+    ],
+    suggestedPrompts: [
+      "Review my current finances and give me a health score plus top priorities.",
+      "If I add ₹5,000/month to savings, when can I hit my down payment goal?",
+      "Explain term vs whole life insurance in plain language given my situation."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 40
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
