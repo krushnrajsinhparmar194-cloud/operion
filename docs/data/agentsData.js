@@ -925,6 +925,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-landing-optimization",
+    name: "Landing Page Optimization Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Audits landing pages with behavioral and conversion data to pinpoint friction and prescribe tests that lift CVR.",
+      "Keeps a rolling scorecard so improvements compound over time."
+    ],
+    capabilities: [
+      "Evaluate headlines, value props, CTAs, forms, social proof, speed, and mobile UX",
+      "Use heatmaps/scroll maps to identify engagement vs drop-off zones",
+      "Prioritize fixes based on expected conversion impact",
+      "Design A/B test plans with variant suggestions and run-time guidance",
+      "Analyze form abandonment and recommend streamlined flows",
+      "Check message match between traffic sources and page content",
+      "Produce monthly scorecards with conversion trends and benchmarks"
+    ],
+    suggestedPrompts: [
+      "Audit the webinar signup page and list the highest-impact fixes.",
+      "What A/B tests should we run first on the pricing page and why?",
+      "Send April’s landing page scorecard with industry benchmark comparisons."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 42
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
