@@ -157,6 +157,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-business-analytics",
+    name: "Business Analytics Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Connects to sales, finance, HR, and ops data to produce real-time dashboards, variance breakdowns, and decision-ready analysis.",
+      "Packages insights in plain language so leaders can act fast."
+    ],
+    capabilities: [
+      "Build executive dashboards covering revenue, cost, CAC, churn, and team KPIs",
+      "Run variance analysis vs budget/targets with narrative explanations",
+      "Surface revenue trends by product, region, segment, and timeframe",
+      "Perform cohort analyses on customer behavior over their lifecycle",
+      "Alert leaders when metrics leave acceptable ranges (margin, churn, etc.)",
+      "Answer ad-hoc business questions in natural language with data citations",
+      "Generate board-ready decks with charts, commentary, and takeaways"
+    ],
+    suggestedPrompts: [
+      "Show today’s exec dashboard with commentary on notable changes.",
+      "Explain why Q1 actuals missed budget on gross margin.",
+      "Which customer cohort from 2025 Q3 has the best retention curve?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 49
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
