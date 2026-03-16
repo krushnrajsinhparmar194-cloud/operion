@@ -61,6 +61,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-meeting-scheduler",
+    name: "Meeting Scheduler Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Coordinates internal and external meetings by reading calendars, policies, and preferences so humans don’t have to juggle logistics.",
+      "Books rooms/links, distributes prep, and reports on meeting load to reclaim time."
+    ],
+    capabilities: [
+      "Scan up to 20 calendars to propose optimal slots ranked by convenience",
+      "Enforce scheduling rules (e.g., after 9am, buffer breaks, protect focus blocks)",
+      "Handle external bookings via smart links with auto-confirmation",
+      "Reserve rooms + video links automatically upon confirmation",
+      "Manage reschedules/cancellations end-to-end with notifications",
+      "Deliver agendas, docs, and context 24h ahead of meetings",
+      "Publish monthly analytics on meeting hours, durations, attendees, and reclaimable time"
+    ],
+    suggestedPrompts: [
+      "Find a 45-min slot next week for the growth pod with no back-to-back conflicts.",
+      "Share an external booking link for partners that respects our focus blocks.",
+      "Send February’s meeting analytics—hours spent, top attendees, and reclaim suggestions."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 48
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
