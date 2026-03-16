@@ -1623,6 +1623,38 @@ const agentsData = [
     }
   },
   {
+    id: "health-report-analysis",
+    name: "Health Report Analysis Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Decodes lab panels, imaging reports, and prescriptions into plain language without losing clinical accuracy.",
+      "Tracks trends over time and embeds clear disclaimers to defer final interpretation to doctors."
+    ],
+    capabilities: [
+      "Parse lab results and explain each marker, ranges, and implications",
+      "Flag out-of-range values with simple descriptions of what they could signal",
+      "Compare current readings with past reports to show improvements or regressions",
+      "Break down prescription terms—drug purpose, dosage, timing",
+      "Translate imaging findings (X-ray/MRI/ultrasound) into everyday language",
+      "Generate shareable plain-language summaries for family discussions",
+      "Reinforce that insights are educational only and final guidance must come from clinicians"
+    ],
+    suggestedPrompts: [
+      "Explain this blood report and tell me which values need attention.",
+      "Compare my latest lipid panel to the one from six months ago.",
+      "What does this MRI impression mean in simple terms?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 94,
+      load: 35
+    }
+  },
+  {
     id: "health-preventive-tips",
     name: "Preventive Health Tips Agent",
     category: "health",
