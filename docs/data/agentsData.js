@@ -3706,6 +3706,40 @@ const agentsData = [
       load: 43
     }
   },
+  {
+    id: "dev-devops-assistant",
+    name: "DevOps Assistant Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Designs CI/CD pipelines, IaC templates, container configs, and runbooks while troubleshooting failures and optimizing build reliability.",
+      "Helps teams ship faster with consistent DevOps practices."
+    ],
+    capabilities: [
+      "Generate CI/CD configs for GitHub Actions, GitLab CI, Jenkins, etc.",
+      "Write Terraform/CloudFormation/Pulumi modules with best practices",
+      "Create Docker/Docker Compose setups with minimal images and health checks",
+      "Produce Kubernetes manifests with services, ingress, HPA, and resource limits",
+      "Debug pipeline failures by analyzing logs and environment settings",
+      "Draft deployment runbooks with pre/post checks and rollback steps",
+      "Monitor pipeline metrics and recommend optimizations"
+    ],
+    suggestedPrompts: [
+      "Create a GitHub Actions workflow that builds, tests, scans, and deploys to staging.",
+      "Write Terraform to provision an AWS ECS cluster with networking.",
+      "Generate Kubernetes manifests for this microservice with autoscaling.",
+      "Diagnose why this GitLab pipeline is failing during the test stage.",
+      "Draft a release runbook including rollback steps for the web app."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 44
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
