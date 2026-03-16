@@ -3774,6 +3774,39 @@ const agentsData = [
       load: 43
     }
   },
+  {
+    id: "dev-software-testing",
+    name: "Software Testing Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Generates comprehensive test suites, manages execution, and highlights coverage gaps so software is validated before production.",
+      "Handles unit through end-to-end testing plus flaky test triage."
+    ],
+    capabilities: [
+      "Write unit tests covering happy paths, edges, and error scenarios",
+      "Author integration tests for APIs, databases, and external services",
+      "Create E2E scripts with Selenium/Playwright/Cypress",
+      "Analyze coverage reports and generate missing tests",
+      "Produce realistic test data sets (valid/invalid/boundary/special)",
+      "Detect flaky tests by analyzing historical runs and suggest fixes",
+      "Summarize executions with pass/fail/skip counts and coverage trends"
+    ],
+    suggestedPrompts: [
+      "Generate unit tests for this payment processor class covering edge cases.",
+      "Write Cypress tests for the signup → checkout flow.",
+      "Analyze our coverage report and tell me which modules need more tests.",
+      "Identify flaky tests in the pipeline and explain probable causes." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 43
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
