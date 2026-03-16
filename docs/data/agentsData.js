@@ -1591,6 +1591,38 @@ const agentsData = [
     }
   },
   {
+    id: "health-medication-reminder",
+    name: "Medication Reminder Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Maintains a full medication vault per person—dose, timing, instructions—and orchestrates smart reminders with adherence tracking.",
+      "Flags supply gaps, potential interactions, and escalates time-sensitive meds across families or caregivers."
+    ],
+    capabilities: [
+      "Store detailed medication profiles with dosage, frequency, instructions, and start dates",
+      "Schedule precise reminders with contextual copy (e.g., take with food, alternate-day dosing)",
+      "Handle multi-person households with separate calendars and caregiver notifications",
+      "Log confirmations for every dose and produce weekly adherence summaries",
+      "Warn when inventory is running low based on consumption pace and prompt reorders",
+      "Check new entries against the existing list for drug interaction risks",
+      "Escalate reminders for critical meds if the user doesn’t confirm within the safe window"
+    ],
+    suggestedPrompts: [
+      "Add Metformin 500mg twice daily with meals and remind me at 8am/8pm.",
+      "Show last week’s adherence for Dad’s prescriptions and highlight any misses.",
+      "I’m starting a new antibiotic—does it conflict with my current meds?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 38
+    }
+  },
+  {
     id: "health-symptom-checker",
     name: "Symptom Checker Agent",
     category: "health",
