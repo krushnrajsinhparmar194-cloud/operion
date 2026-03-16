@@ -3222,6 +3222,38 @@ const agentsData = [
       load: 41
     }
   },
+  {
+    id: "fin-tax-preparation",
+    name: "Tax Preparation Agent",
+    category: "finance",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Keeps income, expense, and investment records organized year-round so filing is effortless and deductions aren’t missed.",
+      "Compares tax regimes, tracks limits, and sends deadline reminders."
+    ],
+    capabilities: [
+      "Log tax-relevant transactions continuously across accounts",
+      "Compare liability under old vs new regimes with clear savings deltas",
+      "Surface every eligible deduction/exemption (80C, HRA, LTA, etc.)",
+      "Alert when deduction buckets are underutilized before year-end",
+      "Track capital gains and compute STCG vs LTCG tax",
+      "Generate accountant-ready income/deduction/tax summaries",
+      "Send reminders for advance tax, TDS, Form 16, and ITR deadlines"
+    ],
+    suggestedPrompts: [
+      "Should I pick old or new regime this year given my current deductions?",
+      "How much room is left under 80C and 80D before March 31?",
+      "Export a summary for my CA with all income, deductions, and TDS paid."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
