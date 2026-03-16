@@ -893,6 +893,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-campaign-analytics",
+    name: "Campaign Performance Analytics Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Unifies performance data across every marketing channel, delivering attribution-aware insights and optimization recommendations in real time.",
+      "Keeps marketing and leadership aligned on ROI."
+    ],
+    capabilities: [
+      "Build cross-channel dashboards spanning paid, owned, and earned media",
+      "Apply multi-touch attribution models to reveal true conversion paths",
+      "Map channel effectiveness by funnel stage",
+      "Compare CPL/CPA across channels and suggest budget shifts",
+      "Send weekly health reports and monthly exec summaries",
+      "Track spend vs revenue to calculate ROI trends",
+      "Run post-campaign retros with lessons and next steps"
+    ],
+    suggestedPrompts: [
+      "Show a unified view of all active campaigns with CPL/CPA by channel.",
+      "Which touchpoint combos most often precede conversions this quarter?",
+      "Summarize the winter promo campaign with ROI and recommendations."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 44
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
