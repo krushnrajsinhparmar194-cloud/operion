@@ -4521,6 +4521,40 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "travel-real-time-updates",
+    name: "Real-Time Travel Update Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Keeps tabs on every booking and destination condition, alerting travelers instantly with actionable guidance whenever plans change.",
+      "Delivers daily briefings so surprises don’t derail the itinerary."
+    ],
+    capabilities: [
+      "Monitor flights for delays, gate changes, cancellations, and schedule shifts",
+      "Detect missed-connection risks and recommend rebooking options early",
+      "Remind travelers when check-in opens with links and seat tips",
+      "Track accommodation issues (outages, construction) and suggest alternatives",
+      "Watch destination transit networks for disruptions and strikes",
+      "Flag local events impacting movement (festivals, protests, holidays)",
+      "Send morning briefings with activities, transport, weather, and alerts"
+    ],
+    suggestedPrompts: [
+      "Notify me if any flight on my Europe trip changes gates or is delayed.",
+      "What’s the connection risk for my Doha layover if my Mumbai flight is 45 minutes late?",
+      "Ping me when online check-in opens for Emirates EK501 with seat advice.",
+      "Let me know if my Rome hotel reports outages or major construction.",
+      "Send daily briefings at 7am local time covering weather, transport, and alerts." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 40
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
