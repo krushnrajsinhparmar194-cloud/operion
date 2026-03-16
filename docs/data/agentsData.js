@@ -3190,6 +3190,38 @@ const agentsData = [
       load: 40
     }
   },
+  {
+    id: "fin-investment-analysis",
+    name: "Investment Analysis Agent",
+    category: "finance",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Researches stocks, funds, and other assets to deliver personalized, risk-aware recommendations in plain language.",
+      "Monitors holdings and market news so users stay ahead of changes."
+    ],
+    capabilities: [
+      "Build investor profiles using goals, horizon, and risk tolerance",
+      "Analyze stocks with key fundamentals (P/E, growth, margins, debt, ROE)",
+      "Compare mutual funds on returns, expense ratios, manager track, concentration, risk-adjusted metrics",
+      "Screen funds per risk profile and timeline",
+      "Detect over-concentration and recommend diversification",
+      "Track market news impacting held positions and explain implications",
+      "Produce on-demand research briefs for any asset"
+    ],
+    suggestedPrompts: [
+      "Given my moderate risk profile, which equity funds should I evaluate?",
+      "Explain how Tata Motors’ latest earnings might affect my holding.",
+      "Analyze this mid-cap stock’s fundamentals and suitability for a 7-year horizon."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 41
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
