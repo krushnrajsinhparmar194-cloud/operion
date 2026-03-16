@@ -509,6 +509,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-customer-engagement",
+    name: "Customer Engagement Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Handles web chat, messaging apps, and social DMs in real time to qualify prospects, answer questions, and keep customers engaged throughout the lifecycle.",
+      "Understands CRM context before replying so every interaction is personal and logged."
+    ],
+    capabilities: [
+      "Engage site visitors instantly, ask qualifying questions, and route hot leads to reps",
+      "Answer product/pricing questions 24/7 across channels",
+      "Guide decision conversations and drive demos/trials",
+      "Detect high-intent behavior from pages visited, time on site, and topics",
+      "Maintain ongoing touchpoints with existing customers for renewals/check-ins",
+      "Personalize replies using CRM history and prior interactions",
+      "Capture contact info from each conversation and update CRM automatically"
+    ],
+    suggestedPrompts: [
+      "Handle live chat on the pricing page and escalate anyone asking about enterprise SLAs.",
+      "Send check-ins to customers 30 days before renewal and log feedback.",
+      "Show me today’s high-intent visitors and how we handled them."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 46
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
