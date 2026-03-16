@@ -3906,6 +3906,41 @@ const agentsData = [
       load: 42
     }
   },
+  {
+    id: "dev-ml-assistant",
+    name: "AI Model Assistant Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Guides the entire ML lifecycle—from data prep and model selection to tuning, deployment, and monitoring—with clear explanations and governance artifacts.",
+      "Helps teams build reliable, responsible AI systems faster."
+    ],
+    capabilities: [
+      "Recommend architectures (classification, regression, NLP, CV, time series) based on problem context",
+      "Design preprocessing pipelines (normalization, encoding, balancing, feature engineering, splits)",
+      "Interpret evaluation metrics in business terms (precision/recall/F1/confusion matrices)",
+      "Run structured hyperparameter tuning experiments",
+      "Diagnose performance issues (data scarcity, overfit/underfit, leakage, drift)",
+      "Build monitoring pipelines for data/prediction drift and trigger retraining",
+      "Generate model cards covering use cases, data, metrics, fairness, and limitations"
+    ],
+    suggestedPrompts: [
+      "What model family should we use for this churn dataset and why?",
+      "Create a preprocessing pipeline for mixed numeric/categorical data with imbalance.",
+      "Explain our F1 score and confusion matrix in plain language for stakeholders.",
+      "Run hyperparameter tuning for this XGBoost model and summarize the best params.",
+      "Set up monitoring to detect feature drift post-deployment and alert us.",
+      "Draft a model card documenting this recommendation system." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 43
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
