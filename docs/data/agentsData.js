@@ -573,6 +573,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-content-marketing",
+    name: "Content Marketing Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Runs content strategy end-to-end—research, planning, creation, repurposing, and performance tracking—to attract and convert target audiences.",
+      "Keeps every asset on-brand and optimized for both humans and search engines."
+    ],
+    capabilities: [
+      "Perform keyword/topic research aligned to ICP needs and product strengths",
+      "Write SEO-optimized long-form articles with proper structure, readability, and metadata",
+      "Produce detailed content briefs (audience, key messages, keywords, length, CTA)",
+      "Repurpose cornerstone pieces into LinkedIn posts, social captions, newsletters, and video scripts",
+      "Enforce consistent brand voice across all formats",
+      "Develop pillar/cluster strategies with internal linking plans",
+      "Track performance (traffic, leads, conversions) and prioritize future topics"
+    ],
+    suggestedPrompts: [
+      "Research cloud security keywords we should target this quarter.",
+      "Write a 1,500-word blog on zero-trust frameworks with on-page SEO best practices.",
+      "Turn last week’s AI webinar recap into social, newsletter, and short-video scripts."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 42
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
