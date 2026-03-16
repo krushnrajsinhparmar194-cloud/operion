@@ -1623,6 +1623,38 @@ const agentsData = [
     }
   },
   {
+    id: "health-wellness-tracker",
+    name: "Wellness Goal Tracker Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Turns broad health intentions into SMART goals, milestones, and accountability across every wellness pillar.",
+      "Aggregates data from other agents to keep progress visible and behavior change sustainable."
+    ],
+    capabilities: [
+      "Guide SMART goal creation for fitness, nutrition, sleep, mental health, and hydration",
+      "Break big objectives into weekly micro-targets with reminders",
+      "Ingest metrics from companion agents (fitness, sleep, nutrition, hydration) into one dashboard",
+      "Send weekly reviews with honest gap analysis per goal",
+      "Highlight which pillars are thriving vs neglected and rebalance focus",
+      "Produce monthly wellness scorecards with overall and per-pillar scores",
+      "Celebrate milestone wins and provide accountability nudges when progress stalls"
+    ],
+    suggestedPrompts: [
+      "Help me set SMART goals for stress reduction and muscle gain this quarter.",
+      "Show this week’s progress across sleep, workouts, and hydration—what’s lagging?",
+      "Send my monthly wellness scorecard with trends vs last month."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 41
+    }
+  },
+  {
     id: "health-report-analysis",
     name: "Health Report Analysis Agent",
     category: "health",
