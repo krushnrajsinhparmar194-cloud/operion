@@ -189,6 +189,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-invoice-billing",
+    name: "Invoice & Billing Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Handles the billing lifecycle end-to-end—from invoice creation to reminders, reconciliation, and cash-flow visibility.",
+      "Gives finance teams clarity on who owes what and when to chase."
+    ],
+    capabilities: [
+      "Generate invoices automatically from projects, timesheets, or sales orders",
+      "Email invoices instantly, tracking opens and views",
+      "Schedule reminder cadences (3 days before, due day, 7/14/30 days overdue)",
+      "Reconcile incoming payments to open invoices and update AR ledgers",
+      "Track client payment speed and flag chronic slow payers",
+      "Produce weekly cash-flow forecasts using outstanding invoices + historical behavior",
+      "Build AR aging reports split by overdue brackets"
+    ],
+    suggestedPrompts: [
+      "Create invoices for last week’s approved timesheets and send them out.",
+      "Show me clients averaging >20 days past due so we can intervene.",
+      "Generate this Friday’s cash-flow outlook based on expected payments."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 45
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
