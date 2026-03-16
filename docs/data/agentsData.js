@@ -349,6 +349,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-lead-generation",
+    name: "Lead Generation Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Scans LinkedIn, company sites, directories, news, and social feeds to populate ICP-aligned prospect lists automatically.",
+      "Tracks intent triggers so sellers know who’s ready for outreach."
+    ],
+    capabilities: [
+      "Define ICPs by industry, size, geo, revenue, and buyer titles",
+      "Scrape + enrich company/contact data (names, roles, emails, phones)",
+      "Detect intent signals (funding, hiring, leadership changes, market moves)",
+      "Score and segment leads by ICP fit and urgency",
+      "Monitor triggers like expansion, competitor exits, or regulatory shifts",
+      "Build territory- or product-specific lead lists and auto-assign reps",
+      "Continuously dedupe, refresh, and hygiene the database"
+    ],
+    suggestedPrompts: [
+      "Generate a list of EU fintech scale-ups hiring RevOps leaders.",
+      "Show high-intent prospects in APAC after the latest funding announcements.",
+      "Clean the outbound list—remove duplicates and flag bounced contacts."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 46
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
