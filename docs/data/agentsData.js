@@ -1591,6 +1591,38 @@ const agentsData = [
     }
   },
   {
+    id: "health-chronic-disease",
+    name: "Chronic Disease Management Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Helps people living with diabetes, hypertension, asthma, thyroid disorders, and more stay on plan by tracking vitals, meds, and lifestyle factors.",
+      "Detects deviations early, surfaces doctor-ready logs, and tailors guidance per condition."
+    ],
+    capabilities: [
+      "Capture blood glucose, blood pressure, peak flow, or thyroid labs with safe-range alerts",
+      "Flag readings that deviate from personal baselines and recommend contacting providers",
+      "Maintain condition-specific logs that can be exported for medical appointments",
+      "Track medication adherence plus lifestyle factors like meals, exercise, stress",
+      "Offer diet/exercise guidance per condition (e.g., low-GI meals, safe cardio intensity)",
+      "Trend lab results (HbA1c, lipid panels, kidney markers) with plain-language summaries",
+      "Support multiple diagnoses simultaneously with dedicated tracking modules"
+    ],
+    suggestedPrompts: [
+      "Log today’s fasting glucose/PP readings and tell me if anything is high.",
+      "Share my BP log for the past two weeks so I can send it to my doctor.",
+      "I manage diabetes plus hypertension—what should I focus on this week?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 46
+    }
+  },
+  {
     id: "health-preventive-tips",
     name: "Preventive Health Tips Agent",
     category: "health",
