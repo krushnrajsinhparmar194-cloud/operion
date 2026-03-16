@@ -125,6 +125,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-customer-support",
+    name: "Customer Support Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Works every inbound channel—chat, email, messaging—to resolve common issues autonomously and prep complex cases for humans.",
+      "Understands full account context, sentiment, and recurring trends to improve support quality."
+    ],
+    capabilities: [
+      "Auto-resolve routine tickets (orders, billing, refunds, FAQs, password resets)",
+      "Reference full account history for personalized responses",
+      "Detect sentiment and escalate high-risk/frustrated customers instantly",
+      "Offer multilingual replies, matching the customer’s language",
+      "Draft responses for human agents on nuanced cases",
+      "Surface unresolved-ticket themes to address root causes",
+      "Report on response times, resolution rates, CSAT, and volume by issue"
+    ],
+    suggestedPrompts: [
+      "Handle all order-status questions today and only escalate if the shipment is missing.",
+      "Draft a response for this billing dispute with context from past refunds.",
+      "Show this week’s unresolved ticket themes and CSAT by channel."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 95,
+      load: 57
+    }
+  },
+  {
     id: "qa-product-analyst",
     name: "Product QA Analyst",
     category: "qa",
