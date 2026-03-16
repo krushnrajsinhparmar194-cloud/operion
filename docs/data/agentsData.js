@@ -253,6 +253,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-strategy-advisor",
+    name: "Business Strategy Advisor Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Blends internal KPIs with market intel, competitor moves, and industry trends to steer strategic decisions.",
+      "Surfaces growth bets, risks, and scenario models so leadership can act with confidence."
+    ],
+    capabilities: [
+      "Run SWOT analyses using company data plus external research",
+      "Spot high-ROI segments/products/markets for focused investment",
+      "Monitor competitor launches, pricing, and positioning with impact summaries",
+      "Model strategic scenarios with revenue/profit projections",
+      "Evaluate partnership or acquisition opportunities (fit, risk, value)",
+      "Track industry trends/regulation shifts and alert on threats/opportunities",
+      "Author quarterly strategic review docs with performance, learnings, and next steps"
+    ],
+    suggestedPrompts: [
+      "Produce a SWOT using last quarter’s performance plus current market intel.",
+      "Which customer segments delivered the best margin growth this year?",
+      "Model the impact of entering the APAC market in Q3."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 40
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
