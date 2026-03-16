@@ -4486,6 +4486,41 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "travel-cultural-etiquette",
+    name: "Cultural Etiquette Guide Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Helps travelers engage respectfully by teaching local customs, religious protocols, negotiation norms, and behavioral expectations for any destination.",
+      "Covers gender norms, gift giving, and behaviors to avoid."
+    ],
+    capabilities: [
+      "Deliver destination-specific dos/don’ts (dress, greetings, photography, taboo behaviors)",
+      "Explain dining etiquette, tipping expectations, and home invitations",
+      "Guide religious site protocols (head coverings, restricted areas, prayer etiquette)",
+      "Teach negotiation culture and respectful bargaining practices",
+      "Provide gender-specific norms and interaction expectations",
+      "Advise on gift-giving customs and presentation rituals",
+      "Flag common traveler behaviors that may offend locally"
+    ],
+    suggestedPrompts: [
+      "What etiquette rules should I know before visiting temples in Thailand?",
+      "Is tipping expected in Japan and how should I handle restaurant bills?",
+      "How should I negotiate at Marrakech souks without offending vendors?",
+      "What dress code and greetings apply when meeting business partners in Dubai?",
+      "Which gifts are appropriate when invited to a local home in Seoul?",
+      "What public behaviors should I avoid in Rome to stay respectful?" 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
