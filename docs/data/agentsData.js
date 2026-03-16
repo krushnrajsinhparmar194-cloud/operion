@@ -3807,6 +3807,40 @@ const agentsData = [
       load: 43
     }
   },
+  {
+    id: "dev-cybersecurity-monitoring",
+    name: "Cybersecurity Monitoring Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Continuously scans code, dependencies, auth logs, and network activity to surface vulnerabilities and suspicious behavior with remediation guidance.",
+      "Keeps teams aligned with security frameworks and best practices."
+    ],
+    capabilities: [
+      "Scan codebases for OWASP Top 10 issues",
+      "Monitor auth logs for brute force, unusual locations, and rapid logins",
+      "Detect vulnerable dependencies via CVE databases",
+      "Analyze network traffic for anomalies and malicious IPs",
+      "Track access patterns to flag insider threats or compromised accounts",
+      "Run automated web app penetration tests in a controlled environment",
+      "Produce security posture reports with severity-ranked remediation"
+    ],
+    suggestedPrompts: [
+      "Scan this repo for OWASP vulnerabilities and list blocking issues.",
+      "Alert me if logins occur outside India after midnight.",
+      "Which dependencies in this package.json have known CVEs?",
+      "Analyze network logs for unusual outbound connections this week.",
+      "Generate a SOC 2 readiness report with current gaps."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 42
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
