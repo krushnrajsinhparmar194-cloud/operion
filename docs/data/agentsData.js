@@ -1591,6 +1591,38 @@ const agentsData = [
     }
   },
   {
+    id: "health-weight-management",
+    name: "Weight Management Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Pairs weight logs, calorie data, and behavior coaching to help users reach targets sustainably.",
+      "Adapts goals, macros, and motivation context as physiology shifts."
+    ],
+    capabilities: [
+      "Set realistic target weight + timelines using body stats and health data",
+      "Track daily weigh-ins, smooth noise, and show trendlines",
+      "Calculate daily calorie deficit/surplus for healthy momentum",
+      "Spot behavior patterns (late meals, weekend binges) that derail progress",
+      "Adjust calories/macros as weight and metabolism evolve",
+      "Explain plateaus physiologically and offer break-through tactics",
+      "Celebrate non-scale wins like energy, sleep quality, and strength"
+    ],
+    suggestedPrompts: [
+      "Based on my stats, what’s a safe pace to drop 5kg?",
+      "Why has the scale flatlined this week—any behaviors I should tweak?",
+      "Remind me of non-scale wins from the last month to stay motivated."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 43
+    }
+  },
+  {
     id: "health-hydration-reminder",
     name: "Hydration Reminder Agent",
     category: "health",
