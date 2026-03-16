@@ -797,6 +797,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-seo-optimization",
+    name: "SEO Optimization Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Audits technical + content SEO, runs keyword research, and delivers prioritized plans to grow organic traffic.",
+      "Monitors rankings, competitors, and link opportunities continuously."
+    ],
+    capabilities: [
+      "Perform full technical SEO audits (speed, links, meta, mobile, crawl issues)",
+      "Conduct keyword research based on volume, competition, and intent",
+      "Review each page with actionable on-page recommendations",
+      "Track keyword rankings weekly and diagnose movement",
+      "Monitor competitor rankings to surface keyword/content gaps",
+      "Build link acquisition strategies with outreach targets",
+      "Publish monthly SEO performance reports (traffic, rankings, new keywords, revenue impact)"
+    ],
+    suggestedPrompts: [
+      "Audit the docs site for technical SEO issues and prioritize fixes.",
+      "Which high-intent keywords should we target next quarter?",
+      "Send March’s SEO report with ranking changes and traffic impact."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 43
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
