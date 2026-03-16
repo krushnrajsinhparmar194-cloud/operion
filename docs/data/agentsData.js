@@ -1591,6 +1591,38 @@ const agentsData = [
     }
   },
   {
+    id: "health-sleep-agent",
+    name: "Sleep Health Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Analyzes wearable or manual sleep logs to decode quality, disruptions, and chronotype patterns.",
+      "Delivers wind-down routines, lifestyle correlations, and environmental tweaks to boost rest."
+    ],
+    capabilities: [
+      "Track latency, duration, deep/REM %, and wakeups nightly",
+      "Infer natural sleep window and recommend ideal bed/wake times",
+      "Compare weekday vs weekend quality to surface behavioral gaps",
+      "Prescribe 60-minute wind-down routines tailored to habits",
+      "Alert when ongoing deprivation trends pose health risks",
+      "Correlate sleep with exercise, caffeine, screens, and alcohol",
+      "Suggest bedroom/environment tweaks (temp, light, noise)"
+    ],
+    suggestedPrompts: [
+      "Did my sleep quality drop on weekends compared to weekdays?",
+      "Build a wind-down checklist for the next hour before bed.",
+      "How are late workouts and caffeine impacting my deep sleep?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 39
+    }
+  },
+  {
     id: "health-mental-health-support",
     name: "Mental Health Support Agent",
     category: "health",
