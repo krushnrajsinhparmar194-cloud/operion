@@ -1591,6 +1591,38 @@ const agentsData = [
     }
   },
   {
+    id: "health-symptom-checker",
+    name: "Symptom Checker Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Guides people through structured symptom intake, referencing vetted medical databases for likely conditions and urgency cues.",
+      "Tracks symptom logs over time, factoring age, meds, and chronic issues to tailor guidance while reinforcing medical disclaimers."
+    ],
+    capabilities: [
+      "Interview users in natural language to capture symptom type, duration, and severity",
+      "Cross-reference multi-symptom combos against trusted clinical datasets to rank possible causes",
+      "Label each potential condition with urgency guidance (ER, doctor soon, monitor at home)",
+      "Incorporate personal health context—age, chronic conditions, medications—for more precise assessments",
+      "Maintain daily symptom diaries and flag whether metrics are trending better or worse",
+      "Offer evidence-backed home-care suggestions for mild issues plus warning signs to escalate",
+      "Embed clear disclaimers and route users to licensed professionals for diagnosis"
+    ],
+    suggestedPrompts: [
+      "I’ve had chest tightness and dizziness for two days—ask what you need and tell me how urgent this is.",
+      "Log today’s cough, fever, and fatigue updates and compare to the last three entries.",
+      "Given my asthma and current meds, what conditions explain these wheezing episodes?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 40
+    }
+  },
+  {
     id: "health-monitoring-agent",
     name: "Health Monitoring Agent",
     category: "health",
