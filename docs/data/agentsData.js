@@ -221,6 +221,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-client-communication",
+    name: "Client Communication Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Orchestrates proactive, personalized outreach across the client lifecycle so no relationship goes cold.",
+      "Tracks sentiment, milestones, and cadence to keep account teams ahead of issues."
+    ],
+    capabilities: [
+      "Maintain per-client communication calendars with last touch + next action",
+      "Draft personalized updates, check-ins, and milestone notes for one-click send",
+      "Trigger automated notifications when projects hit key milestones or orders ship",
+      "Monitor sentiment trends and alert managers if tone turns negative",
+      "Run annual review workflows: schedule, prep summaries, send recaps",
+      "Handle onboarding comms (welcomes, guides, 30/60/90-day check-ins)",
+      "Publish communication health reports showing dormant/risk/high-engagement accounts"
+    ],
+    suggestedPrompts: [
+      "Who hasn’t heard from us in 45 days and needs a check-in drafted?",
+      "Send milestone updates to clients whose projects just cleared QA.",
+      "Prepare next week’s annual review packet for Horizon Capital."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 42
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
