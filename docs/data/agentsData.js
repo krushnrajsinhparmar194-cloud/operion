@@ -541,6 +541,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-social-media-marketing",
+    name: "Social Media Marketing Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Runs end-to-end social operations—planning, creation, scheduling, monitoring, and analytics—across every platform.",
+      "Keeps the calendar balanced and reactive to trends."
+    ],
+    capabilities: [
+      "Build monthly cross-platform calendars with educational/promotional/engagement mix",
+      "Transform core messages into platform-specific copy/assets",
+      "Schedule posts at optimal times per channel",
+      "Monitor comments/mentions/messages and draft rapid responses",
+      "Surface trending topics/hashtags and suggest timely content",
+      "Identify best-performing formats per platform and adjust mix",
+      "Deliver weekly performance reports (growth, reach, engagement, top posts)"
+    ],
+    suggestedPrompts: [
+      "Plan April’s social calendar with product launches + thought leadership.",
+      "Repurpose this webinar announcement for LinkedIn, Instagram, and X.",
+      "Send this week’s social report with insights on what to double down on."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 42
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
