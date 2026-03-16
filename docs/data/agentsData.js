@@ -1591,6 +1591,38 @@ const agentsData = [
     }
   },
   {
+    id: "health-mental-health-support",
+    name: "Mental Health Support Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Creates a safe, non-judgmental space for daily emotional check-ins, coping techniques, and structured mental wellness routines.",
+      "Combines CBT-style reframing, journaling prompts, psychoeducation, and escalation paths to licensed support when needed."
+    ],
+    capabilities: [
+      "Run mood check-ins, chart trends, and surface potential triggers or recurring dips",
+      "Offer CBT-informed thought reframing exercises tailored to anxious or negative loops",
+      "Guide structured journaling sessions to process emotions and build self-awareness",
+      "Detect stress/burnout cues in language and respond with empathetic support",
+      "Coach grounding routines: breathing patterns, sensory exercises, and quick distractions",
+      "Explain anxiety/depression/burnout concepts in plain language with reputable resources",
+      "Escalate to licensed professionals or crisis resources whenever severe distress signals appear"
+    ],
+    suggestedPrompts: [
+      "Do my mood logs show a pattern of low energy mid-week?",
+      "I’m spiraling about work—walk me through a CBT reframing exercise.",
+      "Give me a grounding routine I can use before tonight’s presentation."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 92,
+      load: 41
+    }
+  },
+  {
     id: "health-nutrition-advisor",
     name: "Nutrition Advisor Agent",
     category: "health",
