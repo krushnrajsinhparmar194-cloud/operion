@@ -669,6 +669,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-market-research",
+    name: "Market Research Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Collects and synthesizes market, customer, and competitor intelligence so marketing and product teams can move with clarity.",
+      "Surfaces unmet needs, positioning insights, and size/growth signals."
+    ],
+    capabilities: [
+      "Profile customer segments (jobs-to-be-done, current solutions, buying criteria, objections)",
+      "Produce deep competitor reports covering features, pricing, positioning, channels, strengths/weaknesses",
+      "Monitor competitor marketing activity and send weekly intel briefings",
+      "Design/distribute surveys, analyze results, and highlight statistically significant findings",
+      "Mine complaints/forums/reviews/support data to spot unmet needs",
+      "Track market size/growth using public/industry data with quarterly refreshes",
+      "Deliver pre-launch research on demand, competition, segments, and positioning"
+    ],
+    suggestedPrompts: [
+      "Profile mid-market HR leaders shopping for analytics tools—what matters to them?",
+      "Summarize competitor content launches this week and implications for us.",
+      "Estimate 2026 TAM + growth for the LATAM logistics automation market."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 40
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
