@@ -125,6 +125,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-workflow-automation",
+    name: "Workflow Automation Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Observes repetitive business ops and codifies them into reliable, auditable automations.",
+      "Keeps humans focused on strategy while workflows handle approvals, routing, and notifications."
+    ],
+    capabilities: [
+      "Automate purchase orders with approval routing and supplier notifications",
+      "Trigger onboarding chains when new employees are created (IT, facilities, manager tasks)",
+      "Ingest invoices from email, match to POs, route for approval, and forward to AP",
+      "Send multi-step follow-up sequences to dormant sales leads",
+      "Schedule recurring report generation/distribution (weekly sales, monthly finance, etc.)",
+      "Monitor thresholds (inventory, ticket SLA) and fire alerts or actions",
+      "Log every workflow run with timestamps, status, and error traces"
+    ],
+    suggestedPrompts: [
+      "Automate purchase orders under $5k with manager approval and supplier notice.",
+      "Kick off onboarding for the new marketing hire and confirm when each step is done.",
+      "Show last week’s workflow runs and highlight any failures."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 50
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
