@@ -1591,6 +1591,38 @@ const agentsData = [
     }
   },
   {
+    id: "health-doctor-appointment",
+    name: "Doctor Appointment Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Acts as a medical concierge—matching symptoms to specialists, booking visits, and orchestrating reminders before and after the appointment.",
+      "Maintains a unified medical timeline with follow-ups, tests, vaccinations, and history across clinics."
+    ],
+    capabilities: [
+      "Interpret health concerns and recommend the right specialist or clinic nearby",
+      "Search integrated clinic calendars, book slots, and deliver confirmations with doctor/location details",
+      "Maintain a chronological visit history so patients can recall who they saw and when",
+      "Send prep checklists (documents, fasting, questions) ahead of each visit",
+      "Track doctor-ordered follow-ups, tests, and vaccinations with proactive reminders",
+      "Handle reschedules/cancellations and auto-hunt the next available time",
+      "Surface a full medical timeline spanning checkups, tests, and specialist visits"
+    ],
+    suggestedPrompts: [
+      "I need help for recurring knee pain—find an ortho nearby and book the earliest slot.",
+      "Remind me tomorrow what to bring for the cardiology visit and any fasting rules.",
+      "Show my medical appointments this year plus what follow-ups are pending."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 42
+    }
+  },
+  {
     id: "health-medication-reminder",
     name: "Medication Reminder Agent",
     category: "health",
