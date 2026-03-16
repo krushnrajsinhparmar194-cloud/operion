@@ -3841,6 +3841,38 @@ const agentsData = [
       load: 42
     }
   },
+  {
+    id: "dev-system-monitoring",
+    name: "System Monitoring Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Monitors infra and app metrics in real time, correlating anomalies across layers to minimize downtime and surface root causes.",
+      "Forecasts capacity and produces weekly health reports."
+    ],
+    capabilities: [
+      "Track CPU, memory, disk I/O, network, and process health per server",
+      "Establish dynamic baselines to reduce false alerts",
+      "Correlate related alerts across app/db/infrastructure layers",
+      "Detect capacity trends before they become incidents",
+      "Monitor app-layer metrics (API latency, errors, queues, cache hit ratios)",
+      "Send incident notifications with rich context and similar-incident history",
+      "Generate weekly health reports with uptime, incident trends, and forecasts"
+    ],
+    suggestedPrompts: [
+      "Alert me if API latency, DB queries, and disk I/O spike together.",
+      "Which servers will run out of disk within 30 days at current growth?",
+      "Send a weekly report with uptime, incidents, and capacity forecasts."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 42
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
