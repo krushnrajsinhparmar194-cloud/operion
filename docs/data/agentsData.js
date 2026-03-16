@@ -1591,6 +1591,38 @@ const agentsData = [
     }
   },
   {
+    id: "health-nutrition-advisor",
+    name: "Nutrition Advisor Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Builds a holistic nutrition profile from health goals, medical considerations, restrictions, and taste preferences.",
+      "Translates it into meal plans, grocery lists, food logging, and education so users stay aligned with their targets."
+    ],
+    capabilities: [
+      "Generate 7-day meal plans with calories, macros, prep time, and swaps",
+      "Estimate nutritional content from photos or descriptions and log it automatically",
+      "Detect likely deficiencies from intake patterns and recommend foods or supplements",
+      "Design condition-specific plans (diabetic, heart-healthy, thyroid, PCOS, etc.)",
+      "Advise on pre/post-workout fueling tuned to the exercise type and performance goals",
+      "Produce grocery lists from meal plans with quantity math to reduce waste",
+      "Decode food labels—ingredients, additives, suitability for the user’s profile"
+    ],
+    suggestedPrompts: [
+      "Build a 7-day vegetarian meal plan for weight loss with macros per meal.",
+      "Log this meal photo and tell me how it affects today’s calories and macros.",
+      "Does this packaged cereal fit a low-sugar, heart-healthy plan?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 44
+    }
+  },
+  {
     id: "health-fitness-tracker",
     name: "Fitness Activity Tracker Agent",
     category: "health",
