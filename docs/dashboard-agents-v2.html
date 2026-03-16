@@ -664,6 +664,7 @@
     .chip-icon.sparkles-icon::before { content: '✨'; }
     .chip-icon.newspaper-icon::before { content: '📰'; }
     .chip-icon.leaf-icon::before { content: '🌿'; }
+    .chip-icon.heart-icon::before { content: '❤️'; }
     .chip-icon.gear-icon::before { content: '⚙️'; }
     .chip-icon.check-icon::before { content: '✔️'; }
     .chip-icon.code-icon::before { content: '</>'; font-family: 'Inter', system-ui, sans-serif; font-size: 0.65rem; font-weight: 600; }
@@ -671,6 +672,7 @@
     .category-chip.astrology-theme { color: #7c3aed; border-color: rgba(124,58,237,0.35); background: rgba(124,58,237,0.12); }
     .category-chip.news-theme { color: #0ea5e9; border-color: rgba(14,165,233,0.35); background: rgba(14,165,233,0.12); }
     .category-chip.lifestyle-theme { color: #10b981; border-color: rgba(16,185,129,0.35); background: rgba(16,185,129,0.12); }
+    .category-chip.health-theme { color: #db2777; border-color: rgba(219,39,119,0.35); background: rgba(219,39,119,0.12); }
     .category-chip.ops-theme { color: #475467; border-color: rgba(71,84,103,0.35); background: rgba(71,84,103,0.12); }
     .category-chip.default-theme { color: #475467; border-color: rgba(148,163,184,0.4); background: rgba(148,163,184,0.12); }
     .layout {
@@ -800,6 +802,7 @@
           <button class="filter-tab" data-filter="astrology">Astrology</button>
           <button class="filter-tab" data-filter="news">News</button>
           <button class="filter-tab" data-filter="lifestyle">Lifestyle</button>
+          <button class="filter-tab" data-filter="health">Health &amp; Wellness</button>
           <button class="filter-tab" data-filter="calendar">Calendar</button>
         </div>
       </div>
@@ -1039,6 +1042,7 @@
       astrology: { label: 'Astrology', chipClass: 'astrology-theme', iconClass: 'sparkles-icon' },
       news: { label: 'News', chipClass: 'news-theme', iconClass: 'newspaper-icon' },
       lifestyle: { label: 'Lifestyle', chipClass: 'lifestyle-theme', iconClass: 'leaf-icon' },
+      health: { label: 'Health & Wellness', chipClass: 'health-theme', iconClass: 'heart-icon' },
       ops: { label: 'Operations', chipClass: 'ops-theme', iconClass: 'gear-icon' },
       qa: { label: 'Quality', chipClass: 'ops-theme', iconClass: 'check-icon' },
       dev: { label: 'Development', chipClass: 'ops-theme', iconClass: 'code-icon' },
