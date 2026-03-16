@@ -29,6 +29,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-hr-management",
+    name: "HR Management Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Centralizes employee records, attendance, leave, performance, and compliance data to automate everyday HR ops.",
+      "Surfaces proactive insights on contracts, reviews, and workforce health so HR can act before issues escalate."
+    ],
+    capabilities: [
+      "Maintain rich digital profiles covering history, compensation, and achievements",
+      "Sync attendance from biometric/digital check-ins and flag anomalies",
+      "Run end-to-end leave workflows with balance updates and payroll notices",
+      "Alert on contract expiries, probation completions, and review deadlines",
+      "Automate onboarding tasks—docs, equipment, orientation scheduling",
+      "Compile labor-law compliance reports on hours, leave, and diversity stats",
+      "Produce workforce analytics (headcount, attrition, absenteeism, gender/grade splits)"
+    ],
+    suggestedPrompts: [
+      "Show me attendance outliers this month for the sales team.",
+      "Prep onboarding tasks for the three hires starting Monday.",
+      "Generate an attrition + diversity report by department for Q1."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 95,
+      load: 55
+    }
+  },
+  {
     id: "qa-product-analyst",
     name: "Product QA Analyst",
     category: "qa",
