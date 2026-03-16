@@ -93,6 +93,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-document-management",
+    name: "Document Management Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Keeps contracts, invoices, proposals, policies, and more organized with smart classification, permissions, and workflow control.",
+      "Ensures teams always know which version is current while meeting compliance and audit requirements."
+    ],
+    capabilities: [
+      "Auto-classify uploads into the correct folder structure by document type",
+      "Maintain full version history with diffs and easy rollback",
+      "Enforce granular access controls for sensitive materials",
+      "Send renewal/expiry alerts for contracts, certifications, and compliance docs",
+      "Deliver fast internal search by keyword, metadata, or author",
+      "Run sequential approval workflows with status tracking",
+      "Log detailed audit trails of views, edits, and shares"
+    ],
+    suggestedPrompts: [
+      "File these client contracts and flag any expiring within 60 days.",
+      "Show the version history for the Q2 policy doc and restore the March draft.",
+      "Who accessed the salary benchmark report last week?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 44
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
