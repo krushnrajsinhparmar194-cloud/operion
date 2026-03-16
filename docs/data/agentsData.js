@@ -637,6 +637,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-ad-campaign",
+    name: "Ad Campaign Management Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Runs paid campaigns end-to-end across Google, Meta, LinkedIn, and more—building structures, testing creative, and optimizing budget for ROI.",
+      "Keeps performance on target with real-time adjustments and clear reporting."
+    ],
+    capabilities: [
+      "Create campaign structures (objectives, ad sets/groups, targeting, bidding, budgets)",
+      "Write/test multiple ad copy and creative variations",
+      "Monitor metrics in real time and adjust bids/budgets/audiences automatically",
+      "Pause underperforming sets and scale winning combinations",
+      "Manage retargeting audiences tied to site visitors, video viewers, and email lists",
+      "Deliver weekly dashboards with impressions, clicks, CPL, CVR, ROAS by campaign",
+      "Recommend budget reallocation across platforms based on ROI"
+    ],
+    suggestedPrompts: [
+      "Spin up a LinkedIn demand-gen campaign targeting SaaS CMOs with two creative variants.",
+      "Show this week’s ROAS by channel and where to shift budget.",
+      "Pause any ad sets exceeding $120 CPL and reassign spend to the top performers."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 45
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
