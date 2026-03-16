@@ -861,6 +861,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-influencer-marketing",
+    name: "Influencer Marketing Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Finds, vets, and manages influencer partnerships end-to-end so campaigns feel authentic and deliver measurable impact.",
+      "Keeps a living database of performance to re-engage the best creators."
+    ],
+    capabilities: [
+      "Search influencers by platform, niche, audience size, engagement, demographics, and collaboration history",
+      "Evaluate quality via authenticity metrics, growth patterns, and brand alignment",
+      "Segment influencers into mega/macro/micro tiers for the right goals",
+      "Manage outreach, contracts, briefs, approvals, publishing, and payments",
+      "Track per-influencer performance (reach, engagement, traffic, promo codes, conversions)",
+      "Maintain a vetted influencer database with historical results",
+      "Spot emerging creators early for long-term partnerships"
+    ],
+    suggestedPrompts: [
+      "Find micro-influencers in sustainable fashion with >8% engagement and eco-friendly content history.",
+      "Draft briefs + contracts for the Q2 launch collab and manage approvals.",
+      "Report on last month’s influencer campaign with conversions per creator."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 42
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
