@@ -4383,6 +4383,41 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "travel-safety-advisor",
+    name: "Travel Safety Advisor Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Monitors advisories, health alerts, crime data, and natural risks to deliver practical safety guidance before and during trips.",
+      "Tailors recommendations to neighborhoods, activities, and traveler profile."
+    ],
+    capabilities: [
+      "Provide pre-departure safety briefings with advisory levels and risk context",
+      "Issue real-time alerts for unrest, disasters, outbreaks, or extreme weather",
+      "Recommend safe neighborhoods and highlight areas to avoid",
+      "Advise on activity-specific safety checks and available medical support",
+      "Outline health precautions (vaccines, malaria, food/water safety, first aid kit)",
+      "Educate on destination-specific scams and how to avoid them",
+      "Compile emergency contacts (local emergency numbers, embassies, hospitals, insurance helplines)"
+    ],
+    suggestedPrompts: [
+      "Give me a safety briefing for Rio next month—what are the key concerns?",
+      "Alert me if protests or storms occur in Bangkok during my stay.",
+      "Which neighborhoods in Cape Town are safest for tourists and which to avoid?",
+      "What health precautions should I take for trekking in Peru’s Sacred Valley?",
+      "List common Rome taxi scams and how to avoid them.",
+      "Provide all emergency contacts I need for Bali including hospital and embassy info." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
