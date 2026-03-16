@@ -701,6 +701,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-analytics",
+    name: "Sales Analytics Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Aggregates CRM, activity, and revenue data into real-time dashboards and diagnostics so sales leaders can act quickly.",
+      "Highlights funnel bottlenecks, top-performer behaviors, and seasonal patterns."
+    ],
+    capabilities: [
+      "Deliver live dashboards showing revenue vs target by rep/team/product/region",
+      "Track win rate, deal size, cycle length, pipeline coverage, and quota attainment",
+      "Analyze conversion rates per funnel stage and identify drop-off causes",
+      "Compare reps to surface repeatable behaviors",
+      "Correlate activity metrics (calls/emails/meetings) with outcomes",
+      "Detect seasonal patterns and inform target/resource planning",
+      "Run lost-deal analyses with insights by product, industry, and competitor"
+    ],
+    suggestedPrompts: [
+      "Show today’s revenue vs target by team and highlight any red flags.",
+      "Where is the biggest funnel drop-off right now and why?",
+      "Summarize lost-deal reasons this quarter with actionable takeaways."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 42
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
