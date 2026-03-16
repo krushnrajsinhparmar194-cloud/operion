@@ -3740,6 +3740,40 @@ const agentsData = [
       load: 44
     }
   },
+  {
+    id: "dev-database-management",
+    name: "Database Management Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Designs schemas, writes optimized queries, tunes performance, and manages migrations/backups across SQL and NoSQL databases.",
+      "Keeps database health visible with monitoring queries and alerting."
+    ],
+    capabilities: [
+      "Model normalized schemas with keys, indexes, and constraints",
+      "Translate business questions into advanced SQL",
+      "Analyze execution plans to fix slow queries",
+      "Recommend indexing strategies and flag unused indexes",
+      "Author migration scripts with validation + rollback logic",
+      "Propose partitioning strategies for large tables",
+      "Generate monitoring queries for size, fragmentation, locks, cache hits, and pool usage"
+    ],
+    suggestedPrompts: [
+      "Design a schema for a multi-tenant subscription app with justification.",
+      "Optimize this slow SQL query and explain the execution plan changes.",
+      "Write migration scripts to move data from PostgreSQL to BigQuery.",
+      "What indexes and partitions should we add to this 1B-row orders table?",
+      "Generate monitoring queries for lock waits and cache hit ratios."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 43
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
