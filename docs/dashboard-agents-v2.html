@@ -667,6 +667,7 @@
     .chip-icon.heart-icon::before { content: '❤️'; }
     .chip-icon.briefcase-icon::before { content: '💼'; }
     .chip-icon.megaphone-icon::before { content: '📣'; }
+    .chip-icon.coin-icon::before { content: '💰'; }
     .chip-icon.gear-icon::before { content: '⚙️'; }
     .chip-icon.check-icon::before { content: '✔️'; }
     .chip-icon.code-icon::before { content: '</>'; font-family: 'Inter', system-ui, sans-serif; font-size: 0.65rem; font-weight: 600; }
@@ -677,6 +678,7 @@
     .category-chip.health-theme { color: #db2777; border-color: rgba(219,39,119,0.35); background: rgba(219,39,119,0.12); }
     .category-chip.business-theme { color: #f97316; border-color: rgba(249,115,22,0.35); background: rgba(249,115,22,0.12); }
     .category-chip.sales-theme { color: #ec4899; border-color: rgba(236,72,153,0.35); background: rgba(236,72,153,0.12); }
+    .category-chip.finance-theme { color: #0f766e; border-color: rgba(15,118,110,0.35); background: rgba(15,118,110,0.12); }
     .category-chip.ops-theme { color: #475467; border-color: rgba(71,84,103,0.35); background: rgba(71,84,103,0.12); }
     .category-chip.default-theme { color: #475467; border-color: rgba(148,163,184,0.4); background: rgba(148,163,184,0.12); }
     .layout {
@@ -809,6 +811,7 @@
           <button class="filter-tab" data-filter="health">Health &amp; Wellness</button>
           <button class="filter-tab" data-filter="business">Business &amp; Professional</button>
           <button class="filter-tab" data-filter="sales">Sales &amp; Marketing</button>
+          <button class="filter-tab" data-filter="finance">Finance</button>
           <button class="filter-tab" data-filter="calendar">Calendar</button>
         </div>
       </div>
@@ -1051,6 +1054,7 @@
       health: { label: 'Health & Wellness', chipClass: 'health-theme', iconClass: 'heart-icon' },
       business: { label: 'Business & Professional', chipClass: 'business-theme', iconClass: 'briefcase-icon' },
       sales: { label: 'Sales & Marketing', chipClass: 'sales-theme', iconClass: 'megaphone-icon' },
+      finance: { label: 'Finance', chipClass: 'finance-theme', iconClass: 'coin-icon' },
       ops: { label: 'Operations', chipClass: 'ops-theme', iconClass: 'gear-icon' },
       qa: { label: 'Quality', chipClass: 'ops-theme', iconClass: 'check-icon' },
       dev: { label: 'Development', chipClass: 'ops-theme', iconClass: 'code-icon' },
