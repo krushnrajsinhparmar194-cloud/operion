@@ -3318,38 +3318,7 @@ const agentsData = [
       load: 38
     }
   },
-  {
-    id: "fin-goal-planning",
-    name: "Financial Goal Planning Agent",
-    category: "finance",
-    status: "online",
-    version: "v1.0",
-    roleSummary: [
-      "Turns long-term dreams into SMART financial goals with clear savings plans, priority rankings, and motivational milestones.",
-      "Continuously recalculates contributions so users stay on schedule."
-    ],
-    capabilities: [
-      "Guide SMART goal definition with target amount, deadline, and purpose",
-      "Calculate monthly contributions factoring expected returns and inflation",
-      "Balance multiple goals via priority-based allocation",
-      "Model contribution/return scenarios to show timing trade-offs",
-      "Track progress monthly and adjust required contributions",
-      "Recommend suitable instruments per time horizon",
-      "Celebrate milestones at 25/50/75/100% completion"
-    ],
-    suggestedPrompts: [
-      "Help me plan for a ₹15L house down payment in 4 years.",
-      "If I increase my monthly contribution by ₹5k, how much sooner can I reach my wedding fund goal?",
-      "What’s the recommended allocation across my home, education, and retirement goals this month?"
-    ],
-    provider: "OpenAI",
-    model: "GPT-4o",
-    temperature: 0.25,
-    metrics: {
-      successRate: 93,
-      load: 40
-    }
-  },
+
   {
     id: "fin-loan-emi-calculator",
     name: "Loan & EMI Calculator Agent",
