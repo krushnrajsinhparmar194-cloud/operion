@@ -1589,6 +1589,38 @@ const agentsData = [
       successRate: 95,
       load: 60
     }
+  },
+  {
+    id: "health-monitoring-agent",
+    name: "Health Monitoring Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Connects to wearables and health apps to stream steps, heart rate, SpO2, temperature, and activity trends into one dashboard.",
+      "Studies multi-device biometrics to spot anomalies early and nudge users before issues escalate."
+    ],
+    capabilities: [
+      "Aggregate smartwatch, phone, and smart-scale readings into one unified health profile",
+      "Plot 7/30/90-day trendlines for steps, activity minutes, and calorie burn",
+      "Detect heart-rate values that drift outside someone’s personal baseline and send alerts",
+      "Calculate true resting heart-rate trends as a cardiovascular fitness signal",
+      "Compare daily and weekly activity deltas to highlight momentum gains or dips",
+      "Emit weekly recaps covering steps, active minutes, HR zones, and calories",
+      "Flag simultaneous declines across multiple metrics to hint at potential illness"
+    ],
+    suggestedPrompts: [
+      "Show today’s dashboard plus how my biometrics trended vs the last 30 days.",
+      "Have my resting heart rate or active minutes dipped enough that I should recover today?",
+      "Draft this week’s health recap with any anomalies I should watch."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 45
+    }
   }
 ];
 
