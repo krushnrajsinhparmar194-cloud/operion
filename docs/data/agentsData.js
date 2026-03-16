@@ -733,6 +733,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-product-promotion",
+    name: "Product Promotion Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Builds integrated promotion strategies for specific products, coordinating messaging and channels to maximize awareness and sales.",
+      "Tracks performance in real time and distills post-campaign learnings."
+    ],
+    capabilities: [
+      "Develop go-to-market promotion plans with positioning, audience, messaging, channels, timeline, and KPIs",
+      "Tailor promotional messaging per segment (enterprise, SMB, consumer)",
+      "Coordinate email, social, paid, content, and sales outreach so campaigns stay aligned",
+      "Design urgency-driven offers (countdowns, early-bird pricing, bundles)",
+      "Spot underperforming products and launch targeted boosts",
+      "Monitor incremental sales lift, acquisition, and revenue vs baseline",
+      "Publish post-campaign retros with ROI and recommendations"
+    ],
+    suggestedPrompts: [
+      "Create a GTM promotion brief for the new analytics add-on with enterprise and SMB variants.",
+      "Coordinate a two-week promo across email, social, and paid around the spring sale.",
+      "Analyze last month’s bundle campaign and report ROI plus next-step recommendations."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 41
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
