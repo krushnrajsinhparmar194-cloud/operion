@@ -3543,6 +3543,39 @@ const agentsData = [
       load: 40
     }
   },
+  {
+    id: "dev-coding-assistant",
+    name: "Coding Assistant Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Serves as an AI pair programmer that understands your stack and project patterns to write, debug, optimize, and explain code across languages.",
+      "Translates between languages, suggests algorithms, and answers syntax questions instantly."
+    ],
+    capabilities: [
+      "Generate production-ready code from natural language requirements",
+      "Respect existing architecture, naming, and style conventions",
+      "Explain complex or legacy code line by line",
+      "Diagnose performance bottlenecks and propose optimized alternatives",
+      "Translate code between languages or paradigms (REST⇄GraphQL, SQL⇄NoSQL)",
+      "Recommend algorithms/data structures with complexity analysis",
+      "Answer language-specific questions across Python, JS, Java, Go, Rust, etc."
+    ],
+    suggestedPrompts: [
+      "Write a Python function that deduplicates a CSV and exports the cleaned file.",
+      "Explain this legacy Java class so I can refactor it safely.",
+      "Convert this Node.js REST endpoint into a GraphQL resolver.",
+      "What algorithm should I use for nearest-neighbor search on this dataset?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 96,
+      load: 55
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
