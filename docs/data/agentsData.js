@@ -4452,6 +4452,40 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "travel-deal-finder",
+    name: "Travel Deal Finder Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Scours flights, hotels, packages, and loyalty promos to surface genuine deals and alert travelers when prices dip below their targets.",
+      "Understands historical pricing to separate real savings from fake sales."
+    ],
+    capabilities: [
+      "Monitor saved flight routes daily and alert on drops below target or historical averages",
+      "Detect error fares and true flash sales",
+      "Compare package prices vs DIY bookings",
+      "Track hotel price swings for saved properties",
+      "Surface last-minute deals on unsold inventory",
+      "Recommend booking windows based on seasonal price patterns",
+      "Aggregate loyalty program promos (bonus miles, status challenges, free nights)"
+    ],
+    suggestedPrompts: [
+      "Alert me if Mumbai→New York fares drop under ₹55k anytime this year.",
+      "Is this Bali package cheaper than booking flights + hotel separately?",
+      "Find last-minute hotel + flight deals for Phuket next weekend.",
+      "When is the best window to book Tokyo flights for cherry blossom season?",
+      "Notify me of any Qatar Airways status challenges or Hilton bonus points promos." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
