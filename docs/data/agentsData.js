@@ -1591,6 +1591,38 @@ const agentsData = [
     }
   },
   {
+    id: "health-preventive-tips",
+    name: "Preventive Health Tips Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Pushes daily/weekly/seasonal health education tailored to someone’s age, gender, history, and lifestyle.",
+      "Keeps people ahead of issues with screening reminders, risk assessments, and workplace wellness nudges."
+    ],
+    capabilities: [
+      "Send one actionable tip per day customized to the user’s profile",
+      "Remind users of age/gender-specific screenings and vaccine timelines",
+      "Deliver seasonal guidance (monsoon hygiene, winter immunity, summer heat safety)",
+      "Teach early warning signs for conditions tied to the user’s risk factors",
+      "Run lifestyle risk questionnaires for hypertension/diabetes/heart disease",
+      "Cover workplace wellness topics like ergonomics and mental fatigue",
+      "Track tip engagement to personalize future content"
+    ],
+    suggestedPrompts: [
+      "What preventive tip should I focus on today given my profile?",
+      "When is my next cholesterol or eye screening due?",
+      "Give me seasonal health advice for monsoon travel."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 92,
+      load: 37
+    }
+  },
+  {
     id: "health-weight-management",
     name: "Weight Management Agent",
     category: "health",
