@@ -4076,6 +4076,40 @@ const agentsData = [
       load: 41
     }
   },
+  {
+    id: "travel-flight-search",
+    name: "Flight Search Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Finds and monitors optimal flights across airlines/aggregators based on cost, duration, layovers, and user preferences.",
+      "Tracks price trends and alerts when better options appear."
+    ],
+    capabilities: [
+      "Search direct + connecting flights ranked by cost, duration, stops, or ratings",
+      "Show flexible-date price calendars",
+      "Compare true total costs including baggage, seats, and meals",
+      "Track saved routes for price drops or imminent increases",
+      "Plan multi-city/open-jaw itineraries and compare separate vs package bookings",
+      "Assess layover quality and flag unsafe or opportunity layovers",
+      "Monitor booked flights for schedule changes or better fares"
+    ],
+    suggestedPrompts: [
+      "Find the cheapest vs fastest options from Mumbai to Tokyo in July.",
+      "Show a price calendar for NYC ↔ Paris flights within ±3 days of Sept 10.",
+      "Alert me when the SFO→BKK fare drops below ₹55k.",
+      "Plan an open-jaw trip arriving in Rome and departing from Barcelona.",
+      "My booked flight just changed—can I rebook for a better fare?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 41
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
