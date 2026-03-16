@@ -4144,6 +4144,40 @@ const agentsData = [
       load: 40
     }
   },
+  {
+    id: "travel-local-guide",
+    name: "Local Attraction Guide Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Curates personalized attraction plans that blend must-sees with local gems, plus practical visit logistics tailored to the traveler’s interests.",
+      "Steers travelers away from tourist traps and highlights seasonal specials."
+    ],
+    capabilities: [
+      "Recommend attractions based on traveler personas (history, food, adventure, etc.)",
+      "Provide visit logistics: address, hours, entry fees, crowd timing, transit, bookings",
+      "Highlight hidden gems and local-only experiences",
+      "Sequence visits efficiently by proximity/time requirements",
+      "Flag tourist traps with honest expectations",
+      "Suggest seasonal highlights tied to festivals or natural events",
+      "Build themed lists (street art, UNESCO sites, rooftop bars, temples, etc.)"
+    ],
+    suggestedPrompts: [
+      "Plan a photography-focused day in Lisbon with sunrise/sunset spots.",
+      "What hidden food markets should I visit in Bangkok next month?",
+      "Warn me about overrated attractions in Bali and what to expect.",
+      "Create a UNESCO heritage road trip within 2 hours of Rome.",
+      "List rooftop bars in Singapore with the best skyline views this season." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 40
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
