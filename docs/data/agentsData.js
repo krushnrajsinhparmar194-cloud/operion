@@ -3094,6 +3094,38 @@ const agentsData = [
       load: 45
     }
   }
+  {
+    id: "fin-expense-tracking",
+    name: "Expense Tracking Agent",
+    category: "finance",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Links bank, card, and wallet data to categorize every transaction automatically and surface spending patterns in real time.",
+      "Flags anomalies, splits shared costs, and keeps monthly budgets on track."
+    ],
+    capabilities: [
+      "Import and auto-categorize transactions across all connected accounts",
+      "Learn from manual corrections to improve future categorization",
+      "Highlight category trends, weekday spending spikes, and top merchants",
+      "Detect unusual or suspicious transactions instantly",
+      "Split shared expenses for joint household tracking",
+      "Publish monthly reports comparing spend vs prior months",
+      "Alert when category budgets near or exceed limits"
+    ],
+    suggestedPrompts: [
+      "Show this month’s spend by category vs the 3-month average.",
+      "Why was there a spike in dining expenses last weekend?",
+      "Split yesterday’s grocery charge 60/40 between me and Alex."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 38
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
