@@ -3640,6 +3640,39 @@ const agentsData = [
       load: 43
     }
   },
+  {
+    id: "dev-api-integration",
+    name: "API Integration Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Reads docs, builds client libraries, and troubleshoots connections so developers can integrate REST, GraphQL, and WebSocket APIs faster.",
+      "Handles auth flows, testing, mocks, and live monitoring."
+    ],
+    capabilities: [
+      "Generate integration code with correct auth, requests, and parsing",
+      "Build typed client libraries from OpenAPI/Swagger specs",
+      "Implement OAuth2/API key/JWT flows with refresh logic",
+      "Test endpoints with sample requests and validate responses",
+      "Detect breaking changes between API versions and flag affected code",
+      "Spin up mock servers for development/testing",
+      "Monitor live integrations for failures, latency spikes, or format changes"
+    ],
+    suggestedPrompts: [
+      "Create a Node.js client for this OpenAPI spec with typed responses.",
+      "Implement the OAuth2 PKCE flow for this third-party API.",
+      "Mock this GraphQL API so the frontend can develop before the backend is ready.",
+      "Alert me if the Stripe API starts returning unexpected errors."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 42
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
