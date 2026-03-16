@@ -4212,6 +4212,40 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "travel-weather-advisor",
+    name: "Weather Travel Advisor Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Combines forecasts and climate history to advise when to schedule activities, what to pack, and how to adapt plans when weather shifts.",
+      "Provides microclimate insights and severe-weather alerts for travelers."
+    ],
+    capabilities: [
+      "Provide 14-day forecasts per destination with morning/afternoon/evening breakdowns",
+      "Explain historical climate context vs current forecast",
+      "Sequence daily activities based on expected conditions",
+      "Alert for severe weather (storms, monsoons, heat/cold snaps)",
+      "Advise on microclimates within a region",
+      "Translate weather outlook into packing guidance",
+      "Monitor ongoing weather vs itinerary and notify when adjustments are needed"
+    ],
+    suggestedPrompts: [
+      "Give me a 2-week forecast for Cape Town with best times for outdoor hikes.",
+      "Is this rain pattern in Bali normal for June or unusual?",
+      "Which days should I avoid snorkeling in Maui based on wind and surf forecasts?",
+      "Warn me if a tropical storm threatens Phuket during my travel window.",
+      "What should I pack for a Tokyo trip with temperatures from 5–15°C?" 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
