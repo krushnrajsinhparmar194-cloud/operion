@@ -605,6 +605,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-email-marketing",
+    name: "Email Marketing Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Owns segmentation, creative, automation, and reporting for targeted email programs that nurture leads and drive revenue.",
+      "Protects deliverability while iterating through testing."
+    ],
+    capabilities: [
+      "Segment lists by lifecycle stage, behavior, and purchase history",
+      "Build multi-email nurture sequences for new leads",
+      "Design/promote product launches, promos, and events with polished templates",
+      "Run A/B tests on subject lines, timing, length, and CTAs",
+      "Monitor deliverability metrics and adjust sending practices",
+      "Trigger behavior-based emails (pricing visits, inactivity, etc.)",
+      "Report on opens, CTR, conversions, revenue, unsubscribes with benchmarks"
+    ],
+    suggestedPrompts: [
+      "Create a 6-touch nurture for new freemium signups.",
+      "Send a segmented campaign for customers who viewed pricing yesterday.",
+      "Compare this week’s email performance to last month’s benchmarks."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 41
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
