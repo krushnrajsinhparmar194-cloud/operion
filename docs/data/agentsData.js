@@ -3673,6 +3673,39 @@ const agentsData = [
       load: 42
     }
   },
+  {
+    id: "dev-automation-script",
+    name: "Automation Script Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Writes, tests, and documents automation scripts that eliminate repetitive technical work across ops, data, and deployment workflows.",
+      "Handles everything from shell/Python/PowerShell to web scraping and alerting."
+    ],
+    capabilities: [
+      "Generate shell/Python/PowerShell scripts from natural-language tasks",
+      "Build ETL scripts with transforms, logging, and error handling",
+      "Automate file management with monitoring, naming, routing, and alerts",
+      "Create scheduled maintenance tasks (backups, cleanup, cert checks)",
+      "Write web scraping jobs with pagination, dynamic content, and validation",
+      "Build notification scripts for Slack/email/SMS when thresholds trigger",
+      "Document each script with usage instructions and parameter notes"
+    ],
+    suggestedPrompts: [
+      "Write a Bash script to zip logs older than 7 days and push to S3.",
+      "Create a Python ETL pipeline that cleans CSV data before loading to Postgres.",
+      "Set up a PowerShell task to renew SSL certificates and alert on failures.",
+      "Generate a scraper that handles pagination and rate limiting for this site."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 43
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
