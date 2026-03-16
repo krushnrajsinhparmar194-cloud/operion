@@ -413,6 +413,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-crm-management",
+    name: "CRM Management Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Keeps CRM data trustworthy by automating updates, surfacing pipeline risks, and guiding reps on next actions.",
+      "Ensures contacts, deals, and activity logs stay clean so revenue teams can move faster."
+    ],
+    capabilities: [
+      "Auto-create/update contacts and deals from emails, meetings, calls, and calendars",
+      "Score pipeline health per deal using engagement, inactivity, size, and stage duration",
+      "Alert managers when high-value deals go stale and suggest re-engagement steps",
+      "Continuously verify contact info via external sources and refresh records",
+      "Enforce data quality—detect missing fields, duplicates, and inconsistencies",
+      "Publish deal velocity reports highlighting stage bottlenecks",
+      "Send daily prioritized action lists to each rep"
+    ],
+    suggestedPrompts: [
+      "Which Q2 deals are stalling and what should we do next?",
+      "Refresh contact info for all enterprise accounts before tomorrow’s review.",
+      "Send my prioritized action list for today’s follow-ups."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 44
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
