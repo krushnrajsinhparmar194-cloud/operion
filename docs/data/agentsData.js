@@ -3510,6 +3510,38 @@ const agentsData = [
       load: 38
     }
   },
+  {
+    id: "fin-portfolio-management",
+    name: "Portfolio Management Agent",
+    category: "finance",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Consolidates every investment, tracks performance vs goals, and recommends rebalancing moves to keep risk in check.",
+      "Surfaces inflation-adjusted returns, passive income, and benchmark comparisons."
+    ],
+    capabilities: [
+      "Build unified dashboards with invested capital, current value, absolute/percentage returns, and asset-class splits",
+      "Calculate inflation-adjusted (real) returns",
+      "Compare actual vs target allocation and suggest rebalancing trades",
+      "Track dividends, interest, and maturities to quantify passive income",
+      "Assess risk via volatility, correlations, concentration, and beta",
+      "Benchmark holdings vs relevant indices and flag persistent laggards",
+      "Produce quarterly reviews with performance, risk, allocation, and action items"
+    ],
+    suggestedPrompts: [
+      "Show my consolidated portfolio with real returns and asset allocation drift.",
+      "Which holdings have lagged their benchmarks for the past year?",
+      "Draft the Q2 portfolio review with rebalancing recommendations."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 41
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
