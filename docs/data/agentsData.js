@@ -3350,6 +3350,38 @@ const agentsData = [
       load: 40
     }
   },
+  {
+    id: "fin-loan-emi-calculator",
+    name: "Loan & EMI Calculator Agent",
+    category: "finance",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Evaluates borrowing options, builds amortization schedules, and designs repayment strategies so users grasp the full cost of loans.",
+      "Monitors floating rates and tracks every active loan in one dashboard."
+    ],
+    capabilities: [
+      "Compute EMIs + amortization schedules for any amount/rate/tenure",
+      "Compare loan offers on total cost, effective rate, and fees",
+      "Model prepayment impact on tenure and interest savings",
+      "Balance tenure vs EMI against cash flow constraints",
+      "Track outstanding principal, interest paid, and next EMI per loan",
+      "Alert users to floating-rate changes with recalculated EMIs",
+      "Build debt payoff plans via avalanche or snowball methods"
+    ],
+    suggestedPrompts: [
+      "Compare these two home loan offers and show total interest vs EMI.",
+      "If I prepay ₹50k this month, when will my car loan finish and how much interest do I save?",
+      "Create a debt snowball plan for my personal loans and credit cards."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 41
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
