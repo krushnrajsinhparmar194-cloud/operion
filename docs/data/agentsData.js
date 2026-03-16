@@ -3576,6 +3576,38 @@ const agentsData = [
       load: 55
     }
   },
+  {
+    id: "dev-code-review",
+    name: "Code Review Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Performs automated pull-request reviews that enforce best practices, security rules, and team conventions with line-level feedback.",
+      "Tracks quality trends so teams can coach intentionally."
+    ],
+    capabilities: [
+      "Pre-screen PRs to catch obvious issues before human review",
+      "Check SOLID, design patterns, and clean code compliance with explanations",
+      "Flag security risks (SQL injection, secrets, validation, auth gaps)",
+      "Apply team style guides consistently",
+      "Leave inline comments on the exact lines needing changes",
+      "Differentiate blocking vs non-blocking feedback",
+      "Track quality trends by developer/module over time"
+    ],
+    suggestedPrompts: [
+      "Review this PR for security and clean-code issues before I assign it.",
+      "Explain which SOLID principles this class violates and why.",
+      "Show code quality trends for the payments service over the last quarter."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 44
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
