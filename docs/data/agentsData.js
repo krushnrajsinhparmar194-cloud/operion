@@ -381,6 +381,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-outreach",
+    name: "Sales Outreach Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Takes qualified lists and sends hyper-personalized outreach across channels at the perfect moment.",
+      "Learns from engagement data to keep improving response rates."
+    ],
+    capabilities: [
+      "Craft individualized first-touch emails referencing company, role, or news",
+      "Build multi-channel cadences (email, LinkedIn, call tasks) with timing rules",
+      "A/B test subject lines, hooks, and CTAs to optimize response",
+      "Personalize at scale by merging unique variables into templates",
+      "Schedule sends per prospect’s time zone and historical engagement",
+      "Adjust tone based on seniority (exec vs manager messaging)",
+      "Track delivery/open/click/reply metrics and iterate"
+    ],
+    suggestedPrompts: [
+      "Write a first-touch email to each SaaS CFO in this list referencing their recent funding news.",
+      "Spin up a 4-step cadence (email, LinkedIn, email, call) for APAC retail leads.",
+      "What variant performed best last week and why?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 47
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
