@@ -4110,6 +4110,40 @@ const agentsData = [
       load: 41
     }
   },
+  {
+    id: "travel-hotel-recommendation",
+    name: "Hotel Recommendation Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Finds accommodations that truly fit the trip—location, policies, amenities, and sentiment—not just headline star ratings.",
+      "Tracks price trends and multi-city plans so travelers book with confidence."
+    ],
+    capabilities: [
+      "Filter stays by proximity, cancellation policies, amenities, family/pet needs",
+      "Analyze review sentiment for noise, cleanliness, staff, Wi-Fi, etc.",
+      "Recommend optimal neighborhoods based on planned itinerary",
+      "Compare true value by factoring meals, transfers, and cancellation policies",
+      "Track prices for saved properties and alert on drops/spikes",
+      "Suggest similar alternatives when first-choice options aren’t ideal",
+      "Plan lodging across multi-city trips with recommended night allocations"
+    ],
+    suggestedPrompts: [
+      "Find family-friendly hotels near Rome’s historic center with breakfast and free cancellation.",
+      "Analyze reviews for this Bali resort—what do guests really say about cleanliness and Wi-Fi?",
+      "Alert me if the Kyoto boutique stay drops below ₹12k/night.",
+      "I need comparable alternatives to XYZ Hotel because it’s sold out—what’s nearby?",
+      "Plan lodging for a Paris–Lyon–Nice itinerary with suggested nights per city." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 40
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
