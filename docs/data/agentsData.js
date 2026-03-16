@@ -4349,6 +4349,40 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "travel-language-translation",
+    name: "Language Translation Travel Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Helps travelers communicate anywhere with real-time translation, pronunciation coaching, cultural norms, and emergency language support.",
+      "Understands dialects and warns about false friends so interactions stay respectful."
+    ],
+    capabilities: [
+      "Translate text/speech bidirectionally with dialect awareness",
+      "Provide phonetic and audio guides for key phrases",
+      "Build destination-specific phrasebooks (food, directions, emergencies, bargaining)",
+      "Translate menus/signs/labels via camera input",
+      "Warn about false friends or gestures that change meaning",
+      "Assist with medical/emergency communication templates",
+      "Teach cultural communication etiquette (formality, tone, gratitude expressions)"
+    ],
+    suggestedPrompts: [
+      "Give me essential phrases for Morocco with phonetic pronunciations.",
+      "Translate this restaurant menu photo from Japanese to English.",
+      "How do I explain my nut allergy and asthma to a pharmacist in Spanish?",
+      "What hand gestures should I avoid in Greece and what’s the polite way to say no?",
+      "Provide a quick translator for a conversation with a taxi driver in Hanoi." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
