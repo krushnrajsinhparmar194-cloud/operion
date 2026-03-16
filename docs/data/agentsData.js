@@ -1591,6 +1591,38 @@ const agentsData = [
     }
   },
   {
+    id: "health-hydration-reminder",
+    name: "Hydration Reminder Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Calculates dynamic daily water targets from weight, activity, and climate, then nudges users toward steady intake.",
+      "Logs consumption, accounts for food/beverage water content, and celebrates streaks."
+    ],
+    capabilities: [
+      "Set personalized hydration goals that adjust for workouts or hot weather",
+      "Send timed reminders tuned to the user’s schedule and busy periods",
+      "Track logged intake with a live progress bar toward the daily target",
+      "Remind before/during/after workouts based on exercise intensity",
+      "Educate on dehydration signals like headaches or fatigue",
+      "Estimate water from meals and other drinks for accurate totals",
+      "Celebrate goal completions and streaks to reinforce habits"
+    ],
+    suggestedPrompts: [
+      "What’s my water target today given the afternoon run?",
+      "Log 350ml now and show how close I am to the goal.",
+      "Remind me during the 2-6pm grind—those are my forgetful hours."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 36
+    }
+  },
+  {
     id: "health-sleep-agent",
     name: "Sleep Health Agent",
     category: "health",
