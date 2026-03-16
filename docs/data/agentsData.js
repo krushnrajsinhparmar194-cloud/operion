@@ -3414,6 +3414,38 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "fin-report-analysis",
+    name: "Financial Report Analysis Agent",
+    category: "finance",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Turns dense financial statements into plain-language insights, highlighting growth, risk, and comparative strength.",
+      "Calculates ratios, flags red flags, and summarizes management commentary."
+    ],
+    capabilities: [
+      "Explain P&L, balance sheet, and cash flow line items in simple terms",
+      "Compare multi-year performance to reveal revenue/margin/debt trends",
+      "Auto-calc key ratios with industry benchmarks",
+      "Spot red flags like rising receivables or cashflow/profit disconnects",
+      "Clarify accounting profit vs cash generation",
+      "Summarize MD&A sections (strategy, risks, outlook)",
+      "Compare competing companies side by side"
+    ],
+    suggestedPrompts: [
+      "Break down this company's FY23 annual report in plain language.",
+      "Compare the last three years of margins, debt, and cash flow for Company A.",
+      "Which metrics show Company X is financially stronger than Company Y?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 40
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
