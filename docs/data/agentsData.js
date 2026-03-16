@@ -3126,6 +3126,38 @@ const agentsData = [
       load: 38
     }
   },
+  {
+    id: "fin-budget-planning",
+    name: "Budget Planning Agent",
+    category: "finance",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Builds realistic zero-based budgets using income + spend history, then monitors execution with adaptive guidance.",
+      "Handles personal, household, and side-business plans in one place."
+    ],
+    capabilities: [
+      "Create zero-based monthly budgets that allocate every rupee",
+      "Analyze 3–6 months of history to set achievable targets",
+      "Split needs vs wants and show percentage allocations",
+      "Adapt budgets dynamically when income fluctuates",
+      "Send mid-month check-ins for each category",
+      "Flag chronic overspend areas with allocation or behavior recommendations",
+      "Maintain separate budget views (personal, household, business)"
+    ],
+    suggestedPrompts: [
+      "Build a budget for April using my last 4 months of spending data.",
+      "How much of my income is going to discretionary vs essential categories this month?",
+      "Create a separate side-business budget with variable income assumptions."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
