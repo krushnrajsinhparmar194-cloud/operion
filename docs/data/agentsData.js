@@ -4280,6 +4280,41 @@ const agentsData = [
       load: 38
     }
   },
+  {
+    id: "travel-transport-guide",
+    name: "Transportation Guide Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Explains every transport option—from airport transfers to daily transit and intercity moves—so travelers pick the safest, most efficient choice for each leg.",
+      "Builds day-by-day transport plans with costs, timing, and scams to avoid."
+    ],
+    capabilities: [
+      "Detail airport transfer options with costs and travel times",
+      "Explain local public transit systems (metro, bus, cards, maps)",
+      "Compare intercity transport modes on cost, time, comfort, scenery, booking",
+      "List locally dominant transport apps and their safety/cost profiles",
+      "Advise on vehicle rentals (requirements, driving culture, reputable companies)",
+      "Warn about destination-specific transport scams and avoidance tactics",
+      "Build itinerary transport plans specifying mode, boarding points, fares, and precautions"
+    ],
+    suggestedPrompts: [
+      "What’s the best way to get from Narita Airport to Shibuya at midnight?",
+      "Explain how to use the Lisbon tram + metro system with passes.",
+      "Compare train vs flight vs bus for Barcelona → Madrid next month.",
+      "Which ride-hailing apps work in Cairo and how safe are they?",
+      "Plan daily transport for my London itinerary with Oyster card usage.",
+      "Warn me about common taxi scams in Bangkok and how to avoid them." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
