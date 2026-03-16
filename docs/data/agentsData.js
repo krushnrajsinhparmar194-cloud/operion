@@ -29,6 +29,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-project-management",
+    name: "Project Management Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Turns briefs into structured plans with phases, tasks, dependencies, and resources while tracking execution in real time.",
+      "Highlights critical-path risks, resource overloads, and pending mitigations before they blow up timelines."
+    ],
+    capabilities: [
+      "Generate full project plans (phases, tasks, durations, dependencies) from a goal",
+      "Track task progress live and auto-adjust timelines when schedules change",
+      "Send daily task summaries to each owner",
+      "Identify critical path items and flag delays",
+      "Produce weekly stakeholder reports with progress, milestones, and risks",
+      "Manage resource allocation across projects and call out overbooked teammates",
+      "Maintain risk logs with prompts to assess/mitigate overdue items"
+    ],
+    suggestedPrompts: [
+      "Break this launch brief into a project plan with owners and dependencies.",
+      "What’s on today’s plate for the mobile team and who’s blocked?",
+      "Send a status report for Project Atlas with risks and upcoming milestones."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 95,
+      load: 53
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
