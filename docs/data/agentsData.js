@@ -61,6 +61,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-recruitment-assistant",
+    name: "Recruitment Assistant Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Automates the hiring pipeline—job descriptions, resume triage, scheduling, candidate comms, and analytics—so teams hire faster with less manual work.",
+      "Surfaces insights on funnel health, channel performance, and bottlenecks."
+    ],
+    capabilities: [
+      "Generate tailored, high-converting job descriptions from hiring manager inputs",
+      "Parse and score large resume batches against JD criteria to surface top matches",
+      "Send stage-specific candidate communications automatically",
+      "Coordinate interviews by checking interviewer calendars and dispatching invites",
+      "Produce structured interview question sets aligned to role competencies",
+      "Track funnel metrics (applied, screened, interviewed, offered, accepted) per role",
+      "Analyze hiring data to reveal best-performing channels and drop-off reasons"
+    ],
+    suggestedPrompts: [
+      "Draft a job post for a senior backend engineer focused on Go + microservices.",
+      "Review today’s 120 resumes and shortlist the top 10 that hit the must-haves.",
+      "Show funnel stats for the product designer role and where candidates are dropping." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 52
+    }
+  },
+  {
     id: "qa-product-analyst",
     name: "Product QA Analyst",
     category: "qa",
