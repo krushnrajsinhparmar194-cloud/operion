@@ -3941,6 +3941,40 @@ const agentsData = [
       load: 43
     }
   },
+  {
+    id: "dev-documentation-generator",
+    name: "Documentation Generator Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Keeps technical docs in sync with the codebase by auto-generating docstrings, API references, onboarding guides, ADRs, changelogs, and user-facing manuals.",
+      "Identifies gaps so teams know what to document next."
+    ],
+    capabilities: [
+      "Write docstrings for functions/classes/modules with parameters, returns, and exceptions",
+      "Produce API reference docs from definitions (endpoints, schemas, examples)",
+      "Generate developer onboarding guides and architecture overviews",
+      "Create architecture decision records with rationale and trade-offs",
+      "Detect undocumented code paths and prioritize by usage",
+      "Maintain changelogs/release notes from commits and PRs",
+      "Translate internal docs into external SDK/integration guides and FAQs"
+    ],
+    suggestedPrompts: [
+      "Document this Python package with docstrings and a README overview.",
+      "Generate API reference docs from this OpenAPI spec with examples.",
+      "Create onboarding instructions for new backend engineers joining the project.",
+      "List undocumented endpoints and rank by call frequency.",
+      "Produce release notes for version 2.1 based on these merged PRs." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 41
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
