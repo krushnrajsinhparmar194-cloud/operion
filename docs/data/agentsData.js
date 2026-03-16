@@ -3254,6 +3254,38 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "fin-subscription-management",
+    name: "Subscription Management Agent",
+    category: "finance",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Uncovers every recurring subscription, tracks renewals and usage, and keeps spend lean by flagging underused services.",
+      "Creates proactive alerts before charges hit."
+    ],
+    capabilities: [
+      "Detect recurring transactions across accounts to build a subscription inventory",
+      "Show true monthly vs annual costs per service",
+      "Flag subscriptions with no engagement for 30+ days",
+      "Send 5–7 day renewal alerts to prevent unwanted charges",
+      "Highlight price hikes with annualized impact",
+      "Categorize spend by subscription type",
+      "Estimate savings from cancelling underused services and rank recommendations"
+    ],
+    suggestedPrompts: [
+      "List all active subscriptions with annualized costs.",
+      "Which services haven’t been used in the last month and what would canceling save me?",
+      "Alert me to any upcoming renewals next week."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 38
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
