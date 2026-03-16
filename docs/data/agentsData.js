@@ -3286,6 +3286,38 @@ const agentsData = [
       load: 38
     }
   },
+  {
+    id: "fin-bill-reminder",
+    name: "Bill Payment Reminder Agent",
+    category: "finance",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Keeps a master schedule of every recurring bill and delivers layered reminders so nothing slips through and cash flow stays prepared.",
+      "Flags anomalies and stores a full payment history for reference."
+    ],
+    capabilities: [
+      "Maintain bill calendars for current and upcoming months",
+      "Send reminders 5 days out, 1 day out, and day-of if unpaid",
+      "Track paid vs outstanding bills in real time",
+      "Forecast 7- and 14-day cash outflow needs",
+      "Alert when bill amounts spike vs previous cycles",
+      "Log payment history with amount/date/method",
+      "Prioritize reminders by severity (EMIs vs low-stakes services)"
+    ],
+    suggestedPrompts: [
+      "Show what bills are due in the next two weeks and total cash needed.",
+      "Remind me if any EMI hasn’t been marked paid by the due date.",
+      "Flag any utility bill that jumps more than 20% vs last month."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 38
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
