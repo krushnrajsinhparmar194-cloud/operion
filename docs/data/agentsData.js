@@ -4009,6 +4009,40 @@ const agentsData = [
       load: 41
     }
   },
+  {
+    id: "dev-cloud-management",
+    name: "Cloud Management Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Oversees multi-cloud infra—costs, utilization, security, automation, and DR—to keep environments efficient and compliant.",
+      "Delivers unified dashboards plus monthly governance reports."
+    ],
+    capabilities: [
+      "Provide multi-cloud dashboards for resources, costs, utilization, and health",
+      "Analyze spend to highlight idle/oversized resources, RI/Savings plan options, and storage policies",
+      "Auto-scale resources based on demand patterns",
+      "Enforce security policies (public buckets, permissive SGs, encryption, IAM least privilege)",
+      "Automate routine ops: snapshots, log archiving, cert rotation, AMI cleanup, tagging",
+      "Manage DR readiness with backup verification and RTO/RPO monitoring",
+      "Produce monthly governance reports with cost, security, utilization, and sustainability metrics"
+    ],
+    suggestedPrompts: [
+      "Show a consolidated view of AWS/Azure/GCP costs and top optimization targets.",
+      "Alert me if any storage bucket becomes public or unencrypted.",
+      "Automate nightly snapshots with 30-day retention for all production volumes.",
+      "Are our cross-region replicas meeting RPO targets?",
+      "Generate this month’s cloud governance report by team." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 42
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
