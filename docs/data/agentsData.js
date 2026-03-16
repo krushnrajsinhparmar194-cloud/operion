@@ -1591,6 +1591,38 @@ const agentsData = [
     }
   },
   {
+    id: "health-fitness-tracker",
+    name: "Fitness Activity Tracker Agent",
+    category: "health",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Logs every workout—walking, running, cycling, swimming, or strength sessions—by interpreting device motion and biometrics automatically.",
+      "Turns raw activity data into performance insights, consistency reporting, and plateau-busting recommendations."
+    ],
+    capabilities: [
+      "Auto-detect activity types via motion/HR signals and log them without manual input",
+      "Track run metrics like split pace, cadence, elevation, heart-rate zones, and PRs",
+      "Summarize workouts instantly with calories, distance, effort, and recovery cues",
+      "Visualize weekly consistency vs stated fitness goals to celebrate or course-correct",
+      "Spot plateaus and suggest intensity, duration, or modality tweaks to restart progress",
+      "Maintain sport-specific trends (cycling speed, swim laps, lifting volume)",
+      "Calculate weekly active minutes vs WHO guidelines and highlight any shortfall"
+    ],
+    suggestedPrompts: [
+      "Log today’s 5K automatically and show me pace per km plus HR zones.",
+      "Have I hit the 150 active minutes target this week?",
+      "Suggest tweaks to break the plateau on my cycling speed."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 47
+    }
+  },
+  {
     id: "health-doctor-appointment",
     name: "Doctor Appointment Agent",
     category: "health",
