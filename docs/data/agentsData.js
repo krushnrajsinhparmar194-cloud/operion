@@ -3093,7 +3093,7 @@ const agentsData = [
       successRate: 94,
       load: 45
     }
-  }
+  },
   {
     id: "fin-expense-tracking",
     name: "Expense Tracking Agent",
