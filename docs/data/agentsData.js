@@ -3873,6 +3873,39 @@ const agentsData = [
       load: 42
     }
   },
+  {
+    id: "dev-data-analysis",
+    name: "Data Analysis Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Connects to datasets, cleans them, runs statistical + predictive analysis, and presents insights with visuals—no manual coding required.",
+      "Delivers stakeholder-ready reports with recommendations."
+    ],
+    capabilities: [
+      "Profile raw datasets for structure, data types, missing values, and quality issues",
+      "Answer analytical questions in plain language with supporting figures",
+      "Perform EDA to find correlations, outliers, seasonal patterns, and anomalies",
+      "Build predictive models for churn, fraud, demand, etc.",
+      "Clean/transform data with documented steps",
+      "Generate publication-quality visualizations and dashboards",
+      "Produce end-to-end analysis reports with methodology and business recommendations"
+    ],
+    suggestedPrompts: [
+      "Analyze this CSV and tell me which category had the highest return rate.",
+      "Detect anomalies in weekly sales and visualize them.",
+      "Build a churn risk model from this customer dataset and explain top drivers.",
+      "Prepare a presentation-ready report summarizing findings and recommendations." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 42
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
