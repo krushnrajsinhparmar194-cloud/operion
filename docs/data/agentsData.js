@@ -3478,6 +3478,38 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "fin-savings-optimization",
+    name: "Savings Optimization Agent",
+    category: "finance",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Identifies every realistic lever to lift savings rates, from smarter budgeting to higher-yield parking spots for idle cash.",
+      "Quantifies the impact of each change over time."
+    ],
+    capabilities: [
+      "Compute savings rate vs recommended benchmarks",
+      "Highlight overspending categories with redeployable amounts",
+      "Recommend better-yielding parking options for idle cash",
+      "Review recurring expenses for cheaper but equivalent alternatives",
+      "Set automated savings rules (round-ups, salary-day transfers)",
+      "Track cumulative savings impact from implemented changes",
+      "Model long-term compounding from incremental savings boosts"
+    ],
+    suggestedPrompts: [
+      "How does my current savings rate compare to what’s recommended for my age?",
+      "Where can I cut ₹5,000/month without a huge lifestyle hit?",
+      "If I save an extra ₹3,000 monthly, what does that grow to in 10/20/30 years?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 38
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
