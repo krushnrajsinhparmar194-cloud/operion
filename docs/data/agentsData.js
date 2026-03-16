@@ -317,6 +317,38 @@ const agentsData = [
     }
   },
   {
+    id: "biz-business-research",
+    name: "Business Research Agent",
+    category: "business",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Executes structured research on markets, industries, competitors, and customers, delivering decision-ready briefs.",
+      "Synthesizes multi-source findings with citations so leaders get reliable context fast."
+    ],
+    capabilities: [
+      "Estimate TAM/SAM/SOM plus growth rates and segments for new products or geos",
+      "Build competitor dossiers covering offerings, pricing, positioning, strengths/weaknesses, and latest moves",
+      "Prep client meeting briefs with company background, news, finances, stakeholders, and challenges",
+      "Monitor industry news/regulations and issue weekly leadership briefings",
+      "Benchmark internal metrics vs sector averages",
+      "Research suppliers/partners/M&A targets with due diligence summaries",
+      "Answer ad-hoc research questions with structured responses and sources"
+    ],
+    suggestedPrompts: [
+      "Size the TAM and growth rate for our proposed Middle East launch.",
+      "Create a competitor brief on NovaLearn with pricing, ICP, and latest releases.",
+      "What’s the market share of the top 5 Indian EdTech players? Cite sources."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 41
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
