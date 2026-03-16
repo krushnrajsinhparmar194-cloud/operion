@@ -477,6 +477,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-proposal-quotation",
+    name: "Proposal & Quotation Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Turns deal notes into polished proposals and quotes that follow pricing rules and showcase the right proof points.",
+      "Tracks delivery, approvals, and performance so teams know what messaging wins."
+    ],
+    capabilities: [
+      "Generate formatted proposals (company intro, solution, scope, pricing, timeline, terms) within minutes",
+      "Tailor messaging with prospect-specific challenges, goals, and case studies",
+      "Enforce pricing/discount rules and trigger approvals when thresholds are exceeded",
+      "Track proposal opens/views and schedule follow-ups if unopened",
+      "Offer multi-tier pricing (base/recommended/premium) in a single document",
+      "Maintain version history across negotiations",
+      "Analyze won/lost proposals to learn which structures drive win rates"
+    ],
+    suggestedPrompts: [
+      "Draft a proposal for Apex Retail with logistics pain points and the FashionTech case study.",
+      "Generate three pricing tiers for the SmartOps package and route discounts over 15% for approval.",
+      "Show which proposal formats had the highest win rate last quarter."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 43
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
