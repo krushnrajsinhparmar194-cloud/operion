@@ -445,6 +445,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-forecasting",
+    name: "Sales Forecasting Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Blends pipeline data, historical win rates, seasonality, and risk signals to generate reliable revenue forecasts from rep to company level.",
+      "Keeps leadership ahead of target gaps with proactive alerts and scenario modeling."
+    ],
+    capabilities: [
+      "Produce weekly revenue forecasts by rep, product, region, and company with confidence bands",
+      "Score each open deal’s close probability using ML on historical patterns",
+      "Flag overvalued deals stuck too long in stage vs successful benchmarks",
+      "Model what-if scenarios (deal slips, improved win rates, etc.)",
+      "Track forecast vs actual accuracy and self-correct",
+      "Alert when pipeline coverage drops below target needs",
+      "Maintain a rolling 12-month forecast updated weekly"
+    ],
+    suggestedPrompts: [
+      "Give me this week’s forecast by region with confidence intervals.",
+      "Which deals look overvalued based on stage aging?",
+      "Model the impact if the top three enterprise deals slip one month."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 45
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
