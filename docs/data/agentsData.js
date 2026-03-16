@@ -3975,6 +3975,40 @@ const agentsData = [
       load: 41
     }
   },
+  {
+    id: "dev-version-control",
+    name: "Version Control Assistant Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Optimizes Git workflows by writing consistent commits, guiding branch strategy, resolving conflicts, and keeping repos healthy.",
+      "Handles search, release management, and standards enforcement."
+    ],
+    capabilities: [
+      "Generate descriptive commit messages following team conventions",
+      "Review branch strategies to flag long-lived or stale branches",
+      "Analyze merge conflicts with explanations and suggested resolutions",
+      "Enforce branch naming, PR descriptions, and reviewer requirements",
+      "Search history for when/why a change was made",
+      "Audit repo health for dead branches, large binaries, secrets, and gitignore issues",
+      "Support releases: tagging, changelog generation, commit inclusion, and rollback plans"
+    ],
+    suggestedPrompts: [
+      "Write a conventional commit message for this diff.",
+      "Which branches are more than 30 days old and behind main?",
+      "Help resolve this merge conflict and explain the correct outcome.",
+      "Search history for when we introduced the new pricing logic.",
+      "Generate a changelog and release tag for v1.4 with rollback instructions." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 41
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
