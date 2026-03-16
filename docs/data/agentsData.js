@@ -4418,6 +4418,40 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "travel-packing-checklist",
+    name: "Packing Checklist Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Builds tailored packing lists that match destinations, climates, activities, and airline rules so travelers bring exactly what they need.",
+      "Handles multi-destination trips, document prep, and last-minute reminders."
+    ],
+    capabilities: [
+      "Generate categorized packing lists (clothing, toiletries, docs, electronics, meds, gear)",
+      "Calculate clothing quantities based on trip length, laundry access, and activities",
+      "Adapt lists for multi-climate itineraries",
+      "Include critical document checklists and duplicate storage guidance",
+      "Tailor recommendations for business, beach, trekking, ski, cultural trips, etc.",
+      "Check against airline baggage rules (prohibited items, liquids, estimated weight, carry-on vs checked)",
+      "Send 48-hour reminders with tick-off lists and last-minute items"
+    ],
+    suggestedPrompts: [
+      "Create a packing list for a 10-day Japan trip with city + mountain segments.",
+      "How many outfits should I pack for a week in Bali if I’ll have laundry mid-trip?",
+      "What documents do I need printed for a Schengen + UK combo trip?",
+      "Check this list against Emirates baggage rules—anything I should move to checked?",
+      "Send me a final reminder 48 hours before departure with last-minute essentials." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
