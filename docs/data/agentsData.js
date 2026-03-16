@@ -4178,6 +4178,40 @@ const agentsData = [
       load: 40
     }
   },
+  {
+    id: "travel-budget-planner",
+    name: "Travel Budget Planner Agent",
+    category: "travel",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Plans detailed trip budgets, tracks live spending, and guides adjustments so travelers stay on target without sacrificing experiences.",
+      "Handles multi-currency trips and group expense splits."
+    ],
+    capabilities: [
+      "Estimate costs per category (flights, lodging, transport, meals, activities, shopping, contingency)",
+      "Benchmark destination costs for meals, taxis, transit, and attractions",
+      "Track actual spend vs daily targets in real time",
+      "Alert when categories trend over budget with actionable adjustments",
+      "Support multi-currency trips with unified home-currency views",
+      "Split group expenses and provide settlement summaries",
+      "Produce post-trip variance reports with lessons learned"
+    ],
+    suggestedPrompts: [
+      "Create a detailed budget for a 10-day Italy trip with mid-range spending.",
+      "Show today’s spend vs daily allowance and which categories are over.",
+      "What’s the average cost of meals and taxis in Tokyo so I know if I’m overpaying?",
+      "Split group expenses for our Bali trip and show who owes whom.",
+      "Summarize where my budget vs actual deviated after the trip." 
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
