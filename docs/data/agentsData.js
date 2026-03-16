@@ -3382,6 +3382,38 @@ const agentsData = [
       load: 41
     }
   },
+  {
+    id: "fin-credit-score-monitor",
+    name: "Credit Score Monitoring Agent",
+    category: "finance",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Watches credit scores/reports around the clock, explains drivers, and gives step-by-step plans to reach excellent credit while guarding against fraud.",
+      "Simulates the impact of future credit moves before you act."
+    ],
+    capabilities: [
+      "Track scores from CIBIL, Experian, Equifax with 12-month trends",
+      "Break down payment history, utilization, age, accounts, and inquiries",
+      "Send instant alerts for score changes, new accounts, hard pulls, or negatives",
+      "Flag suspicious entries and guide dispute workflows",
+      "Calculate utilization per card and recommend optimal balances",
+      "Deliver prioritized 3/6/12-month improvement plans",
+      "Simulate score impact of upcoming decisions (new card, loan, etc.)"
+    ],
+    suggestedPrompts: [
+      "Explain why my Experian score dropped 18 points this month.",
+      "What utilization should I target on each card to stay under 30%?",
+      "If I apply for a new credit card, how much might my score dip?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 94,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
