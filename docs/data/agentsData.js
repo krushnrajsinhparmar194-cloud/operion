@@ -829,6 +829,38 @@ const agentsData = [
     }
   },
   {
+    id: "sales-brand-strategy",
+    name: "Brand Strategy Agent",
+    category: "sales",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Builds and protects the brand foundation—positioning, messaging, identity, and health tracking—so every touchpoint stays aligned.",
+      "Translates perception insights into practical brand actions."
+    ],
+    capabilities: [
+      "Define core positioning with clear differentiation",
+      "Create messaging architecture per audience with proof points",
+      "Analyze perception data (feedback, social, surveys) to compare actual vs intended",
+      "Recommend actions to close positioning gaps",
+      "Monitor brand health (awareness, preference, NPS) over time",
+      "Publish guidelines for consistent voice and visual identity across teams",
+      "Advise on brand/extensions or sub-brand strategies for new markets/products"
+    ],
+    suggestedPrompts: [
+      "Craft an updated positioning statement for our AI platform vs legacy vendors.",
+      "What does sentiment analysis say about the gap between how we talk about reliability and how customers perceive it?",
+      "Recommend whether our SMB product should live under a sub-brand before launch."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.25,
+    metrics: {
+      successRate: 93,
+      load: 40
+    }
+  },
+  {
     id: "biz-hr-management",
     name: "HR Management Agent",
     category: "business",
