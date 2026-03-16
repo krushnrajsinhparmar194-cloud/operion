@@ -3608,6 +3608,38 @@ const agentsData = [
       load: 44
     }
   },
+  {
+    id: "dev-bug-detection",
+    name: "Bug Detection Agent",
+    category: "dev",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Combines static and dynamic analysis to surface logic bugs, memory issues, and edge-case failures before code reaches production.",
+      "Delivers root-cause reports with suggested fixes."
+    ],
+    capabilities: [
+      "Run static analysis for null refs, off-by-one, unhandled exceptions, unreachable code, and type mismatches",
+      "Parse logs/stack traces to pinpoint crashing lines and causal chains",
+      "Detect logic flaws that compilers miss (no-op conditionals, dead branches, zero-iteration loops)",
+      "Flag memory/resource leaks (DB connections, file handles, GC pressure)",
+      "Stress-test edge cases (null, empty, extremes, type mismatches)",
+      "Correlate intermittent failures across logs to find common triggers",
+      "Produce bug reports with severity, root cause, locations, and fix suggestions"
+    ],
+    suggestedPrompts: [
+      "Scan this module for null-pointer or off-by-one risks.",
+      "Explain why this intermittent prod error occurs and where to patch it.",
+      "List unhandled edge cases for this API and how to guard against them."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 95,
+      load: 43
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
