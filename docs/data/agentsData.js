@@ -5355,6 +5355,38 @@ const agentsData = [
       load: 31
     }
   },
+  {
+    id: "ent-video-content-creator",
+    name: "Video Content Creator Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Acts like a creative producer for your channel—ideation, scripting, packaging, and scheduling all in one partner.",
+      "Uses your historical performance to tailor ideas, titles, thumbnails, and collab strategies that actually land."
+    ],
+    capabilities: [
+      "Generate niche-specific video ideas tied to your audience data and trending topics.",
+      "Write full scripts with hooks, transitions, natural cadence, and CTAs in your voice.",
+      "Analyze top performers to extract repeatable patterns (topics, titles, thumbnail language, length, openings).",
+      "Provide multiple title options with CTR/search rationale for each.",
+      "Draft descriptions, chapters, and tags optimized for platform algorithms + audience keywords.",
+      "Plan monthly content calendars balancing formats and aligning with seasonal/trending moments.",
+      "Suggest cross-collab partners in adjacent niches with a plan for mutual promotion."
+    ],
+    suggestedPrompts: [
+      "Give me 5 video ideas + hook scripts for my fintech explainer channel this month.",
+      "Rewrite this outline into a full script that matches my usual humor and pacing.",
+      "What should my July content calendar look like around Amazon Prime Day + monsoon season?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.35,
+    metrics: {
+      successRate: 95,
+      load: 33
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
