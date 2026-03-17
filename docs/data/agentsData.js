@@ -5099,6 +5099,38 @@ const agentsData = [
       load: 34
     }
   },
+  {
+    id: "ent-tv-discovery",
+    name: "TV Show Discovery Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Learns which shows you actually finish vs abandon so it surfaces series you'll truly stick with.",
+      "Matches episode length, tone, pacing, and schedule constraints so the next binge feels intentional, not random."
+    ],
+    capabilities: [
+      "Profile completion vs drop-off traits and bias recs toward finish-friendly shows.",
+      "Respect episode length + viewing windows (quick 20-min slots vs weekend binges).",
+      "Find successor shows after a beloved series by matching tone, writing, character depth, and pacing.",
+      "Warn when recommended/saved shows get cancelled so you can decide whether to start.",
+      "Adapt to seasonal preferences (limited series, procedurals, prestige dramas) based on engagement appetite.",
+      "Provide completion difficulty context so you know the time/attention investment required.",
+      "Curate era-specific lists (1990s classics, 2000s prestige cable, recent streaming originals)."
+    ],
+    suggestedPrompts: [
+      "I just finished Succession—what should fill the void with similar writing and tension?",
+      "Give me short 25-min comfort shows for weekday lunches.",
+      "Build a list of essential 1990s TV dramas worth revisiting."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.35,
+    metrics: {
+      successRate: 94,
+      load: 33
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
