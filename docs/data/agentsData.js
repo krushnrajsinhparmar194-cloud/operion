@@ -5451,6 +5451,38 @@ const agentsData = [
       load: 31
     }
   },
+  {
+    id: "ent-entertainment-news",
+    name: "Entertainment News Summary Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Delivers a daily entertainment brief tailored to the sections you care about, so you skip surfing multiple sites.",
+      "Labels reliability + significance and keeps multi-day stories threaded."
+    ],
+    capabilities: [
+      "Structure briefs by category (film, TV, music, gaming, streaming, celebrity) with only high-signal items.",
+      "Personalize which sections and how much depth each gets based on your interests.",
+      "Tag items as confirmed vs rumor/speculation with source reliability indicators.",
+      "Assign significance ratings so you can triage what deserves a deeper read.",
+      "Provide running context for evolving stories (timeline + latest dev).",
+      "Add business/industry implications (mergers, deals, contracts) behind headlines.",
+      "Deliver summaries in preferred format/time (audio AM briefing, lunch text digest, evening roundup)."
+    ],
+    suggestedPrompts: [
+      "Give me a morning briefing covering film + music only, with significance ratings.",
+      "What's the latest on the rumored Paramount/Skydance deal? Thread the coverage from the last week.",
+      "I want a bedtime audio roundup focused on gaming + streaming news at 10pm daily."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 95,
+      load: 31
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
