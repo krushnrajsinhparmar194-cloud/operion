@@ -124,7 +124,9 @@
     .hero-search::placeholder { color: #94a3b8; }
     .hero-search:focus { outline: none; }
     .filter-tabs {
-      display: inline-flex;
+      display: flex;
+      flex: 1;
+      flex-wrap: wrap;
       align-items: center;
       gap: 0.35rem;
       padding: 0.3rem;
@@ -149,8 +151,8 @@
       color: #fff;
       box-shadow: 0 10px 22px rgba(15,23,42,0.3);
     }
-    .filter-tabs-shell { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
-    .filter-dropdown { position: relative; }
+    .filter-tabs-shell { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; width: 100%; }
+    .filter-dropdown { position: relative; margin-left: auto; }
     .more-toggle { border: 1px solid rgba(15,23,42,0.15); border-radius: 999px; padding: 0.35rem 1rem; background: #fff; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3rem; }
     .more-toggle:focus-visible { outline: 2px solid #111827; outline-offset: 2px; }
     .filter-dropdown .chevron { transition: transform 0.2s ease; font-size: 0.85rem; }
@@ -826,11 +828,6 @@
             <button class="filter-tab" data-filter="astrology">Astrology</button>
             <button class="filter-tab" data-filter="news">News</button>
             <button class="filter-tab" data-filter="lifestyle">Lifestyle</button>
-            <button class="filter-tab" data-filter="entertainment">Entertainment &amp; Media</button>
-            <button class="filter-tab" data-filter="shopping">Shopping &amp; Household</button>
-            <button class="filter-tab" data-filter="health">Health &amp; Wellness</button>
-            <button class="filter-tab" data-filter="business">Business &amp; Professional</button>
-            <button class="filter-tab" data-filter="sales">Sales &amp; Marketing</button>
           </div>
           <div class="filter-dropdown">
             <button type="button" class="more-toggle" id="filterMoreBtn" aria-expanded="false" aria-controls="filterDropdownMenu">
@@ -838,6 +835,11 @@
               <span class="chevron" aria-hidden="true">▾</span>
             </button>
             <div class="filter-dropdown-menu" id="filterDropdownMenu" role="menu">
+              <button class="filter-tab" data-filter="entertainment" role="menuitem">Entertainment &amp; Media</button>
+              <button class="filter-tab" data-filter="shopping" role="menuitem">Shopping &amp; Household</button>
+              <button class="filter-tab" data-filter="health" role="menuitem">Health &amp; Wellness</button>
+              <button class="filter-tab" data-filter="business" role="menuitem">Business &amp; Professional</button>
+              <button class="filter-tab" data-filter="sales" role="menuitem">Sales &amp; Marketing</button>
               <button class="filter-tab" data-filter="finance" role="menuitem">Finance</button>
               <button class="filter-tab" data-filter="dev" role="menuitem">Developer &amp; Tech</button>
               <button class="filter-tab" data-filter="travel" role="menuitem">Travel</button>
