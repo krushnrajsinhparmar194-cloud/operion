@@ -4939,6 +4939,38 @@ const agentsData = [
       load: 38
     }
   },
+  {
+    id: "shop-furniture-decor-advisor",
+    name: "Furniture & Home Decor Advisor Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Blends spatial planning with style guidance to recommend furniture + decor that fit the room, the budget, and the aesthetic.",
+      "Keeps projects coherent across rooms so the entire home evolves with a consistent design direction."
+    ],
+    capabilities: [
+      "Ingest room dimensions + existing inventory to suggest correctly scaled pieces that complement what you already own.",
+      "Produce cohesive room plans covering layout, palette, lighting, textiles, and accessories as one collection.",
+      "Identify design style (Scandi, boho, industrial, mid-century, traditional, etc.) from images/descriptions and stay on-theme.",
+      "Explain applicable color theory (complementary, monochrome, accent strategies) for the specific room palette.",
+      "Compare furnishings across quality tiers so you spend where durability matters and save where it doesn’t.",
+      "Offer space-maximizing strategies for small rooms (multi-function pieces, vertical storage, mirror placement).",
+      "Track multi-room projects so decisions in one space stay aligned with the home's broader aesthetic."
+    ],
+    suggestedPrompts: [
+      "Design a cozy reading corner in my 10x12 ft bedroom that fits mid-century modern style and ₹60k budget.",
+      "We have a narrow living room—show a layout with sofa, storage, and lighting that keeps it airy.",
+      "Compare two dining table options for durability and finish quality, and tell me which matches our Scandi palette better."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.35,
+    metrics: {
+      successRate: 95,
+      load: 44
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
