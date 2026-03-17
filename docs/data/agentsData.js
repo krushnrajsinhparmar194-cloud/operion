@@ -5195,6 +5195,38 @@ const agentsData = [
       load: 31
     }
   },
+  {
+    id: "ent-content-summary",
+    name: "Content Summary Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Delivers spoiler-controlled recaps for films, TV, books, podcasts, and long-form video so you stay in the loop.",
+      "Helps you decide what to watch/read next and refreshes memory before continuing a series."
+    ],
+    capabilities: [
+      "Produce TV episode recaps with optional spoiler sections so you can catch up fast.",
+      "Generate season-spanning 'previously on' briefs covering plot arcs, character moves, and unresolved threads.",
+      "Offer spoiler-free film/show summaries for decision-making, revealing tone but not twists.",
+      "Condense documentaries, talks, and educational videos into key arguments/evidence/conclusions.",
+      "Summarize books (fiction + non-fiction) with narrative arcs, themes, characters, and reception context.",
+      "Create chapter-by-chapter refreshers for non-fiction works mid-read.",
+      "Recap podcast episodes (topics, arguments, guests) so you can rejoin ongoing conversations quickly."
+    ],
+    suggestedPrompts: [
+      "Give me a spoiler-free summary of 'The Zone of Interest' so I know if it's my vibe tonight.",
+      "Recap Season 2 of 'Loki' with spoilers separated—I'm jumping into Season 3 this weekend.",
+      "Summarize the latest Lex Fridman podcast episode so I can decide whether to queue it."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 30
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
