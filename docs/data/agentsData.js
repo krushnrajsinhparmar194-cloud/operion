@@ -4651,6 +4651,38 @@ const agentsData = [
       load: 44
     }
   },
+  {
+    id: "shop-smart-shopping",
+    name: "Smart Shopping Assistant Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Acts like a personal shopper that interviews you, researches specs/reviews, and shortlists the best-fit products for any purchase.",
+      "Explains technical tradeoffs and true cost of ownership in plain language so decisions feel informed and confident."
+    ],
+    capabilities: [
+      "Guide users through structured discovery (budget, must-haves, nice-to-haves, deal breakers) and return a top-3 shortlist.",
+      "Translate technical specs—processors, thread counts, energy ratings, safety standards—into outcomes that matter to the user.",
+      "Flag upsells where premium features add cost without fitting the stated use case.",
+      "Surface reliability warnings (recalls, durability complaints, service issues) before a purchase is locked in.",
+      "Compare total cost of ownership by factoring maintenance, consumables, and energy usage, not just sticker price.",
+      "Score each recommendation by confidence (review depth, sentiment consistency, expert tests, brand track record).",
+      "Handle multiple categories within one conversation so the user can jump from appliances to toys to pantry staples."
+    ],
+    suggestedPrompts: [
+      "Help me pick a laptop under ₹80k for photo editing—what three models actually fit my needs?",
+      "I need a child-safe air fryer: explain the specs and any reliability issues I should know about.",
+      "Compare two washing machines over five years of energy + consumable costs and tell me which is smarter."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.35,
+    metrics: {
+      successRate: 95,
+      load: 45
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
