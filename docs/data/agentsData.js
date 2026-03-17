@@ -4907,6 +4907,38 @@ const agentsData = [
       load: 39
     }
   },
+  {
+    id: "shop-home-maintenance-reminder",
+    name: "Home Maintenance Reminder Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Keeps a full-funnel schedule of every home maintenance task and nudges the household before anything becomes urgent.",
+      "Log services, contractors, and costs so the property history stays complete and future planning is easy."
+    ],
+    capabilities: [
+      "Build a comprehensive maintenance calendar (HVAC, water filters, alarms, gutters, pest control, appliances, exterior).",
+      "Send lead-time-tuned reminders (weeks ahead for HVAC, day-of for detectors, etc.).",
+      "Track service history per system with notes on work performed, contractor, cost, and next due date.",
+      "Flag overdue items with risk explanations and projected repair cost impact if deferred further.",
+      "Store and recommend trusted contractors based on past performance and specialty.",
+      "Forecast annual maintenance spend from the schedule + historical invoices for better budgeting.",
+      "Generate property maintenance reports (past 12 months completed, next 12 months upcoming, and overdue tasks)."
+    ],
+    suggestedPrompts: [
+      "Show all maintenance tasks due in the next 60 days with estimated costs and contractor suggestions.",
+      "When did we last service the water heater and who handled it? Schedule the next visit.",
+      "Give me a year-end maintenance report highlighting what’s overdue and what it might cost if delayed."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 38
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
