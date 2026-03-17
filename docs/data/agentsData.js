@@ -4586,7 +4586,8 @@ const agentsData = [
       successRate: 95,
       load: 38
     }
-  },  {
+  },
+  {
     id: "shop-price-comparison",
     name: "Price Comparison Agent",
     category: "shopping",
@@ -4616,6 +4617,38 @@ const agentsData = [
     metrics: {
       successRate: 94,
       load: 41
+    }
+  },
+  {
+    id: "shop-deal-discount",
+    name: "Deal & Discount Finder Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Continuously scrapes coupons, cashbacks, loyalty perks, newsletters, and flash sales tied to what the household actually needs.",
+      "Times major purchases so you capture every available offer—stacking codes, payment promos, and membership perks when allowed."
+    ],
+    capabilities: [
+      "Auto-test and apply valid coupon stacks against the active cart while respecting retailer terms.",
+      "Monitor cashback portals for each planned purchase and route through whichever is offering the best rate right now.",
+      "Track loyalty/credit card points balances and expiries, nudging you before any points lapse with suggested redemptions.",
+      "Map predictable discount cycles (festive sales, year-end clearances) for big-ticket items and advise when to buy or wait.",
+      "Aggregate bank, credit-card, and BNPL promotions so every payment method rebate is captured.",
+      "Flag bulk-buy windows where temporary discounts make stocking up on staples genuinely cheaper over the next few months.",
+      "Model whether paid memberships (Prime, loyalty clubs) are worth the fee based on your historical purchase volume and actual savings."
+    ],
+    suggestedPrompts: [
+      "I'm about to buy a washing machine—when's the next major discount wave and which offers can stack?",
+      "Which cashback portal + bank/card combo gives the best net price for this Nykaa cart today?",
+      "My loyalty points across airlines and grocery chains are expiring soon—show me the smartest way to redeem them."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 44
     }
   },
 ];
