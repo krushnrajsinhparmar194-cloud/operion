@@ -4683,6 +4683,38 @@ const agentsData = [
       load: 45
     }
   },
+  {
+    id: "shop-grocery-management",
+    name: "Grocery List Management Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Builds live grocery lists from meal plans, pantry inventory, and household consumption patterns.",
+      "Organizes shopping by store, aisle, or delivery slot so every grocery run (or order) is efficient and accurate."
+    ],
+    capabilities: [
+      "Generate weekly lists from meal plans, calculating exact ingredient quantities and subtracting what's already in-stock.",
+      "Arrange lists by supermarket aisle/product category to eliminate backtracking during store runs.",
+      "Maintain separate lists per store (supermarket, specialty market, wholesale club) with layouts tailored to each.",
+      "Learn consumption cadence for staples and auto-add replenishment items before the household runs out.",
+      "Ingest recipes, scale servings, and add only the missing ingredients in correct quantities.",
+      "Track price changes on recurring staples and flag spikes with suggested substitutes or alternate retailers.",
+      "Support shared, real-time list updates so multiple shoppers can add/complete items without duplication."
+    ],
+    suggestedPrompts: [
+      "Build this week's grocery list from our 7-day meal plan and tell me what we already have.",
+      "Show me the Costco vs farmers market lists separately and order them by aisle so the trip is faster.",
+      "We're making biryani for 8 people—add the missing ingredients and flag anything that's gone up in price."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 95,
+      load: 47
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
