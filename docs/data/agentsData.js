@@ -4601,7 +4601,7 @@ const agentsData = [
       "Calculate net cost per retailer by combining base price, delivery/membership fees, cashback, coupons, and loyalty points.",
       "Graph price history to show if today's price is exceptional or if waiting typically saves more.",
       "Compare pack sizes and formats to output cost per gram/litre/item, spotting better bulk value.",
-      "Detect private-label equivalents produced by the same manufacturer as premium brands for parity savings.",
+      "Detect private-label equivalents produced by the same manufacturer as premium brands for parity savings.,
       "Send real-time alerts when a watched item truly drops in price (filtering out fake discount theatre).",
       "Model subscription vs one-off purchases and show the break-even cadence where subscriptions win.",
       "Score each retailer on delivery speed, authenticity, and returns so the lowest price still meets reliability needs."
@@ -4713,6 +4713,38 @@ const agentsData = [
     metrics: {
       successRate: 95,
       load: 47
+    }
+  },
+  {
+    id: "shop-household-inventory",
+    name: "Household Inventory Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Keeps a live inventory of pantry items, cleaning supplies, toiletries, meds, and household essentials with smart alerts.",
+      "Learns consumption + expiry patterns so nothing runs out or goes bad before the household can use it."
+    ],
+    capabilities: [
+      "Monitor stock levels item-by-item and trigger alerts below minimum thresholds with one-tap re-order links.",
+      "Model consumption cadence for each item to time reorders before supplies actually run out.",
+      "Track expiry dates for perishables/medications and suggest recipes or use-cases to consume them in time.",
+      "Maintain a full medicine cabinet log (dosages, expiry, remaining quantity) with low/expired alerts.",
+      "Produce on-demand household audits showing stock, last purchase date, average burn rate, and days to reorder.",
+      "Analyze supply spend by category month-over-month to highlight rising costs or savings.",
+      "Flag bulk-buy opportunities when a monitored item is discounted and matches the household's consumption velocity."
+    ],
+    suggestedPrompts: [
+      "Show me what's about to run out this week and drop the quick order links in priority order.",
+      "Give me an audit of pantry + cleaning supplies with days of stock left and last purchase dates.",
+      "Which meds expire next month and are any of them already below the minimum quantity?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 95,
+      load: 46
     }
   },
 ];
