@@ -5387,6 +5387,38 @@ const agentsData = [
       load: 33
     }
   },
+  {
+    id: "ent-media-review",
+    name: "Media Review Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Synthesizes critic + audience sentiment for films, TV, games, music, and books with full context.",
+      "Explains consensus vs controversy so you can judge if a title fits your taste."
+    ],
+    capabilities: [
+      "Aggregate critic, verified audience, and specialist community reviews into credibility-weighted scores.",
+      "Highlight points of agreement vs disagreement across reviewers.",
+      "Explain critic vs audience splits and the likely drivers (quality bars, controversy, marketing).",
+      "Weight reviews from critics you usually agree with more heavily for personalized composites.",
+      "Track score trajectories over time (e.g., post-patch game improvements).",
+      "Detect review bombs/manipulated spikes and flag them separately.",
+      "Provide spoiler-tiered summaries: spoiler-free verdict + deeper thematic analysis."
+    ],
+    suggestedPrompts: [
+      "Give me the honest consensus on 'Dune: Part Two' and why some people disliked the ending.",
+      "Has 'Cyberpunk 2077' improved enough post 2.0 patch to recommend now?",
+      "Summarize critics I align with on indie games and tell me what they’re saying about 'Animal Well'."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 32
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
