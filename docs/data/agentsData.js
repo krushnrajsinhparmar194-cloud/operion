@@ -5483,6 +5483,38 @@ const agentsData = [
       load: 31
     }
   },
+  {
+    id: "ent-watchlist-management",
+    name: "Watchlist Management Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Turns your overflowing watchlist into an organized, actionable plan across mood, time, and platforms.",
+      "Surfaces the right pick for tonight, flags stale entries, and keeps everything synced across services."
+    ],
+    capabilities: [
+      "Categorize entries by mood, genre, length, platform, and social context.",
+      "Run quick preference checks (time, mood, companions, intensity) to suggest the best item to watch now.",
+      "Detect stale items (e.g., >1 year ignored) and prompt watch-or-remove decisions.",
+      "Alert when items are leaving streaming services so you prioritize them.",
+      "Consolidate watchlists from multiple platforms into a single master list.",
+      "Track partially watched content with progress + rewatch recommendations if too much time has passed.",
+      "Generate periodic health reports (total runtime, add vs complete velocity, list growth trends)."
+    ],
+    suggestedPrompts: [
+      "I have 45 minutes, in a lighthearted mood, watching solo—what from my list should I watch?",
+      "Show my stale items over 12 months old and ask if I still care.",
+      "Give me this month’s watchlist health summary with priorities before titles leave streaming."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 30
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
