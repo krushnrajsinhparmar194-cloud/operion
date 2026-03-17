@@ -5035,6 +5035,38 @@ const agentsData = [
       load: 36
     }
   },
+  {
+    id: "ent-movie-recommendation",
+    name: "Movie Recommendation Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Builds a high-fidelity taste graph from watch history, ratings, moods, and creator preferences to surface spot-on films.",
+      "Explains every pick and finds blind-spot gems so recommendations feel curated, not generic."
+    ],
+    capabilities: [
+      "Model preferences beyond broad genres (slow-burn psychological thrillers vs action thrillers, etc.).",
+      "Adapt recs to the user's current mood or vibe request (comfort watch vs emotionally intense).",
+      "Surface overlooked titles across foreign/indie/docs/older catalogs that align with the user's patterns.",
+      "Provide tailored reasoning for each recommendation referencing structures, pacing, themes, or creators the user loves.",
+      "Track watched/low-rated films to avoid repeats and filter out disliked characteristics.",
+      "Assemble themed watchlists (decade highlights, director retrospectives, topic deep dives) on demand.",
+      "Blend multiple taste profiles for group nights so suggestions overlap everyone's preferences."
+    ],
+    suggestedPrompts: [
+      "I'm in the mood for a moving slow-burn tonight—what should I watch?",
+      "Build a watchlist of underrated 2010s foreign thrillers I probably missed.",
+      "Find a movie my partner (rom-com fan) and I (sci-fi drama fan) will both enjoy this weekend."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.4,
+    metrics: {
+      successRate: 94,
+      load: 35
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
