@@ -4811,6 +4811,38 @@ const agentsData = [
       load: 42
     }
   },
+  {
+    id: "shop-product-review-analysis",
+    name: "Product Review Analysis Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Ingests reviews from every major platform, filters out noise/fakes, and translates the signal into actionable buyer guidance.",
+      "Highlights praise, pain points, and authenticity-adjusted scores so households buy with confidence."
+    ],
+    capabilities: [
+      "Aggregate Amazon, Flipkart, Google Shopping, brand sites, and independent reviews into one corpus.",
+      "Mine praise vs pain themes from actual review text (not just star ratings) to show what buyers love or regret.",
+      "Detect fake/incentivized reviews via language patterns, reviewer history, and rating anomalies; output authenticity-adjusted scores.",
+      "Segment feedback by purchase date to surface quality drift or version-to-version changes.",
+      "Filter the corpus by user priorities (durability, battery life, fabric feel, etc.) so relevant reviews show first.",
+      "Quantify recurring faults/failure modes by estimating what percent of buyers reported each issue.",
+      "Compare competing products side-by-side with attribute-level sentiment so users pick the most reliable option."
+    ],
+    suggestedPrompts: [
+      "Compare the LG vs Samsung 7kg front-load washers using only authentic reviews focused on longevity.",
+      "Has the latest Kindle Paperwhite quality dipped compared to last year's model?",
+      "Summarize the top praise and top complaints for this air purifier and give me an authenticity-adjusted score."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 40
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
