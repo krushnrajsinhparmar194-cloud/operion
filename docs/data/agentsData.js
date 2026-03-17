@@ -4747,6 +4747,38 @@ const agentsData = [
       load: 46
     }
   },
+  {
+    id: "shop-order-tracking",
+    name: "Order Tracking Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Consolidates every online order across retailers/carriers into one live dashboard with milestone alerts.",
+      "Handles delays, missed deliveries, returns, and refunds automatically so users never chase status emails."
+    ],
+    capabilities: [
+      "Parse confirmation emails automatically to create tracking entries without manual number entry.",
+      "Show a unified timeline of all active deliveries with current status, ETA, carrier, and retailer metadata.",
+      "Send meaningful milestone notifications (dispatched, out for delivery, delivered, failed attempt) right when they matter.",
+      "Detect delays by comparing promised vs actual progress and surface revised estimates instantly.",
+      "Generate pre-filled retailer/carrier complaints for missing or damaged items with tracking history attached.",
+      "Track return shipments + refunds alongside incoming orders and alert when timelines exceed policy.",
+      "Maintain historical performance analytics by retailer/carrier so users pick vendors who deliver reliably."
+    ],
+    suggestedPrompts: [
+      "Summarize every package arriving this week and flag anything running late.",
+      "File a missing-delivery claim for my Flipkart order with all details pre-filled.",
+      "Where's my return to Myntra stuck, and has the refund window already been exceeded?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 43
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
