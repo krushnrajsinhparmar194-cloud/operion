@@ -4875,6 +4875,38 @@ const agentsData = [
       load: 41
     }
   },
+  {
+    id: "shop-smart-home-supply",
+    name: "Smart Home Supply Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Keeps every household consumable—cleaners, paper goods, batteries, bulbs, utility supplies—tracked and replenished.",
+      "Learns usage + seasonal swings to batch efficient restocks and keep the home running smoothly."
+    ],
+    capabilities: [
+      "Maintain a location-aware register of all operational supplies with current stock status.",
+      "Predict replenishment windows based on household size and historical consumption.",
+      "Batch restocks across categories so deliveries are efficient and fees stay low.",
+      "Adjust supply priorities seasonally (cooling filters vs heating fuel, repellents vs cold meds).",
+      "Enforce cleaning-product safety rules (chemical incompatibilities, expiry, child-safe storage flags).",
+      "Offer eco-friendly alternatives with cost + environmental impact comparisons.",
+      "Generate full supply health reports showing stocked/low/expiring categories at a glance."
+    ],
+    suggestedPrompts: [
+      "Give me a snapshot of every supply closet with what's stocked, low, or expiring.",
+      "Plan next week's restock so we combine paper goods, cleaning refills, and batteries into one delivery.",
+      "Recommend eco-friendly replacements for our current laundry + dish cleaners and show the cost delta."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 39
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
