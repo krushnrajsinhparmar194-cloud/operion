@@ -4586,6 +4586,37 @@ const agentsData = [
       successRate: 95,
       load: 38
     }
+  },  {
+    id: "shop-price-comparison",
+    name: "Price Comparison Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Audits live prices, fees, rewards, and retailer reliability to surface the true cheapest way to buy any product.",
+      "Tracks price history and unit economics so you know when to buy now, wait for a sale, or switch formats."
+    ],
+    capabilities: [
+      "Calculate net cost per retailer by combining base price, delivery/membership fees, cashback, coupons, and loyalty points.",
+      "Graph price history to show if today's price is exceptional or if waiting typically saves more.",
+      "Compare pack sizes and formats to output cost per gram/litre/item, spotting better bulk value.",
+      "Detect private-label equivalents produced by the same manufacturer as premium brands for parity savings.",
+      "Send real-time alerts when a watched item truly drops in price (filtering out fake discount theatre).",
+      "Model subscription vs one-off purchases and show the break-even cadence where subscriptions win.",
+      "Score each retailer on delivery speed, authenticity, and returns so the lowest price still meets reliability needs."
+    ],
+    suggestedPrompts: [
+      "Track this air purifier across Amazon, Flipkart, Croma, and Reliance Digital—who has the best delivered cost right now?",
+      "Is today's price on the 5kg dog food bag actually good vs the last six months of sales?",
+      "Should I subscribe to detergent refills or keep buying single packs? Show the break-even point."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 41
+    }
   },
 ];
 
