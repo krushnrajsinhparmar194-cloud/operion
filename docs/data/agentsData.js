@@ -5419,6 +5419,38 @@ const agentsData = [
       load: 32
     }
   },
+  {
+    id: "ent-fan-community",
+    name: "Fan Community Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Helps you plug into the best fandom communities for your franchises and keeps you looped into top discussions.",
+      "Highlights theories, reactions, and fan-made creations tailored to your niche interests."
+    ],
+    capabilities: [
+      "Map high-quality communities (Reddit, Discord, fan sites, socials) per property and recommend the right fit.",
+      "Curate standout threads, analyses, and creations so you skip the noise.",
+      "Send alerts when major conversations erupt (new theory traction, creator drop-ins, breaking news).",
+      "Summarize release-day fan sentiment with spoiler controls if you haven’t watched yet.",
+      "Connect you with sub-communities focused on specific characters/eras/aspects.",
+      "Surface fan art/fic/video essays/podcasts you'll appreciate.",
+      "Help craft thoughtful posts, theory breakdowns, and advise on best community + timing for sharing."
+    ],
+    suggestedPrompts: [
+      "Where should I hang out for thoughtful discussions about 'House of the Dragon'?",
+      "Recap the biggest fan theories after the latest 'Attack on Titan' episode—no spoilers please.",
+      "Help me draft a post analyzing the new Zelda timeline reveal and suggest the best subreddit to share it."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.35,
+    metrics: {
+      successRate: 94,
+      load: 31
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
