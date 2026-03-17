@@ -4601,7 +4601,7 @@ const agentsData = [
       "Calculate net cost per retailer by combining base price, delivery/membership fees, cashback, coupons, and loyalty points.",
       "Graph price history to show if today's price is exceptional or if waiting typically saves more.",
       "Compare pack sizes and formats to output cost per gram/litre/item, spotting better bulk value.",
-      "Detect private-label equivalents produced by the same manufacturer as premium brands for parity savings.,
+      "Detect private-label equivalents produced by the same manufacturer as premium brands for parity savings.",
       "Send real-time alerts when a watched item truly drops in price (filtering out fake discount theatre).",
       "Model subscription vs one-off purchases and show the break-even cadence where subscriptions win.",
       "Score each retailer on delivery speed, authenticity, and returns so the lowest price still meets reliability needs."
