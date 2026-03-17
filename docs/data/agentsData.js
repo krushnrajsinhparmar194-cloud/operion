@@ -5131,6 +5131,38 @@ const agentsData = [
       load: 33
     }
   },
+  {
+    id: "ent-streaming-guide",
+    name: "Streaming Guide Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Knows where every film/show/doc is streaming in your region and keeps watchlists synced across services.",
+      "Optimizes subscriptions by alerting you to arrivals, departures, rental windows, and value per platform."
+    ],
+    capabilities: [
+      "Instantly tell you which platform (and tier) carries a specific title, including rental/purchase requirements.",
+      "Monitor watchlists and ping you before a saved title leaves a service.",
+      "Highlight which existing subscriptions contain the most unwatched items so you know what to keep or pause.",
+      "Alert when a rental-only title is scheduled to land on a subscription you already have.",
+      "Compare platform libraries vs your taste graph to recommend the best bundle for cost/content value.",
+      "Curate new-arrival lists filtered by your preferences so you only see meaningful additions.",
+      "Handle multi-profile households by keeping separate availability/recommendations while tracking combined spend."
+    ],
+    suggestedPrompts: [
+      "Where can I stream 'Past Lives' in India right now, and is it part of any subscription I have?",
+      "Notify me if 'The Bear' is leaving Hotstar soon.",
+      "Which two streaming services should our family keep this quarter for maximum overlap with our watchlists?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 32
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
