@@ -5163,6 +5163,38 @@ const agentsData = [
       load: 32
     }
   },
+  {
+    id: "ent-gaming-recommendation",
+    name: "Gaming Recommendation Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Understands your completed, abandoned, and wishlist titles across platforms to suggest games you'll actually finish.",
+      "Matches recommendations to available time, platforms, and preferred mechanics so play sessions feel intentional."
+    ],
+    capabilities: [
+      "Analyze finished favorites to extract gameplay mechanics, narrative depth, difficulty, and session cadence preferences.",
+      "Distinguish recommendations for 15-min mobile bursts vs 2-hour console evenings vs weekend marathons.",
+      "Prioritize your backlog based on mood, time available, and average completion length.",
+      "Watch wishlist pricing across Steam, PlayStation Store, Xbox, and Nintendo eShop and alert on sales.",
+      "Highlight upcoming releases aligned with your taste and provide a personalized release calendar (3–6 months).",
+      "Scan Game Pass/PS Plus/Apple Arcade catalogs for titles you already pay for but haven’t tried.",
+      "Warn about technical issues or poor launch value so you know when to buy now vs wait for patches/price drops."
+    ],
+    suggestedPrompts: [
+      "I have 30 minutes on mobile tonight—what should I play that fits my puzzle/strategy streak?",
+      "Which story-driven console game should I start next from my backlog of Control, Jedi Survivor, and Deathloop?",
+      "List the upcoming PC releases in the next 3 months I should keep on my radar and note preorder advice."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.35,
+    metrics: {
+      successRate: 94,
+      load: 31
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
