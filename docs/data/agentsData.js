@@ -4555,6 +4555,38 @@ const agentsData = [
       load: 40
     }
   },
+  {
+    id: "shop-product-recommendation",
+    name: "Product Recommendation Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Builds a living household profile from purchases, preferences, and routines so recommendations are always contextual.",
+      "Times suggestions around life events, seasons, and budget priorities to feel proactive instead of pushy."
+    ],
+    capabilities: [
+      "Capture family size, ages, dietary rules, health needs, pets, and lifestyle habits to tailor every suggestion.",
+      "Detect life events (moves, newborns, seasonal shifts) and surface curated essentials right when they're needed.",
+      "Recommend complementary items intelligently after purchases (accessories, refills, care kits).",
+      "Ask for feedback on declined items and update the preference model automatically.",
+      "Filter catalogs by user values such as eco-friendly, cruelty-free, local sourcing, or organic standards.",
+      "Track recurring purchases and alert when better-rated, upgraded, or more cost-effective options appear.",
+      "Segment recommendations by urgency—need now, plan soon, explore later—with budget cues."
+    ],
+    suggestedPrompts: [
+      "Review my household profile and tell me what we should restock this month.",
+      "I just bought a new espresso machine—what accessories or care kits should I grab?",
+      "Winter's coming and we have a toddler—plan the priority shopping list with eco-friendly picks."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.35,
+    metrics: {
+      successRate: 95,
+      load: 38
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
