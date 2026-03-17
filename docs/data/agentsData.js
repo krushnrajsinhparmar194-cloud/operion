@@ -4843,6 +4843,38 @@ const agentsData = [
       load: 40
     }
   },
+  {
+    id: "shop-subscription-reorder",
+    name: "Subscription & Reorder Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Oversees every household subscription and auto-reorder so quantities, cadence, and spend stay optimized.",
+      "Balances never running out with never over-buying by tying schedules to consumption + inventory signals."
+    ],
+    capabilities: [
+      "Audit all active subscriptions across retailers with spend, frequency, and next delivery snapshots.",
+      "Tune quantity/frequency based on actual burn rate so items neither run out early nor pile up.",
+      "Flag subscriptions that aren't truly cheaper than promo-cycle buying and recommend smarter alternatives.",
+      "Auto-pause when inventory is healthy and resume when stock falls to reorder thresholds.",
+      "Stagger deliveries across the month to smooth door-drop clusters and align with cash-flow preferences.",
+      "Monitor subscription price changes and alert when retailers quietly raise rates.",
+      "Suggest new subscription candidates from frequently repeated one-off purchases." 
+    ],
+    suggestedPrompts: [
+      "Show my current subscription spend, next deliveries, and where we're overstocked.",
+      "We keep running out of pet food before the auto-ship—adjust the cadence and quantity.",
+      "Which items should be moved onto subscription because we buy them every month anyway?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 41
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
