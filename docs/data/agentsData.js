@@ -4779,6 +4779,38 @@ const agentsData = [
       load: 43
     }
   },
+  {
+    id: "shop-home-budget",
+    name: "Home Budget Shopping Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Bridges household shopping with the family budget by tracking planned vs actual spend per category in real time.",
+      "Helps prioritize purchases, model tradeoffs, and pick the most cost-effective strategy for every shopping basket."
+    ],
+    capabilities: [
+      "Set monthly allocations for groceries, supplies, clothing, electronics, and home goods, then monitor burn-down live.",
+      "Rank shopping lists by necessity when funds are tight and suggest which items to buy now vs defer.",
+      "Optimize grocery spend by recommending the best store mix + timing for the current basket.",
+      "Track impulse/non-essential purchases and summarize planned vs unplanned spend each month.",
+      "Model large upcoming buys (appliances, furniture) and show whether to buy now, wait for a sale, or finance over time.",
+      "Compare home-cooking vs meal kits vs prepared delivery costs for the household's weekly eating pattern.",
+      "Issue weekly budget digests with category spend, remaining funds, and on-track/overrun projections."
+    ],
+    suggestedPrompts: [
+      "We only have ₹15k left for household shopping—what should we prioritize and what can slip to next month?",
+      "Is it cheaper for our family of four to stick with meal kits or go back to home cooking this month?",
+      "Show this week's spend vs budget across groceries, supplies, and discretionary shopping with forecasts."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 42
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
