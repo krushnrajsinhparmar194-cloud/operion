@@ -4971,6 +4971,38 @@ const agentsData = [
       load: 44
     }
   },
+  {
+    id: "shop-energy-utility-monitor",
+    name: "Energy & Utility Monitoring Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Connects to smart meters + utility portals to visualize electricity, water, and gas usage in real time.",
+      "Surfaces inefficiencies, faults, tariff opportunities, and actionable savings plans for the household."
+    ],
+    capabilities: [
+      "Show live energy draw per appliance/system with rupee-per-hour burn and historical comparisons.",
+      "Break down the top consumption contributors so conservation focuses where payoff is highest.",
+      "Detect abnormal spikes that hint at faults (continuous heaters, fridge seal failures, hidden leaks).",
+      "Benchmark usage vs similar households and last year's period to contextualize performance.",
+      "Model savings from behavioral tweaks (thermostat changes, off-peak dishwasher runs, standby shutdowns).",
+      "Monitor tariff changes/time-of-use options and recommend switches when patterns align.",
+      "Generate monthly utility reports with trends, YoY deltas, carbon estimates, and prioritized action lists."
+    ],
+    suggestedPrompts: [
+      "Why is today's electricity usage 20% higher than last Tuesday? Show the culprits.",
+      "If we raise the AC setpoint by 2°C and run laundry off-peak, how much would we save annually?",
+      "Review my last three bills and tell me if a time-of-use tariff would be cheaper."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 37
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
