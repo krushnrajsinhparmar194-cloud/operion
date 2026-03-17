@@ -5003,6 +5003,38 @@ const agentsData = [
       load: 37
     }
   },
+  {
+    id: "shop-household-task-organizer",
+    name: "Household Task Organizer Agent",
+    category: "shopping",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Creates structured chore/cleaning cadences tailored to the household and keeps everyone accountable.",
+      "Balances workload by assigning, reminding, and tracking tasks so no one person carries the entire load."
+    ],
+    capabilities: [
+      "Build full task schedules across daily/weekly/fortnightly/monthly/seasonal cadence per room/need.",
+      "Distribute chores by availability, age-appropriateness, and capacity with clear expectations.",
+      "Send individual reminders so each member knows exactly what to do and when.",
+      "Track completion data to highlight on-time vs delayed vs skipped tasks.",
+      "Auto-adjust during busy weeks by deferring non-critical chores while protecting essentials.",
+      "Maintain deep-cleaning calendars (ovens, washer drums, grout, curtains, mattress rotation).",
+      "Produce weekly summaries showing completed/missed/carry-forward tasks and completion rate."
+    ],
+    suggestedPrompts: [
+      "Design a weekly chore plan for two adults + two kids with clear assignments.",
+      "We have exams this week—trim the task list to only essential items.",
+      "Show last week's completion report and who needs follow-ups."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 36
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
