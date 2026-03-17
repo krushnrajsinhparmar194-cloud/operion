@@ -5067,6 +5067,38 @@ const agentsData = [
       load: 35
     }
   },
+  {
+    id: "ent-music-recommendation",
+    name: "Music Recommendation Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Reads listening history, skips, saves, and context signals to serve music that fits both taste and moment.",
+      "Blends discovery with deep-catalog exploration so users get fresh finds plus hidden gems from favorites."
+    ],
+    capabilities: [
+      "Generate context-aware playlists (workouts, focus, wind-down, parties) with the right energy/tempo/mood.",
+      "Surface emerging artists predicted to resonate based on acoustic/lyric similarity and lookalike listeners.",
+      "Detect shifts in taste over time and gradually weave in the new direction.",
+      "Uncover deep cuts, B-sides, collaborations, and back-catalog gems for beloved artists.",
+      "Find music that sounds like a reference track/artist by analyzing sonic + structural fingerprints.",
+      "Create occasion playlists (anniversary year charts, decade spotlights, regional/cultural themes).",
+      "Alert users when followed artists drop new releases so nothing is missed."
+    ],
+    suggestedPrompts: [
+      "Build me a 45-minute deep-focus playlist for late-night work.",
+      "I love Khruangbin—show me lesser-known artists with similar grooves.",
+      "Create an anniversary playlist of songs that charted in 2012 when we met."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.35,
+    metrics: {
+      successRate: 94,
+      load: 34
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
