@@ -5323,6 +5323,38 @@ const agentsData = [
       load: 32
     }
   },
+  {
+    id: "ent-event-concert",
+    name: "Event & Concert Finder Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Keeps tabs on tours, festivals, and cultural events you care about and shepherds you from discovery to booked tickets.",
+      "Lines up alerts, pricing intel, and logistics so you never miss a show within your travel radius."
+    ],
+    capabilities: [
+      "Monitor artist/performer announcements and alert when they schedule dates near your set locations.",
+      "Manage pre-sale codes + on-sale reminders so you’re ready before tickets vanish.",
+      "Recommend adjacent events (similar artists/genres) to broaden live experiences.",
+      "Aggregate primary + secondary ticket prices and watch resale drops vs thresholds.",
+      "Coordinate travel/lodging ideas when an event requires a trip and check date conflicts with planned travel.",
+      "Learn from past attendance (venue types, event formats) to refine future recs.",
+      "Send pre-event briefings covering venue info, timing, transport/parking, support acts, and restrictions."
+    ],
+    suggestedPrompts: [
+      "Ping me the moment The Weeknd adds dates within 300 km of Mumbai—pre-sale codes too.",
+      "Find a comedy show in Bengaluru next month similar to Hannah Gadsby’s style.",
+      "I got waitlisted for Coldplay—alert me if resale prices drop under ₹8k and suggest travel if Delhi works out."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 94,
+      load: 31
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
