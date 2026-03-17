@@ -5259,6 +5259,38 @@ const agentsData = [
       load: 33
     }
   },
+  {
+    id: "ent-celebrity-news",
+    name: "Celebrity News Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Curates credible updates about the celebrities you actually follow, emphasizing professional news over gossip.",
+      "Fact-checks viral stories and explains the business context so you can act on real information."
+    ],
+    capabilities: [
+      "Monitor verified social feeds, press releases, and reputable entertainment journalism for followed figures.",
+      "Filter news by type (projects, awards, personal life) so you can hide tabloid chatter if desired.",
+      "Flag unverified rumors separately from confirmed news with clear status labels.",
+      "Track career milestones: new films, albums, tours, collaborations, and release schedules.",
+      "Explain industry context when someone exits a project or signs a major deal.",
+      "Surface business-side developments (production shingle launches, platform signings, brand partnerships).",
+      "Send alerts for time-sensitive announcements (ticket drops, pre-orders, limited streaming windows)."
+    ],
+    suggestedPrompts: [
+      "Only send me professional updates about Emma Stone—no tabloid stuff.",
+      "Verify whether the rumor about that K-pop group splitting is true before I panic.",
+      "What did Taylor Swift announce this week and when do tickets go on sale?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 95,
+      load: 32
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
