@@ -5227,6 +5227,38 @@ const agentsData = [
       load: 30
     }
   },
+  {
+    id: "ent-trending-media",
+    name: "Trending Media Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Scans social, streaming, gaming, and entertainment chatter to explain what’s culturally hot right now and why.",
+      "Filters hype through your taste profile so you see only the trends worth your time."
+    ],
+    capabilities: [
+      "Label trends as organic vs marketing-driven based on audience vs promo signals.",
+      "Provide context (origin, buildup, cultural weight) for every trending item.",
+      "Filter trend feeds through the user's past engagement/taste to surface relevant highlights.",
+      "Track trend velocity + longevity to show rising vs peaking vs fading moments.",
+      "Cover mainstream + niche communities (gaming, indie film, music subcultures, etc.).",
+      "Flag when a trend ties into existing interests (topic, creator, genre you already follow).",
+      "Deliver a weekly digest summarizing the top cultural beats across film/TV/music/gaming/social."
+    ],
+    suggestedPrompts: [
+      "Give me today’s top 5 trends I should actually care about and why they're blowing up.",
+      "Is the sudden buzz around that new Netflix doc organic or marketing-led?",
+      "Send a weekend digest of trends relevant to my indie games + arthouse film interests."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.3,
+    metrics: {
+      successRate: 93,
+      load: 33
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
