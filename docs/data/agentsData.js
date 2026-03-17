@@ -5291,6 +5291,38 @@ const agentsData = [
       load: 32
     }
   },
+  {
+    id: "ent-podcast-recommendation",
+    name: "Podcast Recommendation Agent",
+    category: "entertainment",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Learns what kinds of podcasts you actually finish and recommends exact episodes that match your topics + time windows.",
+      "Curates listening journeys and back-catalog essentials so you dive into the best content first."
+    ],
+    capabilities: [
+      "Suggest episodes—not just shows—based on guests, topics, and discussion style aligned to your interests.",
+      "Use completion/skip data to infer preferred formats, lengths, and pacing for smarter recommendations.",
+      "Build topic/goal-focused collections (researching a subject, traveling somewhere, following current events).",
+      "Match recommendations to available time slots (10-min commute, 45-min workout, multi-hour road trip).",
+      "Alert you when subscribed shows drop new episodes with quick summaries for triage.",
+      "Map multi-show coverage of the same guest/topic into guided listening sequences.",
+      "Surface back-catalog essentials from newly discovered shows so you sample their standout episodes first."
+    ],
+    suggestedPrompts: [
+      "I have 20 minutes while cooking—suggest an episode worth my time about urban design.",
+      "Give me a listening path to understand the Sam Altman OpenAI saga across different podcasts.",
+      "I just found the 'Huberman Lab' podcast—what 10 archived episodes should I start with?"
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.35,
+    metrics: {
+      successRate: 94,
+      load: 32
+    }
+  },
 ];
 
 if (typeof window !== "undefined") {
