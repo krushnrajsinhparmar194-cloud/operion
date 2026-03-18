@@ -62,6 +62,72 @@ const agentsData = [
     }
   },
   {
+    id: "prompt-video-director",
+    name: "Video Prompt Director",
+    category: "prompt",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Designs cinematic-grade prompts for video generators with scene beats, camera moves, pacing, and voiceover cues.",
+      "Keeps every render on-style by enforcing brand palettes, compliance guardrails, and platform-specific syntax."
+    ],
+    capabilities: [
+      "Convert briefs/scripts into multi-shot video prompt blocks with duration, fps, lens, and movement metadata",
+      "Auto-adapt prompts to different engines (Sora, Pika, Runway) with syntax toggles and capability notes",
+      "Layer lighting, color theory, and camera direction to nail mood and storytelling",
+      "Flag risky or policy-violating language before handoff to generation tools",
+      "Version prompts side-by-side and summarize deltas so creative directors can pick fast",
+      "Package prompts with thumbnail stills and delivery notes for downstream editing"
+    ],
+    suggestedPrompts: [
+      "Transform this 30-second launch script into a 6-shot Sora-ready prompt sequence.",
+      "Remix the same sequence for vertical video and Runway syntax, keeping beats intact.",
+      "Add moody noir lighting and precise lens directions to this chase scene prompt.",
+      "Audit this sci-fi teaser prompt for policy or copyright risks and resurface a safe variant.",
+      "Generate two alternate prompts inspired by Wes Anderson and Denis Villeneuve palettes."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.35,
+    metrics: {
+      successRate: 95,
+      load: 41
+    }
+  },
+  {
+    id: "prompt-image-art-director",
+    name: "Image Prompt Art Director",
+    category: "prompt",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Crafts richly detailed prompts for Midjourney, DALL·E, Ideogram, and Stable Diffusion with composition, lighting, and camera craft.",
+      "Maintains style libraries and ensures every render aligns with brand, tone, and compliance constraints."
+    ],
+    capabilities: [
+      "Translate moodboards or references into structured prompt paragraphs with subject, environment, and detail callouts",
+      "Apply stylistic presets (film stock, illustration medium, era) while keeping control tokens tidy",
+      "Balance realism vs stylization by tuning descriptors, seed weights, and negative prompts",
+      "Auto-generate prompt variants per aspect ratio/platform while reusing the same art direction",
+      "Score prompts on brand fit + safety and annotate required disclaimers",
+      "Bundle final prompt cards with palette, typography, and usage guidance for teams"
+    ],
+    suggestedPrompts: [
+      "Turn this fashion brief into three Midjourney prompts across editorial, street, and studio looks.",
+      "Rewrite this DALL·E prompt for photorealism and include lens/lighting notes.",
+      "Create compliant image prompts for a children's campaign with cozy watercolor styling.",
+      "Generate landscape vs portrait prompt variants for the same product hero shot.",
+      "Build a prompt pack inspired by brutalist architecture with matching color palettes."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.28,
+    metrics: {
+      successRate: 96,
+      load: 39
+    }
+  },
+  {
     id: "biz-project-management",
     name: "Project Management Agent",
     category: "business",
