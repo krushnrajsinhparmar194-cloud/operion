@@ -231,7 +231,6 @@
     .selected-modal-list { display: flex; flex-direction: column; gap: 0.9rem; max-height: 65vh; overflow-y: auto; }
     .selected-agent-row { border-radius: 1rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(15,23,42,0.6); padding: 1rem; display: flex; justify-content: space-between; gap: 0.85rem; text-decoration: none; color: inherit; }
     .selected-agent-row strong { font-size: 1rem; color: #f8fafc; }
-    .selected-tag { margin-left: 0.4rem; border-radius: 999px; border: 1px solid rgba(16,185,129,0.45); background: rgba(16,185,129,0.18); color: #bbf7d0; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.15rem 0.45rem; }
     .selected-agent-row p { margin: 0.35rem 0 0; font-size: 0.9rem; color: rgba(226,232,240,0.85); }
     .selected-modal-meta { display: block; margin-top: 0.35rem; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(148,163,184,0.9); }
     .selected-agent-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; font-size: 0.78rem; color: rgba(148,163,184,0.9); }
@@ -1685,9 +1684,8 @@ const scheduleCard = document.querySelector('.schedule-card');
     const selectedAgentsModalList = document.getElementById('selectedAgentsModalList');
     renderAiPanels();
 
-    const catalogAgentsList = Array.isArray(window.agentsData) ? window.agentsData : [];
     const agentDirectory = new Map(
-      catalogAgentsList.map(agent => [agent.id, agent])
+      (window.agentsData || []).map(agent => [agent.id, agent])
     );
 
     const agentCategoryLabels = {
@@ -1738,20 +1736,6 @@ const scheduleCard = document.querySelector('.schedule-card');
         const lastActive = new Date(now - Math.max(hoursAgo, 1) * 60 * 60 * 1000).toISOString();
         return { ...base, id, last_active: lastActive };
       }).filter(Boolean);
-    }
-
-    function buildModalAgentList() {
-      const ids = new Set(loadStoredAgentIds());
-      if (!catalogAgentsList.length) return [];
-      return catalogAgentsList.map(agent => ({
-        ...agent,
-        isPicked: ids.has(agent.id)
-      })).sort((a, b) => {
-        if (a.isPicked === b.isPicked) {
-          return a.name.localeCompare(b.name);
-        }
-        return a.isPicked ? -1 : 1;
-      });
     }
 
     const renderAgentList = (agents, note = '') => {
@@ -1810,22 +1794,25 @@ const scheduleCard = document.querySelector('.schedule-card');
 
     function renderSelectedAgentsModal() {
       if (!selectedAgentsModalList) return;
-      const modalAgents = buildModalAgentList();
-      if (!modalAgents.length) {
-        selectedAgentsModalList.innerHTML = '<p class="muted">Agent catalog not loaded yet. Refresh once the data is available.</p>';
+      const selectedAgents = buildSelectedAgentsForDisplay();
+      if (!selectedAgents.length) {
+        const storedIds = loadStoredAgentIds();
+        const message = storedIds.length && !agentDirectory.size
+          ? 'Selected agents are loading — refresh once the catalog is ready.'
+          : 'No agents selected yet. Use "+ Add agent" to pick some.';
+        selectedAgentsModalList.innerHTML = `<p class="muted">${message}</p>`;
         return;
       }
-      selectedAgentsModalList.innerHTML = modalAgents.map(agent => {
+      selectedAgentsModalList.innerHTML = selectedAgents.map(agent => {
         const categoryLabel = agentCategoryLabels[agent.category] || agentCategoryLabels.default;
         const summary = agent.roleSummary?.[0] || 'No summary available.';
         const statusClass = getStatusClass(agent.status);
         const provider = agent.provider || '—';
         const model = agent.model || '—';
-        const selectedBadge = agent.isPicked ? ' <span class=\"selected-tag\">Selected</span>' : '';
         return `
           <a class="selected-agent-row" href="agent-live-chat.html?id=${encodeURIComponent(agent.id)}">
             <div>
-              <strong>${agent.name}</strong>${selectedBadge}
+              <strong>${agent.name}</strong>
               <p>${summary}</p>
               <span class="selected-modal-meta">${categoryLabel} • ${provider}</span>
             </div>
