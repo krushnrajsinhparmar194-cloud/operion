@@ -680,6 +680,7 @@
     .chip-icon.shopping-icon::before { content: '🛒'; }
     .chip-icon.entertainment-icon::before { content: '🎬'; }
     .chip-icon.coin-icon::before { content: '💰'; }
+    .chip-icon.prompt-icon::before { content: '📝'; }
     .chip-icon.brackets-icon::before { content: '</>'; font-family: 'Inter', system-ui, sans-serif; font-size: 0.65rem; font-weight: 600; }
     .chip-icon.travel-icon::before { content: '✈️'; }
     .chip-icon.gear-icon::before { content: '⚙️'; }
@@ -695,6 +696,7 @@
     .category-chip.business-theme { color: #f97316; border-color: rgba(249,115,22,0.35); background: rgba(249,115,22,0.12); }
     .category-chip.sales-theme { color: #ec4899; border-color: rgba(236,72,153,0.35); background: rgba(236,72,153,0.12); }
     .category-chip.finance-theme { color: #0f766e; border-color: rgba(15,118,110,0.35); background: rgba(15,118,110,0.12); }
+    .category-chip.prompt-theme { color: #7c3aed; border-color: rgba(124,58,237,0.35); background: rgba(124,58,237,0.12); }
     .category-chip.dev-theme { color: #2563eb; border-color: rgba(37,99,235,0.35); background: rgba(37,99,235,0.12); }
     .category-chip.travel-theme { color: #d97706; border-color: rgba(217,119,6,0.35); background: rgba(217,119,6,0.12); }
     .category-chip.ops-theme { color: #475467; border-color: rgba(71,84,103,0.35); background: rgba(71,84,103,0.12); }
@@ -843,6 +845,7 @@
               <button class="filter-tab" data-filter="dev" role="menuitem">Developer &amp; Tech</button>
               <button class="filter-tab" data-filter="travel" role="menuitem">Travel</button>
               <button class="filter-tab" data-filter="calendar" role="menuitem">Calendar</button>
+              <button class="filter-tab" data-filter="prompt" role="menuitem">Prompt Agents</button>
             </div>
           </div>
         </div>
@@ -1111,6 +1114,7 @@
       business: { label: 'Business & Professional', chipClass: 'business-theme', iconClass: 'briefcase-icon' },
       sales: { label: 'Sales & Marketing', chipClass: 'sales-theme', iconClass: 'megaphone-icon' },
       finance: { label: 'Finance', chipClass: 'finance-theme', iconClass: 'coin-icon' },
+      prompt: { label: 'Prompt Agents', chipClass: 'prompt-theme', iconClass: 'prompt-icon' },
       dev: { label: 'Developer & Tech', chipClass: 'dev-theme', iconClass: 'brackets-icon' },
       travel: { label: 'Travel', chipClass: 'travel-theme', iconClass: 'travel-icon' },
       ops: { label: 'Operations', chipClass: 'ops-theme', iconClass: 'gear-icon' },

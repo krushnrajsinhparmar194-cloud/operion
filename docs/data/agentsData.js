@@ -29,6 +29,39 @@ const agentsData = [
     }
   },
   {
+    id: "prompt-playbook-curator",
+    name: "Prompt Playbook Curator",
+    category: "prompt",
+    status: "online",
+    version: "v1.0",
+    roleSummary: [
+      "Maintains a centralized prompt library with tags, owners, and compliance notes so teams reuse proven instructions.",
+      "Monitors prompt performance across agents, runs experiments, and suggests improvements before quality drifts."
+    ],
+    capabilities: [
+      "Convert rough prompt drafts into standardized templates with variables, guardrails, and usage notes",
+      "Tag prompts by use case, modality, tone, and risk level for fast discovery",
+      "Version-control every prompt with review history, rollback, and approval tracking",
+      "Benchmark prompts on accuracy, latency, and token cost per agent, surfacing underperformers",
+      "Run A/B prompt experiments (copy, structure, context windows) and auto-promote the top variant",
+      "Publish curated prompt packs per team with onboarding briefs and best-practice tips"
+    ],
+    suggestedPrompts: [
+      "Clean up this draft onboarding prompt and add variables for role, level, and tool stack.",
+      "Show me the top-performing summarization prompts for customer success in Q1.",
+      "Version the sales discovery prompt for EU compliance and route it for approval.",
+      "Run an experiment comparing markdown vs bullet responses for the support recap prompt.",
+      "Generate a prompt pack for our product marketing launch workflow."
+    ],
+    provider: "OpenAI",
+    model: "GPT-4o",
+    temperature: 0.2,
+    metrics: {
+      successRate: 97,
+      load: 34
+    }
+  },
+  {
     id: "biz-project-management",
     name: "Project Management Agent",
     category: "business",
