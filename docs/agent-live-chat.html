@@ -47,10 +47,9 @@
     .workspace {
       max-width: 1200px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+      display: flex;
+      flex-direction: column;
       gap: 2rem;
-      align-items: flex-start;
     }
     .agent-panel, .chat-panel {
       border-radius: 1.5rem;
@@ -174,16 +173,16 @@
     }
     .chat-entry span { font-size: 0.75rem; color: var(--muted); }
     .chat-entry.user { align-self: flex-end; background: #e0e7ff; border-color: #c7d2fe; }
-    form { display: flex; gap: 0.85rem; }
+    form { display: grid; grid-template-columns: auto 1fr auto; gap: 0.75rem; align-items: center; }
     form input {
-      flex: 1;
+      width: 100%;
       border-radius: 1.1rem;
       border: 1px solid rgba(15,23,42,0.12);
       background: #f1f5f9;
       color: var(--text);
       padding: 0.9rem 1rem;
     }
-    form button {
+    form button[type="submit"] {
       border: none;
       border-radius: 1rem;
       padding: 0.9rem 1.4rem;
@@ -191,6 +190,21 @@
       color: #ffffff;
       font-weight: 600;
       cursor: pointer;
+    }
+    .upload-btn {
+      border-radius: 999px;
+      border: 1px dashed rgba(15,23,42,0.2);
+      background: #f8fafc;
+      color: var(--muted);
+      padding: 0.55rem 0.95rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .upload-hint {
+      margin: 0.2rem 0 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+      min-height: 1rem;
     }
     .empty-state {
       border-radius: 1.5rem;
@@ -202,7 +216,7 @@
     }
     @media (max-width: 900px) {
       body { padding-top: 5rem; }
-      .workspace { grid-template-columns: 1fr; }
+      .workspace { gap: 1.5rem; }
     }
   </style>
 </head>
@@ -241,9 +255,12 @@
       </div>
       <div class="chat-log" id="chatLog" aria-live="polite"></div>
       <form id="chatForm">
+        <button type="button" class="upload-btn" id="uploadBtn">📎 Upload</button>
         <input type="text" id="chatInput" placeholder="Type a command or paste a prompt…" autocomplete="off" />
         <button type="submit">Send</button>
       </form>
+      <input type="file" id="chatFile" hidden />
+      <p class="upload-hint" id="uploadHint"></p>
     </section>
   </div>
   <script src="./data/agentsData.js"></script>
@@ -294,6 +311,15 @@
       const chatLog = document.getElementById('chatLog');
       const chatForm = document.getElementById('chatForm');
       const chatInput = document.getElementById('chatInput');
+      const uploadBtn = document.getElementById('uploadBtn');
+      const chatFileInput = document.getElementById('chatFile');
+      const uploadHint = document.getElementById('uploadHint');
+
+      uploadBtn?.addEventListener('click', () => chatFileInput?.click());
+      chatFileInput?.addEventListener('change', () => {
+        const file = chatFileInput.files?.[0] || null;
+        uploadHint.textContent = file ? `Attached: ${file.name}` : '';
+      });
 
       const theme = categoryThemes[agent.category] || categoryThemes.default;
       categoryChip.textContent = `${theme.emoji} ${theme.label}`;
@@ -351,11 +377,21 @@
       chatForm.addEventListener('submit', event => {
         event.preventDefault();
         const value = chatInput.value.trim();
-        if (!value) return;
-        appendMessage('You', value, 'user');
-        chatInput.value = '';
+        const file = chatFileInput?.files?.[0] || null;
+        if (!value && !file) return;
+        if (value) {
+          appendMessage('You', value, 'user');
+          chatInput.value = '';
+        }
+        if (file) {
+          appendMessage('You', `📎 Attached: ${file.name}`, 'user');
+          chatFileInput.value = '';
+          uploadHint.textContent = '';
+        }
         setTimeout(() => {
-          const reply = agent.capabilities?.[0] || 'Working on it now.';
+          const reply = file
+            ? `${agent.name} received the file and is processing it.`
+            : agent.capabilities?.[0] || 'Working on it now.';
           appendMessage(agent.name, reply);
         }, 600);
       });
