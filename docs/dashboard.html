@@ -213,7 +213,7 @@
     .agents-card { background: #ffffff; border: 1px solid rgba(15,23,42,0.08); box-shadow: 0 18px 32px rgba(15,23,42,0.08); color: #0f172a; }
     .agents-card h3 { color: #0f172a; }
     .agents-card .add-agent-btn { border: 1px dashed rgba(37,99,235,0.35); color: #2563eb; background: rgba(37,99,235,0.08); }
-    .agents-card .see-all a { color: #2563eb; }
+    .agents-card .see-all a, .agents-card .see-all button { color: #2563eb; }
     .panel-row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 1rem; }
     .activity-row { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
     .activity-feed-card { border-radius: 1.35rem; border: 1px solid rgba(255,255,255,0.08); background: var(--card); padding: 1.4rem; display: flex; flex-direction: column; gap: 1rem; }
@@ -225,8 +225,16 @@
     .activity-text span { font-size: 0.8rem; color: var(--muted); }
     .agent-list { display: flex; flex-direction: column; gap: 0.85rem; margin: 1rem 0; max-height: 320px; overflow-y: auto; }
     .see-all { margin-top: 1rem; text-align: right; }
-    .see-all a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .see-all a, .see-all button { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .see-all button { background: none; border: none; padding: 0; font: inherit; cursor: pointer; }
     .agent-pill { border-radius: 1rem; border: 1px solid rgba(15,23,42,0.08); padding: 0.85rem 1rem; display: flex; justify-content: space-between; align-items: center; background: #f8fafc; box-shadow: 0 8px 18px rgba(15,23,42,0.05); }
+    .selected-modal-list { display: flex; flex-direction: column; gap: 0.9rem; max-height: 65vh; overflow-y: auto; }
+    .selected-agent-row { border-radius: 1rem; border: 1px solid rgba(255,255,255,0.08); background: rgba(15,23,42,0.6); padding: 1rem; display: flex; justify-content: space-between; gap: 0.85rem; }
+    .selected-agent-row strong { font-size: 1rem; color: #f8fafc; }
+    .selected-agent-row p { margin: 0.35rem 0 0; font-size: 0.9rem; color: rgba(226,232,240,0.85); }
+    .selected-modal-meta { display: block; margin-top: 0.35rem; font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(148,163,184,0.9); }
+    .selected-agent-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; font-size: 0.78rem; color: rgba(148,163,184,0.9); }
+    .selected-agent-meta small { font-size: 0.75rem; color: rgba(148,163,184,0.85); }
     .schedule-card { display: flex; flex-direction: column; gap: 1rem; }
     .schedule-list { display: flex; flex-direction: column; gap: 0.7rem; }
     .schedule-item { border-left: 3px solid rgba(124,107,255,0.7); padding-left: 0.9rem; }
@@ -757,7 +765,7 @@
         <div class="skeleton-block" style="height:72px;"></div>
         <div class="skeleton-block" style="height:72px;"></div>
       </div>
-      <div class="see-all"><a href="dashboard-agents.html">See all</a></div>
+      <div class="see-all"><button type="button" id="viewSelectedAgents">See more</button></div>
     </div>
         <aside class="activity-feed-card">
       <h3>Live activity</h3>
@@ -956,6 +964,18 @@
       <div id="agentModalList">Loading agents…</div>
     </div>
   </div>
+  <div class="agent-modal" id="selectedAgentsModal" aria-hidden="true">
+    <div class="agent-modal-backdrop"></div>
+    <div class="agent-modal-panel">
+      <div class="agent-modal-head">
+        <h3>Your selected agents</h3>
+        <button id="closeSelectedAgents">×</button>
+      </div>
+      <div id="selectedAgentsModalList" class="selected-modal-list">
+        <p class="muted">No agents selected yet.</p>
+      </div>
+    </div>
+  </div>
   <section class="chat-overlay chat-hidden" id="chatPanel" aria-live="polite">
     <div class="chat-header">
       <div class="chat-avatar">🤖</div>
@@ -1001,6 +1021,7 @@
   <button class="chat-toggle" id="chatToggle" aria-label="Toggle assistant chat" aria-pressed="false">
     ✨
   </button>
+  <script src="./data/agentsData.js"></script>
   <script>
     let lead = JSON.parse(sessionStorage.getItem('operionLeadAgent') || '{}');
     let langs = JSON.parse(sessionStorage.getItem('operionAgentLanguage') || '[]');
@@ -1657,7 +1678,65 @@ const scheduleCard = document.querySelector('.schedule-card');
     hydrateMonitoring();
 
     const agentListEl = document.getElementById('agentList');
+    const viewSelectedAgentsBtn = document.getElementById('viewSelectedAgents');
+    const selectedAgentsModal = document.getElementById('selectedAgentsModal');
+    const closeSelectedAgentsBtn = document.getElementById('closeSelectedAgents');
+    const selectedAgentsModalList = document.getElementById('selectedAgentsModalList');
     renderAiPanels();
+
+    const agentDirectory = new Map(
+      (window.agentsData || []).map(agent => [agent.id, agent])
+    );
+
+    const agentCategoryLabels = {
+      calendar: 'Calendar',
+      astrology: 'Astrology',
+      news: 'News',
+      lifestyle: 'Lifestyle',
+      shopping: 'Shopping & Household',
+      entertainment: 'Entertainment & Media',
+      health: 'Health & Wellness',
+      business: 'Business & Professional',
+      sales: 'Sales & Marketing',
+      finance: 'Finance',
+      prompt: 'Prompt Agents',
+      dev: 'Developer & Tech',
+      ops: 'Operations',
+      travel: 'Travel',
+      qa: 'Quality',
+      default: 'Agent'
+    };
+
+    function loadStoredAgentIds() {
+      try {
+        const raw = localStorage.getItem('operionCommonAgents') || sessionStorage.getItem('operionCommonAgents');
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function getStatusClass(status = 'online') {
+      if (status === 'online') return 'status-online';
+      if (status === 'maintenance' || status === 'paused') return 'status-paused';
+      return 'status-offline';
+    }
+
+    function buildSelectedAgentsForDisplay() {
+      if (!agentDirectory.size) return [];
+      const ids = loadStoredAgentIds();
+      if (!ids.length) return [];
+      const now = Date.now();
+      return ids.map((id, index) => {
+        const base = agentDirectory.get(id);
+        if (!base) return null;
+        const hoursAgo = Number(base.lastActiveHours ?? (index + 1) * 3);
+        const lastActive = new Date(now - Math.max(hoursAgo, 1) * 60 * 60 * 1000).toISOString();
+        return { ...base, id, last_active: lastActive };
+      }).filter(Boolean);
+    }
 
     const renderAgentList = (agents, note = '') => {
       if (!agentListEl) return;
@@ -1688,7 +1767,16 @@ const scheduleCard = document.querySelector('.schedule-card');
       renderNewTaskAgents(list);
     };
 
-    fetch('agent-list.json')
+    const hydrateSelectedRoster = () => {
+      const selectedAgents = buildSelectedAgentsForDisplay();
+      if (!selectedAgents.length) return false;
+      const note = selectedAgents.length > 6 ? `Showing first 6 of ${selectedAgents.length} selected agents.` : '';
+      renderAgentList(selectedAgents, note);
+      return true;
+    };
+
+    if (!hydrateSelectedRoster()) {
+      fetch('agent-list.json')
       .then(resp => {
         if (!resp.ok) throw new Error('Network error');
         return resp.json();
@@ -1699,6 +1787,61 @@ const scheduleCard = document.querySelector('.schedule-card');
       .catch(() => {
         renderAgentList(fallbackRoster, 'Showing fallback roster.');
       });
+    }
+
+    function renderSelectedAgentsModal() {
+      if (!selectedAgentsModalList) return;
+      const selectedAgents = buildSelectedAgentsForDisplay();
+      if (!selectedAgents.length) {
+        const storedIds = loadStoredAgentIds();
+        const message = storedIds.length && !agentDirectory.size
+          ? 'Selected agents are loading — refresh once the catalog is ready.'
+          : 'No agents selected yet. Use "+ Add agent" to pick some.';
+        selectedAgentsModalList.innerHTML = `<p class="muted">${message}</p>`;
+        return;
+      }
+      selectedAgentsModalList.innerHTML = selectedAgents.map(agent => {
+        const categoryLabel = agentCategoryLabels[agent.category] || agentCategoryLabels.default;
+        const summary = agent.roleSummary?.[0] || 'No summary available.';
+        const statusClass = getStatusClass(agent.status);
+        const provider = agent.provider || '—';
+        const model = agent.model || '—';
+        return `
+          <div class="selected-agent-row">
+            <div>
+              <strong>${agent.name}</strong>
+              <p>${summary}</p>
+              <span class="selected-modal-meta">${categoryLabel} • ${provider}</span>
+            </div>
+            <div class="selected-agent-meta">
+              <span class="status-badge ${statusClass}">${agent.status || 'online'}</span>
+              <small>Model · ${model}</small>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openSelectedAgentsModal() {
+      if (!selectedAgentsModal) return;
+      renderSelectedAgentsModal();
+      selectedAgentsModal.classList.add('open');
+      selectedAgentsModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeSelectedAgentsModal() {
+      if (!selectedAgentsModal) return;
+      selectedAgentsModal.classList.remove('open');
+      selectedAgentsModal.setAttribute('aria-hidden', 'true');
+    }
+
+    viewSelectedAgentsBtn?.addEventListener('click', openSelectedAgentsModal);
+    closeSelectedAgentsBtn?.addEventListener('click', closeSelectedAgentsModal);
+    selectedAgentsModal?.addEventListener('click', event => {
+      if (event.target.classList.contains('agent-modal-backdrop')) {
+        closeSelectedAgentsModal();
+      }
+    });
 
     const workTabs = document.querySelectorAll('.work-tab[data-tab]');
     const filterTabs = document.querySelectorAll('.work-tab[data-filter]');

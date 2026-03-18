@@ -1172,7 +1172,24 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2500);
     }
-    const stored = new Set(JSON.parse(sessionStorage.getItem('operionCommonAgents') || '[]'));
+    function loadStoredAgentIds() {
+      try {
+        const raw = sessionStorage.getItem('operionCommonAgents') || localStorage.getItem('operionCommonAgents');
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function persistStoredAgentIds(ids) {
+      const payload = JSON.stringify(ids);
+      try { sessionStorage.setItem('operionCommonAgents', payload); } catch (error) {}
+      try { localStorage.setItem('operionCommonAgents', payload); } catch (error) {}
+    }
+
+    const stored = new Set(loadStoredAgentIds());
 
     let currentSearchTerm = '';
     let activeCategory = 'all';
@@ -1461,7 +1478,7 @@
           renderCatalog();
         });
       });
-      sessionStorage.setItem('operionCommonAgents', JSON.stringify(arr));
+      persistStoredAgentIds(arr);
       renderSuggestions();
     }
 
