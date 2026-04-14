@@ -3,535 +3,566 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Operion · Agent Workspace</title>
+  <title>Operion · Agent Live Chat</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       font-family: 'Inter', system-ui, sans-serif;
-      color-scheme: light;
-      --bg: #f8f9fb;
-      --panel: #ffffff;
-      --card: #ffffff;
-      --border: rgba(15,23,42,0.08);
-      --text: #0f172a;
-      --muted: #475467;
-      --chip: rgba(15,23,42,0.06);
+      color-scheme: dark;
+      --bg: #030610;
+      --card: rgba(255,255,255,0.04);
+      --card-soft: rgba(255,255,255,0.03);
+      --text: #eef2ff;
+      --muted: #9badcf;
+      --border: rgba(255,255,255,0.1);
+      --accent: #7c6bff;
+      --accent-2: #4da8ff;
+      --good: #82ffbd;
     }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+      min-width: 0;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
-      background: var(--bg);
+      background: radial-gradient(circle at 20% 10%, rgba(124,107,255,0.24), transparent 50%), var(--bg);
       color: var(--text);
-      padding: 4rem clamp(1rem, 4vw, 3rem);
+      padding: 1rem;
     }
-    a.nav-top {
-      position: fixed;
-      top: 1.5rem;
-      left: 1.5rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.45rem 1rem;
-      border-radius: 999px;
-      border: 1px solid rgba(15,23,42,0.12);
-      background: #ffffff;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.9rem;
-      letter-spacing: 0.03em;
-      box-shadow: 0 10px 25px rgba(15,23,42,0.08);
-    }
-    .workspace {
-      max-width: 1200px;
+
+    .app {
+      width: min(1240px, 100%);
       margin: 0 auto;
       display: grid;
-      grid-template-columns: minmax(300px, 320px) minmax(0, 1fr);
-      gap: 2rem;
-      align-items: flex-start;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 1rem;
+      align-items: start;
     }
-    .agent-panel, .chat-panel {
-      border-radius: 1.5rem;
+
+    .sidebar,
+    .chat-shell {
       border: 1px solid var(--border);
-      background: var(--panel);
-      padding: 1.75rem;
-      box-shadow: 0 25px 45px rgba(15,23,42,0.08);
+      border-radius: 1.6rem;
+      background: var(--card);
+      backdrop-filter: blur(24px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.35);
     }
-    .agent-panel h1 { margin: 0 0 0.2rem; font-size: 1.85rem; }
-    .agent-panel p { margin: 0; color: var(--muted); }
-    .category-chip {
+
+    .sidebar {
+      padding: 1.2rem;
+      position: sticky;
+      top: 1rem;
+    }
+
+    .chat-shell {
+      padding: 1.1rem;
+      min-height: calc(100vh - 2rem);
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .nav-top {
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.45rem;
+      padding: 0.55rem 0.9rem;
       border-radius: 999px;
-      border: 1px solid rgba(15,23,42,0.12);
-      padding: 0.2rem 0.75rem;
-      font-size: 0.78rem;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(4,6,14,0.84);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      border-radius: 999px;
+      padding: 0.35rem 0.7rem;
+      background: rgba(124,107,255,0.18);
+      color: #d8d2ff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    h1 {
+      margin: 0.85rem 0 0.35rem;
+      font-size: clamp(2rem, 5vw, 2.7rem);
+      line-height: 1.05;
+      letter-spacing: -0.05em;
+    }
+
+    .subtitle,
+    .chat-head p,
+    .helper {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .info-card {
+      margin-top: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 1.1rem;
+      background: var(--card-soft);
+      padding: 1rem;
+    }
+
+    .info-card h3 {
+      margin: 0 0 0.65rem;
+      font-size: 0.82rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--muted);
-      background: var(--chip);
     }
-    .agent-meta-grid {
-      margin-top: 1rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 0.8rem;
-      font-size: 0.85rem;
-      color: var(--muted);
+
+    .info-card ul {
+      margin: 0;
+      padding-left: 1.15rem;
+      color: var(--text);
+      line-height: 1.65;
     }
-    .agent-meta-grid strong { color: var(--text); }
-    .agent-summary {
-      margin-top: 1rem;
-      border-radius: 1.1rem;
-      border: 1px solid rgba(15,23,42,0.06);
-      background: #f8fafc;
-      padding: 1rem;
+
+    .quick-prompts {
       display: flex;
       flex-direction: column;
       gap: 0.6rem;
-      font-size: 0.95rem;
     }
-    .agent-summary strong { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-    .capability-list {
-      margin: 1.25rem 0 0;
-      padding: 0;
-      list-style: none;
+
+    .quick-prompts button {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      border-radius: 1rem;
+      padding: 0.8rem 0.9rem;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .chat-head {
       display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: start;
     }
-    .capability-list li {
-      display: flex;
-      gap: 0.5rem;
-      font-size: 0.9rem;
-      color: var(--muted);
-      align-items: flex-start;
+
+    .chat-head h2 {
+      margin: 0;
+      font-size: 1.3rem;
     }
-    .capability-list li span {
-      width: 1.1rem;
-      height: 1.1rem;
-      border-radius: 999px;
-      border: 1px solid rgba(15,23,42,0.12);
-      background: #eef2ff;
+
+    .status {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      color: #4338ca;
-      flex-shrink: 0;
-      margin-top: 0.2rem;
+      gap: 0.45rem;
+      border-radius: 999px;
+      padding: 0.45rem 0.8rem;
+      border: 1px solid rgba(130,255,189,0.18);
+      color: var(--good);
+      background: rgba(130,255,189,0.08);
+      font-weight: 600;
+      white-space: nowrap;
     }
-    .prompt-grid {
-      margin-top: 1.25rem;
+
+    .status::before {
+      content: '';
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .profile-strip {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.6rem;
+      gap: 0.55rem;
     }
-    .prompt-grid button {
+
+    .chip {
       border-radius: 999px;
-      border: 1px solid rgba(15,23,42,0.12);
-      background: #f8fafc;
-      color: var(--text);
-      padding: 0.5rem 0.85rem;
-      font-size: 0.82rem;
-      cursor: pointer;
+      border: 1px solid var(--border);
+      padding: 0.42rem 0.72rem;
+      background: rgba(255,255,255,0.04);
+      font-size: 0.88rem;
+      color: var(--muted);
     }
-    .prompt-grid button:hover { border-color: #4338ca; color: #4338ca; }
-    .chat-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .chat-head { display: flex; justify-content: space-between; align-items: center; }
-    .status-pill {
-      border-radius: 999px;
-      border: 1px solid rgba(5,150,105,0.2);
-      background: #ecfdf5;
-      color: #047857;
-      padding: 0.2rem 0.75rem;
-      font-size: 0.8rem;
-      text-transform: capitalize;
-    }
+
     .chat-log {
-      height: 520px;
-      border-radius: 1.2rem;
-      border: 1px solid rgba(15,23,42,0.08);
-      background: #f8fafc;
-      padding: 1.1rem;
+      flex: 1;
+      min-height: 420px;
+      max-height: calc(100vh - 220px);
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 0.65rem;
-      overflow-y: auto;
+      gap: 0.85rem;
+      padding: 0.2rem;
     }
-    .chat-entry {
-      border-radius: 1rem;
-      border: 1px solid rgba(15,23,42,0.08);
-      padding: 0.85rem 1rem;
-      background: #ffffff;
+
+    .message {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      max-width: min(82%, 760px);
     }
-    .chat-entry span { font-size: 0.75rem; color: var(--muted); }
-    .chat-entry.user { align-self: flex-end; background: #e0e7ff; border-color: #c7d2fe; }
-    form { display: grid; grid-template-columns: auto 1fr auto; gap: 0.75rem; align-items: center; }
-    form input {
-      width: 100%;
-      border-radius: 1.1rem;
-      border: 1px solid rgba(15,23,42,0.12);
-      background: #f1f5f9;
+
+    .message.user {
+      align-self: flex-end;
+      align-items: flex-end;
+    }
+
+    .message.agent {
+      align-self: flex-start;
+      align-items: flex-start;
+    }
+
+    .message-label {
+      font-size: 0.76rem;
+      color: var(--muted);
+      padding: 0 0.15rem;
+    }
+
+    .bubble {
+      border-radius: 1.15rem;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      padding: 0.95rem 1rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .message.user .bubble {
+      background: linear-gradient(120deg, rgba(77,168,255,0.26), rgba(124,107,255,0.24));
+      border-color: rgba(124,107,255,0.35);
+    }
+
+    .composer {
+      display: flex;
+      gap: 0.7rem;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      padding: 0.7rem;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .composer input {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: transparent;
       color: var(--text);
       padding: 0.9rem 1rem;
+      font: inherit;
+      outline: none;
     }
-    form button[type="submit"] {
+
+    .composer button {
       border: none;
-      border-radius: 1rem;
-      padding: 0.9rem 1.4rem;
-      background: linear-gradient(120deg, #4da8ff, #7c6bff);
-      color: #ffffff;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .upload-btn {
       border-radius: 999px;
-      border: 1px dashed rgba(15,23,42,0.2);
-      background: #f8fafc;
-      color: var(--muted);
-      padding: 0.55rem 0.95rem;
-      font-size: 0.85rem;
+      padding: 0.9rem 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(120deg, var(--accent-2), var(--accent));
+      color: #041021;
       cursor: pointer;
+      white-space: nowrap;
     }
-    .upload-hint {
-      margin: 0.2rem 0 0;
-      font-size: 0.8rem;
-      color: var(--muted);
-      min-height: 1rem;
-    }
-    .empty-state {
-      border-radius: 1.5rem;
-      border: 1px dashed rgba(15,23,42,0.15);
-      padding: 2rem;
-      text-align: center;
-      color: var(--muted);
-      background: #fff;
-    }
-    @media (max-width: 900px) {
-      body { padding-top: 5rem; }
-      .workspace { grid-template-columns: 1fr; }
-    }
-  
-    /* Metrix responsive pass */
-    img, svg, video, canvas {
-      max-width: 100%;
-      height: auto;
-    }
-    * {
-      min-width: 0;
-    }
+
     @media (max-width: 1024px) {
-      .layout,
-      .shell,
-      .page-shell,
-      .dashboard-grid,
-      .content-grid,
-      .two-col,
-      .three-col,
-      .hero-grid,
-      .main-layout {
-        grid-template-columns: 1fr !important;
+      .app {
+        grid-template-columns: 1fr;
       }
-      .side-panel,
-      .sidebar,
-      aside,
-      .right-panel,
-      .left-panel {
-        position: static !important;
-        top: auto !important;
-        height: auto !important;
-        max-height: none !important;
+
+      .sidebar {
+        position: static;
       }
-      .main-column,
-      .list-scroll,
-      .selected-list,
-      .agents,
-      .suggested-grid,
-      .grid {
-        max-height: none !important;
-      }
-    }
-    @media (max-width: 768px) {
-      body {
-        padding: 4.5rem 1rem 1.25rem !important;
-      }
-      .wrap,
-      .page,
-      .card,
-      .panel,
-      .hero,
-      .section-card,
-      .side-panel,
-      .main,
-      .main-column,
-      .content,
-      .container {
-        width: 100% !important;
-        padding: 1.25rem !important;
-      }
-      .layout,
-      .grid,
-      .suggested-grid,
-      .agents,
-      .footer-actions,
-      .toolbar,
-      .section-head,
-      .topbar,
-      .header-actions {
-        grid-template-columns: 1fr !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-      }
-      .nav-top,
-      .back-link {
-        max-width: 100%;
-        white-space: normal;
-      }
-      .search-box,
-      .search,
-      .search-box input,
-      input,
-      select,
-      textarea,
-      button,
-      .primary,
-      .secondary {
-        width: 100% !important;
-      }
-      table,
-      .table-wrap {
-        display: block;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-      h1 {
-        font-size: clamp(1.5rem, 7vw, 2rem) !important;
-      }
-      h2 {
-        font-size: clamp(1.15rem, 5vw, 1.4rem) !important;
-      }
-    }
-    @media (max-width: 480px) {
-      body {
-        padding: 4rem 0.85rem 1rem !important;
-      }
-      .nav-top,
-      .back-link {
-        padding: 0.55rem 0.85rem !important;
-        gap: 0.4rem !important;
-      }
-      .wrap,
-      .page,
-      .card,
-      .panel,
-      .hero,
-      .section-card,
-      .side-panel,
-      .main,
-      .main-column,
-      .content,
-      .container {
-        padding: 1rem !important;
-        border-radius: 1rem !important;
-      }
-      .agents,
-      .grid,
-      .suggested-grid {
-        gap: 0.75rem !important;
-      }
-      .agent-card,
-      label.card,
-      .selected-card {
-        min-height: auto !important;
+
+      .chat-shell {
+        min-height: auto;
       }
     }
 
+    @media (max-width: 720px) {
+      body {
+        padding: 0.8rem;
+      }
+
+      .sidebar,
+      .chat-shell {
+        border-radius: 1.2rem;
+        padding: 1rem;
+      }
+
+      .message {
+        max-width: 100%;
+      }
+
+      .composer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .composer input,
+      .composer button {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
-  <a href="dashboard.html" class="nav-top"><span class="icon" aria-hidden="true">⬅</span><span>Back to dashboard</span></a>
-  <div class="workspace" id="workspaceRoot">
-    <aside class="agent-panel">
-      <span class="category-chip" id="agentCategory">Agent</span>
-      <h1 id="agentName">Agent name</h1>
-      <p id="agentVersion">Version —</p>
-      <div class="agent-meta-grid">
-        <div>Provider · <strong id="agentProvider">—</strong></div>
-        <div>Model · <strong id="agentModel">—</strong></div>
-        <div>Temperature · <strong id="agentTemp">—</strong></div>
+  <div class="app">
+    <aside class="sidebar">
+      <a href="agents-full.html" class="nav-top">← Back</a>
+      <div class="eyebrow">Live Chat</div>
+      <h1 id="agentTitle">Daily Horoscope Agent</h1>
+      <p class="subtitle" id="agentSubtitle">Ask for today’s love, career, health, or lucky reading using your sign or birth date.</p>
+
+      <div class="info-card">
+        <h3>Current mode</h3>
+        <ul>
+          <li>Works directly inside this existing live-chat page</li>
+          <li>Accepts sign or birth date</li>
+          <li>Replies in English or Gujarati</li>
+          <li>Can answer full, love, career, health, or lucky questions</li>
+        </ul>
       </div>
-      <div class="agent-summary">
-        <strong>Role summary</strong>
-        <div id="agentSummary"></div>
-      </div>
-      <div>
-        <h3 style="margin:1.25rem 0 0.4rem; font-size:0.9rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted);">Capabilities</h3>
-        <ul class="capability-list" id="agentCapabilities"></ul>
-      </div>
-      <div>
-        <h3 style="margin:1.25rem 0 0.4rem; font-size:0.9rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted);">Quick prompts</h3>
-        <div class="prompt-grid" id="agentPrompts"></div>
+
+      <div class="info-card">
+        <h3>Quick prompts</h3>
+        <div class="quick-prompts">
+          <button type="button" data-prompt="Aries">Aries</button>
+          <button type="button" data-prompt="Gujarati ma vaat kariye. Maru sign Libra chhe">Gujarati ma vaat kariye. Maru sign Libra chhe</button>
+          <button type="button" data-prompt="My birth date is 1995-08-19">My birth date is 1995-08-19</button>
+          <button type="button" data-prompt="career">career</button>
+        </div>
       </div>
     </aside>
-    <section class="chat-panel">
+
+    <main class="chat-shell">
       <div class="chat-head">
         <div>
-          <strong>Chat with <span id="chatAgentName"></span></strong>
-          <p style="margin:0.2rem 0 0; color:var(--muted); font-size:0.9rem;">Use a quick prompt or type your own request.</p>
+          <h2>Chat with your agent</h2>
+          <p>This page now has the working answer logic directly inside it.</p>
         </div>
-        <span class="status-pill" id="agentStatus">Online</span>
+        <div class="status">Online</div>
       </div>
-      <div class="chat-log" id="chatLog" aria-live="polite"></div>
-      <form id="chatForm">
-        <button type="button" class="upload-btn" id="uploadBtn">📎 Upload</button>
-        <input type="text" id="chatInput" placeholder="Type a command or paste a prompt…" autocomplete="off" />
-        <button type="submit">Send</button>
-      </form>
-      <input type="file" id="chatFile" hidden />
-      <p class="upload-hint" id="uploadHint"></p>
-    </section>
+
+      <div class="profile-strip" id="profileStrip"></div>
+      <div class="chat-log" id="chatLog"></div>
+      <p class="helper">Try typing only your sign first, then ask about career or love.</p>
+
+      <div class="composer">
+        <input id="chatInput" type="text" placeholder="Type your message, sign, or birth date..." />
+        <button id="sendBtn" type="button">Send</button>
+      </div>
+    </main>
   </div>
-  <script src="./data/agentsData.js"></script>
+
   <script>
-    (function() {
-      const params = new URLSearchParams(window.location.search);
-      const requestedId = params.get('id');
-      const catalog = Array.isArray(window.agentsData) ? window.agentsData : [];
-      const lookup = new Map(catalog.map(agent => [agent.id, agent]));
-      const agent = lookup.get(requestedId) || catalog[0] || null;
-      const workspaceRoot = document.getElementById('workspaceRoot');
+    const horoscopeRows = [
+      { sign: 'Aries', transit: 'Sun Trine Mars', love_relations: 'High attraction. Great day for a first date or a bold move.', career_money: 'Success in leadership. Start that new project today.', health_energy: 'Peak physical vitality. Best for high-intensity work or workouts.', lucky_color: 'Red', lucky_number: 9, lucky_direction: 'East', energy_score: 5, day_tag: 'Good' },
+      { sign: 'Taurus', transit: 'Venus in 2nd House', love_relations: 'Emotional stability. A quiet dinner or grounded conversation will go well.', career_money: 'Financial gains are favored. Small luxury purchases can feel rewarding.', health_energy: 'Focus on comfort and recovery. Good day for rest or a spa routine.', lucky_color: 'Green', lucky_number: 6, lucky_direction: 'South', energy_score: 4, day_tag: 'Good' },
+      { sign: 'Gemini', transit: 'Mercury Retrograde', love_relations: 'Old connections may resurface. Avoid heavy relationship talks.', career_money: 'Tech glitches and delays may show up. Back up important work.', health_energy: 'Mental fatigue is possible. Slow down and reduce multitasking.', lucky_color: 'Silver', lucky_number: 5, lucky_direction: 'West', energy_score: 2, day_tag: 'Caution' },
+      { sign: 'Cancer', transit: 'Moon Square Pluto', love_relations: 'Emotions run strong. Avoid power struggles or overreaction.', career_money: 'Deep focus helps. Good day for investigation, review, or auditing.', health_energy: 'Watch stress around digestion. Stay hydrated and calm.', lucky_color: 'White', lucky_number: 2, lucky_direction: 'North', energy_score: 3, day_tag: 'Neutral' },
+      { sign: 'Leo', transit: 'Jupiter Sextile Sun', love_relations: 'Confidence is magnetic. You naturally draw attention today.', career_money: 'Career momentum is strong. Seniors notice your optimism and visibility.', health_energy: 'Vitality is high. You can push forward with confidence.', lucky_color: 'Gold', lucky_number: 1, lucky_direction: 'East', energy_score: 5, day_tag: 'Good' },
+      { sign: 'Virgo', transit: 'Saturn Conjunct Sun', love_relations: 'Duty may feel stronger than desire today. Keep expectations realistic.', career_money: 'A heavy workload can still lead to long-term gains.', health_energy: 'Support your bones and joints. Stretching and posture help.', lucky_color: 'Brown', lucky_number: 8, lucky_direction: 'South', energy_score: 3, day_tag: 'Neutral' },
+      { sign: 'Libra', transit: 'Venus Conjunct Moon', love_relations: 'Harmony is strong. Great day for connection and commitment.', career_money: 'Collaboration helps. Networking may bring useful money leads.', health_energy: 'Calm energy supports beauty and self-care routines.', lucky_color: 'Pink', lucky_number: 7, lucky_direction: 'West', energy_score: 5, day_tag: 'Good' },
+      { sign: 'Scorpio', transit: 'Mars in 8th House', love_relations: 'Intensity rises. Honest conversations can reveal deep truths.', career_money: 'Shared finances, taxes, or investments deserve attention.', health_energy: 'Energy is strong but avoid impulsive risks or strain.', lucky_color: 'Black', lucky_number: 0, lucky_direction: 'North', energy_score: 3, day_tag: 'Caution' },
+      { sign: 'Sagittarius', transit: 'Jupiter in 9th House', love_relations: 'Growth comes through travel, learning, or fresh perspectives.', career_money: 'Good day for education, publishing, law, or expansion plans.', health_energy: 'Adventure energy is high. Outdoor movement feels good.', lucky_color: 'Purple', lucky_number: 3, lucky_direction: 'East', energy_score: 5, day_tag: 'Good' },
+      { sign: 'Capricorn', transit: 'Saturn Square Uranus', love_relations: 'Tension between stability and freedom may show up in relationships.', career_money: 'Old methods may clash with new systems at work.', health_energy: 'Nervous tension can build. Reduce screen fatigue and pause often.', lucky_color: 'Grey', lucky_number: 4, lucky_direction: 'South', energy_score: 2, day_tag: 'Caution' },
+      { sign: 'Aquarius', transit: 'Uranus Trine Venus', love_relations: 'A surprising social spark can appear today.', career_money: 'Breakthrough energy favors tech, creative work, and unconventional ideas.', health_energy: 'Erratic energy is possible. Try a fresh routine.', lucky_color: 'Electric Blue', lucky_number: 11, lucky_direction: 'West', energy_score: 4, day_tag: 'Good' },
+      { sign: 'Pisces', transit: 'Neptune Sextile Moon', love_relations: 'Soulful emotional connection is highlighted today.', career_money: 'Creative work flows more easily. Trust intuition.', health_energy: 'Good day for yoga, meditation, or spiritual healing.', lucky_color: 'Sea Foam', lucky_number: 12, lucky_direction: 'North', energy_score: 4, day_tag: 'Good' }
+    ];
 
-      if (!agent) {
-        workspaceRoot.innerHTML = '<div class="empty-state"><h2>No agent data loaded</h2><p>Pick an agent from the dashboard first.</p></div>';
-        return;
+    const params = new URLSearchParams(window.location.search);
+    const requestedName = params.get('name') || params.get('id') || 'Daily Horoscope Agent';
+    document.getElementById('agentTitle').textContent = requestedName;
+
+    const state = {
+      language: 'en',
+      sign: null,
+      birthDate: null
+    };
+
+    const chatLog = document.getElementById('chatLog');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const profileStrip = document.getElementById('profileStrip');
+
+    function addMessage(role, text) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'message ' + role;
+      const label = document.createElement('div');
+      label.className = 'message-label';
+      label.textContent = role === 'user' ? 'You' : requestedName;
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.textContent = text;
+      wrapper.appendChild(label);
+      wrapper.appendChild(bubble);
+      chatLog.appendChild(wrapper);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function renderProfile() {
+      const chips = [];
+      chips.push('Language: ' + (state.language === 'gu' ? 'Gujarati' : 'English'));
+      if (state.sign) chips.push('Sign: ' + state.sign);
+      if (state.birthDate) chips.push('Birth date: ' + state.birthDate);
+      profileStrip.innerHTML = chips.map(function (item) {
+        return '<span class="chip">' + item + '</span>';
+      }).join('');
+    }
+
+    function detectLanguage(text) {
+      const lower = text.toLowerCase();
+      if (/[\u0A80-\u0AFF]/.test(text) || lower.indexOf('gujarati') !== -1 || lower.indexOf('gujarati ma') !== -1) {
+        state.language = 'gu';
       }
-
-      const categoryThemes = {
-        calendar: { label: 'Calendar', emoji: '📅', tint: '#60a5fa' },
-        astrology: { label: 'Astrology', emoji: '✨', tint: '#c084fc' },
-        news: { label: 'News', emoji: '📰', tint: '#38bdf8' },
-        lifestyle: { label: 'Lifestyle', emoji: '🌿', tint: '#34d399' },
-        shopping: { label: 'Shopping & Household', emoji: '🛒', tint: '#fbbf24' },
-        entertainment: { label: 'Entertainment & Media', emoji: '🎬', tint: '#f472b6' },
-        health: { label: 'Health & Wellness', emoji: '❤️', tint: '#fb7185' },
-        business: { label: 'Business & Professional', emoji: '💼', tint: '#fb923c' },
-        sales: { label: 'Sales & Marketing', emoji: '📣', tint: '#f472b6' },
-        finance: { label: 'Finance', emoji: '💰', tint: '#14b8a6' },
-        prompt: { label: 'Prompt Agents', emoji: '📝', tint: '#a78bfa' },
-        dev: { label: 'Developer & Tech', emoji: '</>', tint: '#93c5fd' },
-        ops: { label: 'Operations', emoji: '⚙️', tint: '#94a3b8' },
-        travel: { label: 'Travel', emoji: '✈️', tint: '#fbbf24' },
-        qa: { label: 'Quality', emoji: '✔️', tint: '#d1d5db' },
-        default: { label: 'Agent', emoji: '🤖', tint: '#cbd5f5' }
-      };
-
-      const categoryChip = document.getElementById('agentCategory');
-      const agentNameEl = document.getElementById('agentName');
-      const chatAgentName = document.getElementById('chatAgentName');
-      const agentVersionEl = document.getElementById('agentVersion');
-      const agentProviderEl = document.getElementById('agentProvider');
-      const agentModelEl = document.getElementById('agentModel');
-      const agentTempEl = document.getElementById('agentTemp');
-      const agentSummaryEl = document.getElementById('agentSummary');
-      const agentCapabilitiesEl = document.getElementById('agentCapabilities');
-      const agentPromptsEl = document.getElementById('agentPrompts');
-      const agentStatusEl = document.getElementById('agentStatus');
-      const chatLog = document.getElementById('chatLog');
-      const chatForm = document.getElementById('chatForm');
-      const chatInput = document.getElementById('chatInput');
-      const uploadBtn = document.getElementById('uploadBtn');
-      const chatFileInput = document.getElementById('chatFile');
-      const uploadHint = document.getElementById('uploadHint');
-
-      uploadBtn?.addEventListener('click', () => chatFileInput?.click());
-      chatFileInput?.addEventListener('change', () => {
-        const file = chatFileInput.files?.[0] || null;
-        uploadHint.textContent = file ? `Attached: ${file.name}` : '';
-      });
-
-      const theme = categoryThemes[agent.category] || categoryThemes.default;
-      categoryChip.textContent = `${theme.emoji} ${theme.label}`;
-      categoryChip.style.borderColor = theme.tint;
-      categoryChip.style.color = theme.tint;
-      categoryChip.style.background = `${theme.tint}1a`;
-
-      agentNameEl.textContent = agent.name;
-      chatAgentName.textContent = agent.name;
-      agentVersionEl.textContent = agent.version ? `Version ${agent.version}` : 'Version —';
-      agentProviderEl.textContent = agent.provider || '—';
-      agentModelEl.textContent = agent.model || '—';
-      agentTempEl.textContent = typeof agent.temperature === 'number' ? agent.temperature.toFixed(2) : '—';
-      agentStatusEl.textContent = agent.status || 'online';
-      if ((agent.status || '').toLowerCase() !== 'online') {
-        agentStatusEl.classList.remove('status-pill');
-        agentStatusEl.classList.add('status-pill');
+      if (lower.indexOf('english') !== -1) {
+        state.language = 'en';
       }
+    }
 
-      const summary = Array.isArray(agent.roleSummary) && agent.roleSummary.length
-        ? agent.roleSummary.map(line => `<p>${line}</p>`).join('')
-        : '<p>No summary available.</p>';
-      agentSummaryEl.innerHTML = summary;
-
-      const capabilities = Array.isArray(agent.capabilities) && agent.capabilities.length
-        ? agent.capabilities.map(item => `<li><span>✔</span>${item}</li>`).join('')
-        : '<li><span>ℹ</span>No capabilities listed.</li>';
-      agentCapabilitiesEl.innerHTML = capabilities;
-
-      if (Array.isArray(agent.suggestedPrompts) && agent.suggestedPrompts.length) {
-        agentPromptsEl.innerHTML = agent.suggestedPrompts.slice(0, 6).map(prompt => `<button type="button">${prompt}</button>`).join('');
-      } else {
-        agentPromptsEl.innerHTML = '<p style="color:var(--muted);">No quick prompts yet.</p>';
-      }
-
-      agentPromptsEl.querySelectorAll('button').forEach(btn => {
-        btn.addEventListener('click', () => {
-          chatInput.value = btn.textContent;
-          chatInput.focus();
-        });
-      });
-
-      function appendMessage(from, text, role = 'agent') {
-        const entry = document.createElement('div');
-        entry.className = `chat-entry ${role}`;
-        entry.innerHTML = `<span>${from}</span><p>${text}</p>`;
-        chatLog.appendChild(entry);
-        chatLog.scrollTop = chatLog.scrollHeight;
-      }
-
-      const teaser = agent.roleSummary?.[0] || 'Ready when you are.';
-      appendMessage(agent.name, teaser);
-      appendMessage(agent.name, 'Drop a request or pick a quick prompt to get started.');
-
-      chatForm.addEventListener('submit', event => {
-        event.preventDefault();
-        const value = chatInput.value.trim();
-        const file = chatFileInput?.files?.[0] || null;
-        if (!value && !file) return;
-        if (value) {
-          appendMessage('You', value, 'user');
-          chatInput.value = '';
+    function extractSign(text) {
+      const lower = text.toLowerCase();
+      for (let i = 0; i < horoscopeRows.length; i += 1) {
+        if (lower.indexOf(horoscopeRows[i].sign.toLowerCase()) !== -1) {
+          return horoscopeRows[i].sign;
         }
-        if (file) {
-          appendMessage('You', `📎 Attached: ${file.name}`, 'user');
-          chatFileInput.value = '';
-          uploadHint.textContent = '';
-        }
-        setTimeout(() => {
-          const reply = file
-            ? `${agent.name} received the file and is processing it.`
-            : agent.capabilities?.[0] || 'Working on it now.';
-          appendMessage(agent.name, reply);
-        }, 600);
+      }
+      return null;
+    }
+
+    function extractBirthDate(text) {
+      const isoMatch = text.match(/\b(\d{4})-(\d{2})-(\d{2})\b/);
+      if (isoMatch) return isoMatch[0];
+      const slashMatch = text.match(/\b(\d{1,2})\/(\d{1,2})\/(\d{4})\b/);
+      if (slashMatch) {
+        const dd = slashMatch[1].padStart(2, '0');
+        const mm = slashMatch[2].padStart(2, '0');
+        const yyyy = slashMatch[3];
+        return yyyy + '-' + mm + '-' + dd;
+      }
+      return null;
+    }
+
+    function signFromBirthDate(isoDate) {
+      const date = new Date(isoDate + 'T00:00:00');
+      if (Number.isNaN(date.getTime())) return null;
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return 'Aries';
+      if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return 'Taurus';
+      if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return 'Gemini';
+      if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return 'Cancer';
+      if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return 'Leo';
+      if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return 'Virgo';
+      if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return 'Libra';
+      if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return 'Scorpio';
+      if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return 'Sagittarius';
+      if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return 'Capricorn';
+      if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return 'Aquarius';
+      return 'Pisces';
+    }
+
+    function detectTopic(text) {
+      const lower = text.toLowerCase();
+      if (lower.indexOf('love') !== -1 || text.indexOf('પ્રેમ') !== -1 || text.indexOf('લવ') !== -1) return 'love';
+      if (lower.indexOf('career') !== -1 || lower.indexOf('job') !== -1 || lower.indexOf('money') !== -1 || text.indexOf('કેરિયર') !== -1 || text.indexOf('જોબ') !== -1 || text.indexOf('પૈસા') !== -1) return 'career';
+      if (lower.indexOf('health') !== -1 || lower.indexOf('energy') !== -1 || text.indexOf('હેલ્થ') !== -1 || text.indexOf('આરોગ્ય') !== -1) return 'health';
+      if (lower.indexOf('lucky') !== -1 || lower.indexOf('color') !== -1 || lower.indexOf('number') !== -1 || text.indexOf('લકી') !== -1 || text.indexOf('રંગ') !== -1 || text.indexOf('નંબર') !== -1) return 'lucky';
+      return 'full';
+    }
+
+    function currentRow() {
+      for (let i = 0; i < horoscopeRows.length; i += 1) {
+        if (horoscopeRows[i].sign === state.sign) return horoscopeRows[i];
+      }
+      return null;
+    }
+
+    function askForSign() {
+      if (state.language === 'gu') {
+        return 'તમારું sign કે birth date મોકલો, પછી હું horoscope answer આપી દઈશ.';
+      }
+      return 'Send me your sign or birth date, and I will reply with your horoscope.';
+    }
+
+    function buildEnglish(row, topic) {
+      const lucky = 'Lucky color: ' + row.lucky_color + '. Lucky number: ' + row.lucky_number + '. Power direction: ' + row.lucky_direction + '. Energy score: ' + row.energy_score + '/5. Day tag: ' + row.day_tag + '.';
+      if (topic === 'love') return 'Love: ' + row.love_relations + '\n\nTransit: ' + row.transit;
+      if (topic === 'career') return 'Career: ' + row.career_money + '\n\nTransit: ' + row.transit;
+      if (topic === 'health') return 'Health: ' + row.health_energy + '\n\nTransit: ' + row.transit;
+      if (topic === 'lucky') return lucky;
+      return 'Today for ' + row.sign + ':\n\nLove: ' + row.love_relations + '\nCareer: ' + row.career_money + '\nHealth: ' + row.health_energy + '\nLucky: ' + lucky;
+    }
+
+    function buildGujarati(row, topic) {
+      const lucky = 'લકી color ' + row.lucky_color + ', lucky number ' + row.lucky_number + ', અને lucky direction ' + row.lucky_direction + ' છે. Energy score ' + row.energy_score + '/5 છે અને day tag ' + row.day_tag + ' છે.';
+      if (topic === 'love') return 'પ્રેમ: ' + row.love_relations + '\n\nTransit: ' + row.transit;
+      if (topic === 'career') return 'કેરિયર: ' + row.career_money + '\n\nTransit: ' + row.transit;
+      if (topic === 'health') return 'હેલ્થ: ' + row.health_energy + '\n\nTransit: ' + row.transit;
+      if (topic === 'lucky') return lucky;
+      return 'આજે ' + row.sign + ' માટે reading:\n\nપ્રેમ: ' + row.love_relations + '\nકેરિયર: ' + row.career_money + '\nહેલ્થ: ' + row.health_energy + '\nલકી: ' + lucky;
+    }
+
+    function updateState(text) {
+      detectLanguage(text);
+      const sign = extractSign(text);
+      if (sign) state.sign = sign;
+      const birthDate = extractBirthDate(text);
+      if (birthDate) {
+        state.birthDate = birthDate;
+        state.sign = signFromBirthDate(birthDate);
+      }
+      renderProfile();
+    }
+
+    function buildReply(text) {
+      const row = currentRow();
+      if (!row) return askForSign();
+      const topic = detectTopic(text);
+      return state.language === 'gu' ? buildGujarati(row, topic) : buildEnglish(row, topic);
+    }
+
+    function submitMessage(text) {
+      const message = text.trim();
+      if (!message) return;
+      addMessage('user', message);
+      updateState(message);
+      addMessage('agent', buildReply(message));
+      chatInput.value = '';
+    }
+
+    sendBtn.addEventListener('click', function () {
+      submitMessage(chatInput.value);
+    });
+
+    chatInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        submitMessage(chatInput.value);
+      }
+    });
+
+    document.querySelectorAll('[data-prompt]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        submitMessage(button.getAttribute('data-prompt'));
       });
-    })();
+    });
+
+    renderProfile();
+    addMessage('agent', 'Hi, I am ready. Send me your sign or birth date, and I will reply here in this live chat page.');
   </script>
 </body>
 </html>
