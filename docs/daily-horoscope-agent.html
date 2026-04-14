@@ -452,16 +452,10 @@
       { sign: 'Pisces', transit: 'Neptune Sextile Moon', love_relations: 'Deep soul connection. Romantic dreams may come true.', career_money: 'Creative projects flow effortlessly. Trust your intuition.', health_energy: 'Spiritual healing. Good day for yoga or meditation.', lucky_color: 'Sea Foam', lucky_number: 12, lucky_direction: 'North', energy_score: 4, day_tag: 'Good' }
     ];
 
-    const signOrder = horoscopeRows.map(row => row.sign);
     const state = {
       language: 'en',
-      profile: {
-        name: null,
-        sign: null,
-        birthDate: null,
-        relationshipStatus: null,
-        jobTitle: null
-      }
+      sign: null,
+      birthDate: null
     };
 
     const chatLog = document.getElementById('chatLog');
@@ -471,7 +465,7 @@
 
     function addMessage(role, text) {
       const wrapper = document.createElement('div');
-      wrapper.className = `message ${role}`;
+      wrapper.className = 'message ' + role;
       const label = document.createElement('div');
       label.className = 'message-label';
       label.textContent = role === 'user' ? 'You' : 'Daily Horoscope Agent';
@@ -486,28 +480,32 @@
 
     function renderProfile() {
       const chips = [];
-      if (state.language === 'gu') chips.push('Language: Gujarati');
-      else chips.push('Language: English');
-      if (state.profile.sign) chips.push(`Sign: ${state.profile.sign}`);
-      if (state.profile.birthDate) chips.push(`Birth date: ${state.profile.birthDate}`);
-      if (state.profile.relationshipStatus) chips.push(`Status: ${state.profile.relationshipStatus}`);
-      if (state.profile.jobTitle) chips.push(`Job: ${state.profile.jobTitle}`);
-      profileStrip.innerHTML = chips.map(item => `<span class="chip">${item}</span>`).join('');
+      chips.push('Language: ' + (state.language === 'gu' ? 'Gujarati' : 'English'));
+      if (state.sign) chips.push('Sign: ' + state.sign);
+      if (state.birthDate) chips.push('Birth date: ' + state.birthDate);
+      profileStrip.innerHTML = chips.map(function (item) {
+        return '<span class="chip">' + item + '</span>';
+      }).join('');
     }
 
     function detectLanguage(text) {
       const lower = text.toLowerCase();
-      if (/[\u0A80-\u0AFF]/.test(text) || lower.includes('gujarati') || lower.includes('gujaratima') || lower.includes('gujarati ma')) {
+      if (/[\u0A80-\u0AFF]/.test(text) || lower.indexOf('gujarati') !== -1 || lower.indexOf('gujarati ma') !== -1) {
         state.language = 'gu';
       }
-      if (lower.includes('english')) {
+      if (lower.indexOf('english') !== -1) {
         state.language = 'en';
       }
     }
 
     function extractSign(text) {
       const lower = text.toLowerCase();
-      return signOrder.find(sign => lower.includes(sign.toLowerCase())) || null;
+      for (let i = 0; i < horoscopeRows.length; i += 1) {
+        if (lower.indexOf(horoscopeRows[i].sign.toLowerCase()) !== -1) {
+          return horoscopeRows[i].sign;
+        }
+      }
+      return null;
     }
 
     function extractBirthDate(text) {
@@ -518,13 +516,13 @@
         const dd = slashMatch[1].padStart(2, '0');
         const mm = slashMatch[2].padStart(2, '0');
         const yyyy = slashMatch[3];
-        return `${yyyy}-${mm}-${dd}`;
+        return yyyy + '-' + mm + '-' + dd;
       }
       return null;
     }
 
     function signFromBirthDate(isoDate) {
-      const date = new Date(`${isoDate}T00:00:00`);
+      const date = new Date(isoDate + 'T00:00:00');
       if (Number.isNaN(date.getTime())) return null;
       const month = date.getMonth() + 1;
       const day = date.getDate();
@@ -542,142 +540,68 @@
       return 'Pisces';
     }
 
-    function extractRelationshipStatus(text) {
+    function detectTopic(text) {
       const lower = text.toLowerCase();
-      if (lower.includes('married')) return 'married';
-      if (lower.includes('relationship')) return 'in a relationship';
-      if (lower.includes('single')) return 'single';
-      return null;
-    }
-
-    function extractJobTitle(text) {
-      const lower = text.toLowerCase();
-      const match = text.match(/\b(?:i am|i'm|my job is|job title is)\s+(?:an?\s+)?([A-Za-z][A-Za-z\s-]{2,40})/i);
-      if (match) return match[1].trim();
-      if (lower.includes('software engineer')) return 'Software Engineer';
-      if (lower.includes('marketing manager')) return 'Marketing Manager';
-      if (lower.includes('journalist')) return 'Journalist';
-      return null;
-    }
-
-    function extractName(text) {
-      const match = text.match(/\b(?:my name is|i am|i'm)\s+([A-Z][a-z]+)\b/);
-      return match ? match[1] : null;
-    }
-
-    function detectIntent(text) {
-      const lower = text.toLowerCase();
-      if (lower.includes('yesterday') || text.includes('ગઈકાલ')) return 'yesterday';
-      if (lower.includes('lucky') || lower.includes('color') || lower.includes('number') || lower.includes('direction') || text.includes('લકી') || text.includes('રંગ') || text.includes('નંબર') || text.includes('દિશા')) return 'lucky';
-      if (lower.includes('love') || lower.includes('relationship') || lower.includes('romance') || text.includes('પ્રેમ') || text.includes('લવ')) return 'love';
-      if (lower.includes('career') || lower.includes('job') || lower.includes('money') || lower.includes('finance') || lower.includes('work') || text.includes('કેરિયર') || text.includes('જોબ') || text.includes('પૈસા') || text.includes('કામ')) return 'career';
-      if (lower.includes('health') || lower.includes('energy') || lower.includes('wellness') || text.includes('હેલ્થ') || text.includes('આરોગ્ય') || text.includes('energy')) return 'health';
+      if (lower.indexOf('love') !== -1 || text.indexOf('પ્રેમ') !== -1 || text.indexOf('લવ') !== -1) return 'love';
+      if (lower.indexOf('career') !== -1 || lower.indexOf('job') !== -1 || lower.indexOf('money') !== -1 || text.indexOf('કેરિયર') !== -1 || text.indexOf('જોબ') !== -1 || text.indexOf('પૈસા') !== -1) return 'career';
+      if (lower.indexOf('health') !== -1 || lower.indexOf('energy') !== -1 || text.indexOf('હેલ્થ') !== -1 || text.indexOf('આરોગ્ય') !== -1) return 'health';
+      if (lower.indexOf('lucky') !== -1 || lower.indexOf('color') !== -1 || lower.indexOf('number') !== -1 || text.indexOf('લકી') !== -1 || text.indexOf('રંગ') !== -1 || text.indexOf('નંબર') !== -1) return 'lucky';
       return 'full';
     }
 
-    function isGreeting(text) {
-      const lower = text.toLowerCase().trim();
-      return ['hi', 'hello', 'hey', 'namaste', 'kem cho', 'kem chho', 'હાય', 'હેલો', 'નમસ્તે'].includes(lower);
+    function currentRow() {
+      for (let i = 0; i < horoscopeRows.length; i += 1) {
+        if (horoscopeRows[i].sign === state.sign) return horoscopeRows[i];
+      }
+      return null;
+    }
+
+    function askForSign() {
+      if (state.language === 'gu') {
+        return 'તમારું sign કે birth date મોકલો, પછી હું horoscope answer આપી દઈશ.';
+      }
+      return 'Send me your sign or birth date, and I will reply with your horoscope.';
+    }
+
+    function buildEnglish(row, topic) {
+      const lucky = 'Lucky color: ' + row.lucky_color + '. Lucky number: ' + row.lucky_number + '. Power direction: ' + row.lucky_direction + '. Energy score: ' + row.energy_score + '/5. Day tag: ' + row.day_tag + '.';
+      if (topic === 'love') return 'Love: ' + row.love_relations + '\n\nTransit: ' + row.transit;
+      if (topic === 'career') return 'Career: ' + row.career_money + '\n\nTransit: ' + row.transit;
+      if (topic === 'health') return 'Health: ' + row.health_energy + '\n\nTransit: ' + row.transit;
+      if (topic === 'lucky') return lucky;
+      return 'Today for ' + row.sign + ':\n\nLove: ' + row.love_relations + '\nCareer: ' + row.career_money + '\nHealth: ' + row.health_energy + '\nLucky: ' + lucky;
+    }
+
+    function buildGujarati(row, topic) {
+      const lucky = 'લકી color ' + row.lucky_color + ', lucky number ' + row.lucky_number + ', અને lucky direction ' + row.lucky_direction + ' છે. Energy score ' + row.energy_score + '/5 છે અને day tag ' + row.day_tag + ' છે.';
+      if (topic === 'love') return 'પ્રેમ: ' + row.love_relations + '\n\nTransit: ' + row.transit;
+      if (topic === 'career') return 'કેરિયર: ' + row.career_money + '\n\nTransit: ' + row.transit;
+      if (topic === 'health') return 'હેલ્થ: ' + row.health_energy + '\n\nTransit: ' + row.transit;
+      if (topic === 'lucky') return lucky;
+      return 'આજે ' + row.sign + ' માટે reading:\n\nપ્રેમ: ' + row.love_relations + '\nકેરિયર: ' + row.career_money + '\nહેલ્થ: ' + row.health_energy + '\nલકી: ' + lucky;
     }
 
     function updateState(text) {
       detectLanguage(text);
       const sign = extractSign(text);
-      if (sign) state.profile.sign = sign;
+      if (sign) state.sign = sign;
       const birthDate = extractBirthDate(text);
       if (birthDate) {
-        state.profile.birthDate = birthDate;
-        state.profile.sign = signFromBirthDate(birthDate);
+        state.birthDate = birthDate;
+        state.sign = signFromBirthDate(birthDate);
       }
-      const status = extractRelationshipStatus(text);
-      if (status) state.profile.relationshipStatus = status;
-      const jobTitle = extractJobTitle(text);
-      if (jobTitle) state.profile.jobTitle = jobTitle;
-      const name = extractName(text);
-      if (name && !['I', 'My'].includes(name)) state.profile.name = name;
       renderProfile();
     }
 
-    function currentRow() {
-      return horoscopeRows.find(row => row.sign === state.profile.sign) || null;
-    }
-
-    function introName() {
-      return state.profile.name || (state.language === 'gu' ? 'મિત્ર' : 'friend');
-    }
-
-    function relationText(sign) {
-      const status = state.profile.relationshipStatus;
-      const name = introName();
-      if (state.language === 'gu') {
-        if (status === 'married') return `${name}, તમારા લગ્નજીવનમાં`; 
-        if (status === 'in a relationship') return `${name}, તમારા relationship માં`; 
-        return `${name}, ${sign} તરીકે`; 
+    function buildReply(text) {
+      const lower = text.toLowerCase().trim();
+      if (lower === 'hi' || lower === 'hello' || lower === 'hey' || lower === 'kem cho' || lower === 'kem chho' || text === 'હાય' || text === 'હેલો' || text === 'નમસ્તે') {
+        return askForSign();
       }
-      if (status === 'married') return `${name}, in your marriage,`;
-      if (status === 'in a relationship') return `${name}, in your relationship,`;
-      return `As a ${sign}, ${name},`;
-    }
-
-    function buildEnglish(row, intent) {
-      const name = introName();
-      const job = state.profile.jobTitle || 'professional';
-      const love = `${relationText(row.sign)} ${row.love_relations.charAt(0).toLowerCase()}${row.love_relations.slice(1)}`;
-      const career = `${name}, as a ${job}, ${row.career_money.charAt(0).toLowerCase()}${row.career_money.slice(1)}`;
-      const health = `${name}, ${row.health_energy}`;
-      const lucky = `Lucky color: ${row.lucky_color}. Lucky number: ${row.lucky_number}. Power direction: ${row.lucky_direction}. Energy score: ${row.energy_score}/5. Day tag: ${row.day_tag}.`;
-
-      if (intent === 'love') return `${love}\n\nTransit: ${row.transit}`;
-      if (intent === 'career') return `${career}\n\nTransit: ${row.transit}`;
-      if (intent === 'health') return `${health}\n\nTransit: ${row.transit}`;
-      if (intent === 'lucky') return lucky;
-
-      return `${name}, here is your ${row.sign} reading for today.\n\nLove: ${love}\nCareer: ${career}\nHealth: ${health}\nLucky: ${lucky}`;
-    }
-
-    function buildGujarati(row, intent) {
-      const name = introName();
-      const job = state.profile.jobTitle || 'professional';
-      const love = `${relationText(row.sign)} પ્રેમ બાબતે ${row.love_relations}`;
-      const career = `${name}, ${job} તરીકે આજે ${row.career_money}`;
-      const health = `${name}, હેલ્થ અને energy માટે ${row.health_energy}`;
-      const lucky = `તમારો lucky color ${row.lucky_color} છે, lucky number ${row.lucky_number} છે, અને ${row.lucky_direction} દિશા આજે તમારા માટે favorable છે. Energy score ${row.energy_score}/5 છે અને day tag ${row.day_tag} છે.`;
-
-      if (intent === 'love') return `${love}\n\nTransit: ${row.transit}`;
-      if (intent === 'career') return `${career}\n\nTransit: ${row.transit}`;
-      if (intent === 'health') return `${health}\n\nTransit: ${row.transit}`;
-      if (intent === 'lucky') return lucky;
-
-      return `${name}, આજે ${row.sign} માટે તમારું full horoscope આ રહ્યું.\n\nપ્રેમ: ${love}\nકેરિયર: ${career}\nહેલ્થ: ${health}\nલકી: ${lucky}`;
-    }
-
-    function askForSign() {
-      if (state.language === 'gu') {
-        return 'તમારું sun sign કે birth date મોકલો, પછી હું today love, career, health અને lucky details આપી દઈશ.';
-      }
-      return 'Send me your sun sign or birth date, and I will generate your love, career, health, and lucky details for today.';
-    }
-
-    function buildReply(userText) {
-      const trimmed = userText.trim();
-      const intent = detectIntent(trimmed);
-
-      if (intent === 'yesterday') {
-        return state.language === 'gu'
-          ? 'ગઈકાલ સાથે compare કરવાનું feature next version માં add કરીશું. હાલ માટે આજેનું reading આપી શકું.'
-          : 'Yesterday comparison will be added in the next version. For now, I can give today\'s reading.';
-      }
-
-      if (isGreeting(trimmed) && !state.profile.sign) {
-        return state.language === 'gu'
-          ? 'હાય, હું Daily Horoscope Agent છું. તમારું sign કે birth date મોકલો.'
-          : 'Hi, I am the Daily Horoscope Agent. Send me your sign or birth date.';
-      }
-
       const row = currentRow();
       if (!row) return askForSign();
-
-      return state.language === 'gu' ? buildGujarati(row, intent) : buildEnglish(row, intent);
+      const topic = detectTopic(text);
+      return state.language === 'gu' ? buildGujarati(row, topic) : buildEnglish(row, topic);
     }
 
     function submitMessage(text) {
@@ -685,22 +609,28 @@
       if (!message) return;
       addMessage('user', message);
       updateState(message);
-      const reply = buildReply(message);
-      setTimeout(() => addMessage('agent', reply), 180);
+      addMessage('agent', buildReply(message));
       chatInput.value = '';
     }
 
-    sendBtn.addEventListener('click', () => submitMessage(chatInput.value));
-    chatInput.addEventListener('keydown', event => {
-      if (event.key === 'Enter') submitMessage(chatInput.value);
+    sendBtn.addEventListener('click', function () {
+      submitMessage(chatInput.value);
     });
 
-    document.querySelectorAll('[data-prompt]').forEach(button => {
-      button.addEventListener('click', () => submitMessage(button.dataset.prompt));
+    chatInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        submitMessage(chatInput.value);
+      }
+    });
+
+    document.querySelectorAll('[data-prompt]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        submitMessage(button.getAttribute('data-prompt'));
+      });
     });
 
     renderProfile();
-    addMessage('agent', 'Hi, I am the Daily Horoscope Agent. Send me your sun sign or birth date and I will reply here in chat. You can also ask me to speak in Gujarati.');
+    addMessage('agent', 'Hi, I am the Daily Horoscope Agent. Send me your sign or birth date and I will reply here in chat.');
   </script>
 </body>
 </html>
