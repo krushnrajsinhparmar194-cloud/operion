@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Operion · Daily Horoscope Agent Demo</title>
+  <title>Operion · Daily Horoscope Agent Chat Demo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,14 +12,16 @@
       font-family: 'Inter', system-ui, sans-serif;
       color-scheme: light;
       --bg: #eef4fb;
-      --surface: rgba(255, 255, 255, 0.92);
-      --surface-strong: #ffffff;
+      --surface: rgba(255, 255, 255, 0.94);
+      --surface-soft: #f8fbff;
       --border: #d8e2f0;
       --text: #101828;
       --muted: #667085;
       --accent: #7c6bff;
       --accent-2: #4da8ff;
       --shadow: 0 30px 80px rgba(15, 23, 42, 0.12);
+      --bubble-user: linear-gradient(135deg, rgba(124, 107, 255, 0.16), rgba(77, 168, 255, 0.18));
+      --bubble-agent: #ffffff;
       --good: #137333;
       --neutral: #8a5b00;
       --caution: #b42318;
@@ -38,20 +40,20 @@
         radial-gradient(circle at 84% 10%, rgba(77, 168, 255, 0.18), transparent 38%),
         linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
       color: var(--text);
-      padding: 2rem 1rem 3rem;
+      padding: 1rem;
     }
 
-    .page {
-      width: min(1180px, 100%);
+    .app {
+      width: min(1240px, 100%);
       margin: 0 auto;
       display: grid;
-      grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
-      gap: 1.25rem;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 1rem;
       align-items: start;
     }
 
-    .panel,
-    .result-shell {
+    .sidebar,
+    .chat-shell {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 1.75rem;
@@ -59,10 +61,24 @@
       backdrop-filter: blur(24px);
     }
 
-    .panel {
-      padding: 1.4rem;
+    .sidebar {
+      padding: 1.2rem;
       position: sticky;
       top: 1rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 1rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.6rem 0.95rem;
+      background: rgba(255,255,255,0.8);
     }
 
     .eyebrow {
@@ -73,373 +89,618 @@
       padding: 0.4rem 0.75rem;
       background: rgba(124, 107, 255, 0.08);
       color: var(--accent);
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
     }
 
     h1 {
-      margin: 1rem 0 0.5rem;
-      font-size: clamp(2rem, 4vw, 2.9rem);
+      margin: 0.8rem 0 0.35rem;
+      font-size: 2.35rem;
       line-height: 1.05;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.05em;
     }
 
-    .lede {
-      margin: 0 0 1.4rem;
+    .version {
+      margin: 0 0 0.9rem;
       color: var(--muted);
-      line-height: 1.6;
+      font-weight: 500;
     }
 
-    .field {
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-bottom: 1rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .info-card,
+    .quick-prompts {
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #fff 0%, var(--surface-soft) 100%);
+      border-radius: 1.2rem;
+      padding: 1rem;
       margin-bottom: 1rem;
     }
 
-    label {
-      display: block;
-      margin-bottom: 0.45rem;
-      font-size: 0.82rem;
-      font-weight: 700;
+    .info-card h3,
+    .quick-prompts h3 {
+      margin: 0 0 0.6rem;
+      font-size: 0.85rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #5a6b84;
     }
 
-    input,
-    select,
-    button,
-    textarea {
-      font: inherit;
-    }
-
-    input,
-    select {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: #f8fbff;
-      color: var(--text);
-      padding: 0.95rem 1rem;
-      border-radius: 1rem;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    }
-
-    input:focus,
-    select:focus {
-      border-color: rgba(124, 107, 255, 0.5);
-      box-shadow: 0 0 0 4px rgba(124, 107, 255, 0.14);
-      background: var(--surface-strong);
-    }
-
-    .primary {
-      width: 100%;
-      border: none;
-      border-radius: 1rem;
-      padding: 1rem 1.15rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      background: linear-gradient(120deg, var(--accent-2), var(--accent));
-      color: #08111f;
-      cursor: pointer;
-      box-shadow: 0 18px 40px rgba(77, 168, 255, 0.22);
-    }
-
-    .helper {
-      margin-top: 0.85rem;
-      font-size: 0.92rem;
-      color: var(--muted);
+    .info-card p,
+    .capabilities li {
+      margin: 0;
+      color: #344054;
       line-height: 1.55;
     }
 
-    .result-shell {
-      padding: 1.5rem;
+    .capabilities {
+      list-style: none;
+      padding: 0;
+      margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.55rem;
     }
 
-    .result-top {
+    .capabilities li {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 1rem;
+      gap: 0.55rem;
       align-items: flex-start;
     }
 
-    .result-top h2 {
-      margin: 0;
-      font-size: clamp(1.4rem, 3vw, 2rem);
+    .capabilities li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 700;
+      margin-top: 0.05rem;
     }
 
-    .result-top p {
-      margin: 0.35rem 0 0;
-      color: var(--muted);
-    }
-
-    .meta-row {
+    .prompt-list {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.7rem;
+      flex-direction: column;
+      gap: 0.6rem;
     }
 
-    .pill {
-      border-radius: 999px;
-      padding: 0.5rem 0.85rem;
+    .prompt-list button {
+      width: 100%;
+      text-align: left;
       border: 1px solid var(--border);
       background: #fff;
-      font-size: 0.88rem;
-      font-weight: 600;
+      border-radius: 1rem;
+      padding: 0.8rem 0.9rem;
+      color: var(--text);
+      cursor: pointer;
     }
 
-    .pill.good { color: var(--good); border-color: rgba(19, 115, 51, 0.22); background: rgba(19, 115, 51, 0.06); }
-    .pill.neutral { color: var(--neutral); border-color: rgba(138, 91, 0, 0.22); background: rgba(138, 91, 0, 0.06); }
-    .pill.caution { color: var(--caution); border-color: rgba(180, 35, 24, 0.22); background: rgba(180, 35, 24, 0.06); }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
-    }
-
-    .card {
-      border: 1px solid var(--border);
-      border-radius: 1.25rem;
+    .chat-shell {
+      display: flex;
+      flex-direction: column;
+      min-height: calc(100vh - 2rem);
       padding: 1.15rem;
-      background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(246,249,255,0.96) 100%);
+      gap: 0.9rem;
     }
 
-    .card h3 {
-      margin: 0 0 0.55rem;
-      font-size: 1rem;
+    .chat-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: start;
+      padding: 0.25rem 0.1rem 0;
     }
 
-    .card p {
+    .chat-head h2 {
       margin: 0;
-      color: #344054;
-      line-height: 1.65;
+      font-size: 1.35rem;
     }
 
-    .card.full {
-      grid-column: 1 / -1;
-    }
-
-    .logic {
-      border-top: 1px solid var(--border);
-      padding-top: 1rem;
-    }
-
-    .logic h3 {
-      margin: 0 0 0.55rem;
-      font-size: 1rem;
-    }
-
-    .logic ul {
-      margin: 0;
-      padding-left: 1.1rem;
+    .chat-head p {
+      margin: 0.3rem 0 0;
       color: var(--muted);
-      line-height: 1.7;
     }
 
-    @media (max-width: 980px) {
-      .page {
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      border-radius: 999px;
+      padding: 0.45rem 0.8rem;
+      background: rgba(19, 115, 51, 0.09);
+      color: var(--good);
+      font-weight: 600;
+      border: 1px solid rgba(19, 115, 51, 0.14);
+      white-space: nowrap;
+    }
+
+    .status::before {
+      content: '';
+      width: 0.6rem;
+      height: 0.6rem;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 0 0.2rem rgba(19, 115, 51, 0.12);
+    }
+
+    .profile-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .chip {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      padding: 0.45rem 0.75rem;
+      font-size: 0.88rem;
+      color: #344054;
+    }
+
+    .chat-log {
+      flex: 1;
+      min-height: 420px;
+      max-height: calc(100vh - 220px);
+      overflow-y: auto;
+      padding: 0.35rem 0.2rem 0.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .message {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      max-width: min(82%, 720px);
+    }
+
+    .message.user {
+      align-self: flex-end;
+      align-items: flex-end;
+    }
+
+    .message.agent {
+      align-self: flex-start;
+      align-items: flex-start;
+    }
+
+    .message-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      padding: 0 0.2rem;
+    }
+
+    .bubble {
+      border-radius: 1.2rem;
+      border: 1px solid var(--border);
+      padding: 0.95rem 1rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      background: var(--bubble-agent);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    .message.user .bubble {
+      background: var(--bubble-user);
+      border-color: rgba(124, 107, 255, 0.22);
+    }
+
+    .composer {
+      display: flex;
+      gap: 0.7rem;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      padding: 0.7rem;
+      background: #fff;
+    }
+
+    .composer input {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.9rem 1rem;
+      font: inherit;
+      outline: none;
+      background: var(--surface-soft);
+    }
+
+    .composer input:focus {
+      border-color: rgba(124, 107, 255, 0.45);
+      box-shadow: 0 0 0 4px rgba(124, 107, 255, 0.12);
+      background: #fff;
+    }
+
+    .composer button {
+      border: none;
+      border-radius: 999px;
+      padding: 0.9rem 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(120deg, var(--accent-2), var(--accent));
+      color: #08111f;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .helper-text {
+      color: var(--muted);
+      font-size: 0.88rem;
+      padding: 0 0.2rem;
+    }
+
+    @media (max-width: 1024px) {
+      .app {
         grid-template-columns: 1fr;
       }
 
-      .panel {
+      .sidebar {
         position: static;
+      }
+
+      .chat-shell {
+        min-height: auto;
       }
     }
 
     @media (max-width: 720px) {
-      .cards {
-        grid-template-columns: 1fr;
-      }
-
       body {
-        padding: 1rem 0.85rem 2rem;
+        padding: 0.8rem;
       }
 
-      .panel,
-      .result-shell {
-        border-radius: 1.25rem;
+      .sidebar,
+      .chat-shell {
+        border-radius: 1.2rem;
         padding: 1rem;
+      }
+
+      .message {
+        max-width: 100%;
+      }
+
+      .composer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .composer button,
+      .composer input {
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <section class="panel">
-      <div class="eyebrow">First Agent Demo</div>
+  <div class="app">
+    <aside class="sidebar">
+      <a href="operion-links.html" class="back-link">← Back to dashboard</a>
+      <div class="eyebrow">Astrology</div>
       <h1>Daily Horoscope Agent</h1>
-      <p class="lede">This is a working prototype of how one Operion agent can turn structured training data into a personalized answer for the user.</p>
-
-      <div class="field">
-        <label for="userName">User name</label>
-        <input id="userName" type="text" value="Rahul" placeholder="Enter a name" />
+      <p class="version">Version v1.1</p>
+      <div class="meta">
+        <span>Provider · Dataset Logic</span>
+        <span>Mode · Chat Demo</span>
       </div>
 
-      <div class="field">
-        <label for="sign">Zodiac sign</label>
-        <select id="sign"></select>
-      </div>
+      <section class="info-card">
+        <h3>Role summary</h3>
+        <p>Generates personalized daily horoscopes from sun sign or birth date. Can answer in English or Gujarati and focus on love, career, health, or lucky cues.</p>
+      </section>
 
-      <div class="field">
-        <label for="relationshipStatus">Relationship status</label>
-        <select id="relationshipStatus">
-          <option value="single">Single</option>
-          <option value="in a relationship">In a relationship</option>
-          <option value="married">Married</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="jobTitle">Job title</label>
-        <input id="jobTitle" type="text" value="Software Engineer" placeholder="Enter a job title" />
-      </div>
-
-      <button class="primary" id="generateBtn">Generate answer</button>
-      <p class="helper">Current version uses the provided sign dataset as the answer seed, then personalizes it with name, relationship status, and job title.</p>
-    </section>
-
-    <section class="result-shell">
-      <div class="result-top">
-        <div>
-          <h2 id="resultTitle">Rahul's Aries horoscope</h2>
-          <p id="resultSubtitle">Transit: Sun Trine Mars</p>
-        </div>
-        <div class="meta-row">
-          <div class="pill" id="energyPill">Energy score: 5/5</div>
-          <div class="pill good" id="tagPill">Good day</div>
-        </div>
-      </div>
-
-      <div class="cards">
-        <article class="card">
-          <h3>Love</h3>
-          <p id="loveText"></p>
-        </article>
-        <article class="card">
-          <h3>Career</h3>
-          <p id="careerText"></p>
-        </article>
-        <article class="card">
-          <h3>Health</h3>
-          <p id="healthText"></p>
-        </article>
-        <article class="card">
-          <h3>Lucky highlight</h3>
-          <p id="luckyText"></p>
-        </article>
-        <article class="card full">
-          <h3>Data row used by the agent</h3>
-          <p id="rowText"></p>
-        </article>
-      </div>
-
-      <div class="logic">
-        <h3>How this answer was built</h3>
-        <ul>
-          <li>The agent finds the dataset row for the selected zodiac sign.</li>
-          <li>It uses the stored transit and domain seeds as the base meaning.</li>
-          <li>It rewrites the output with the user's name, relationship status, and job title.</li>
-          <li>Lucky color, number, direction, energy score, and day tag are attached from the same record.</li>
+      <section class="info-card">
+        <h3>Capabilities</h3>
+        <ul class="capabilities">
+          <li>Accept sun sign or birth date to tailor predictions</li>
+          <li>Reply in Gujarati when the user asks for it</li>
+          <li>Focus on love, career, health, or lucky details</li>
+          <li>Remember sign, language, and basic profile during the chat</li>
         </ul>
+      </section>
+
+      <section class="quick-prompts">
+        <h3>Quick prompts</h3>
+        <div class="prompt-list">
+          <button type="button" data-prompt="Give me today's horoscope for Taurus focusing on career.">Give me today's horoscope for Taurus focusing on career.</button>
+          <button type="button" data-prompt="Gujarati ma vaat kariye. Maru sign Aries chhe, full horoscope aapo.">Gujarati ma vaat kariye. Maru sign Aries chhe, full horoscope aapo.</button>
+          <button type="button" data-prompt="My birth date is 1995-08-19. Tell me love and lucky details.">My birth date is 1995-08-19. Tell me love and lucky details.</button>
+        </div>
+      </section>
+    </aside>
+
+    <main class="chat-shell">
+      <div class="chat-head">
+        <div>
+          <h2>Chat with Daily Horoscope Agent</h2>
+          <p>Type naturally, for example: “Gujarati ma vaat kariye, maru sign Libra chhe”</p>
+        </div>
+        <div class="status">Online</div>
       </div>
-    </section>
+
+      <div class="profile-strip" id="profileStrip"></div>
+
+      <div class="chat-log" id="chatLog"></div>
+
+      <div class="helper-text">This v1 chat works fully on the front-end. It parses your message, finds the sign dataset row, and replies in chat bubbles.</div>
+
+      <div class="composer">
+        <input id="chatInput" type="text" placeholder="Type your message, sign, or birth date..." />
+        <button id="sendBtn" type="button">Send</button>
+      </div>
+    </main>
   </div>
 
   <script>
-    const dataset = [
-      { sign: 'Aries', symbol: ':aries:', transit: 'Sun Trine Mars', love_relations: 'High attraction; great day for a first date or bold move.', career_money: 'Success in leadership. Start that new project today.', health_energy: 'Peak physical vitality. Best for high-intensity gym work.', lucky_color: 'Red', lucky_number: 9, lucky_direction: 'East', energy_score: 5, day_tag: 'Good' },
-      { sign: 'Taurus', symbol: ':taurus:', transit: 'Venus in 2nd House', love_relations: 'Emotional stability. A good day for a quiet dinner at home.', career_money: 'Financial gains. Small luxury purchases are favored.', health_energy: 'Focus on sensory comfort. Good day for a spa or rest.', lucky_color: 'Green', lucky_number: 6, lucky_direction: 'South', energy_score: 4, day_tag: 'Good' },
-      { sign: 'Gemini', symbol: ':gemini:', transit: 'Mercury Retrograde', love_relations: 'Old flames might reach out. Avoid serious relationship talks.', career_money: 'Tech glitches and email delays. Backup all your work.', health_energy: 'Mental fatigue. Practice mindfulness and slow down.', lucky_color: 'Silver', lucky_number: 5, lucky_direction: 'West', energy_score: 2, day_tag: 'Caution' },
-      { sign: 'Cancer', symbol: ':cancer:', transit: 'Moon Square Pluto', love_relations: 'Emotional intensity. Avoid power struggles with your partner.', career_money: 'Deep focus. Great for investigative work or auditing.', health_energy: 'Watch for stress-related stomach issues. Stay hydrated.', lucky_color: 'White', lucky_number: 2, lucky_direction: 'North', energy_score: 3, day_tag: 'Neutral' },
-      { sign: 'Leo', symbol: ':leo:', transit: 'Jupiter Sextile Sun', love_relations: 'Confidence is magnetic. You are the center of attention.', career_money: 'Career growth. Bosses are impressed by your optimism.', health_energy: 'High vitality. You feel invincible; share your energy.', lucky_color: 'Gold', lucky_number: 1, lucky_direction: 'East', energy_score: 5, day_tag: 'Good' },
-      { sign: 'Virgo', symbol: ':virgo:', transit: 'Saturn Conjunct Sun', love_relations: 'Duty over desire. You may feel a bit lonely or serious today.', career_money: 'Heavy workload. Disciplined effort leads to long-term gain.', health_energy: 'Focus on bones and joints. Good day for stretching.', lucky_color: 'Brown', lucky_number: 8, lucky_direction: 'South', energy_score: 3, day_tag: 'Neutral' },
-      { sign: 'Libra', symbol: ':libra:', transit: 'Venus Conjunct Moon', love_relations: 'Pure harmony. Ideal day for marriage or deep commitments.', career_money: 'Collaborative success. Networking brings financial tips.', health_energy: 'Calm energy. Skin and beauty routines are effective now.', lucky_color: 'Pink', lucky_number: 7, lucky_direction: 'West', energy_score: 5, day_tag: 'Good' },
-      { sign: 'Scorpio', symbol: ':scorpius:', transit: 'Mars in 8th House', love_relations: 'Intense intimacy. Deep secrets may be revealed.', career_money: 'Focus on joint finances, taxes, or shared investments.', health_energy: 'High libido but risk of minor burn injuries. Be careful.', lucky_color: 'Black', lucky_number: 0, lucky_direction: 'North', energy_score: 3, day_tag: 'Caution' },
-      { sign: 'Sagittarius', symbol: ':sagittarius:', transit: 'Jupiter in 9th House', love_relations: 'Growth through travel. Meet someone from a different culture.', career_money: 'Success in publishing, law, or higher education.', health_energy: 'Adventure energy. Great for hiking or outdoor sports.', lucky_color: 'Purple', lucky_number: 3, lucky_direction: 'East', energy_score: 5, day_tag: 'Good' },
-      { sign: 'Capricorn', symbol: ':capricorn:', transit: 'Saturn Square Uranus', love_relations: 'Tension between tradition and freedom in your relationship.', career_money: 'Conflict between old methods and new technology at work.', health_energy: 'Nervous tension. Take breaks from blue-light screens.', lucky_color: 'Grey', lucky_number: 4, lucky_direction: 'South', energy_score: 2, day_tag: 'Caution' },
-      { sign: 'Aquarius', symbol: ':aquarius:', transit: 'Uranus Trine Venus', love_relations: 'A sudden, exciting social connection. Expect the unexpected.', career_money: 'Breakthrough in tech or creative freelance work.', health_energy: 'Erratic energy. Try a new, unconventional workout.', lucky_color: 'Electric Blue', lucky_number: 11, lucky_direction: 'West', energy_score: 4, day_tag: 'Good' },
-      { sign: 'Pisces', symbol: ':pisces:', transit: 'Neptune Sextile Moon', love_relations: 'Deep soul connection. Romantic dreams may come true.', career_money: 'Creative projects flow effortlessly. Trust your intuition.', health_energy: 'Spiritual healing. Good day for yoga or meditation.', lucky_color: 'Sea Foam', lucky_number: 12, lucky_direction: 'North', energy_score: 4, day_tag: 'Good' }
+    const horoscopeRows = [
+      { sign: 'Aries', transit: 'Sun Trine Mars', love_relations: 'High attraction; great day for a first date or bold move.', career_money: 'Success in leadership. Start that new project today.', health_energy: 'Peak physical vitality. Best for high-intensity gym work.', lucky_color: 'Red', lucky_number: 9, lucky_direction: 'East', energy_score: 5, day_tag: 'Good' },
+      { sign: 'Taurus', transit: 'Venus in 2nd House', love_relations: 'Emotional stability. A good day for a quiet dinner at home.', career_money: 'Financial gains. Small luxury purchases are favored.', health_energy: 'Focus on sensory comfort. Good day for a spa or rest.', lucky_color: 'Green', lucky_number: 6, lucky_direction: 'South', energy_score: 4, day_tag: 'Good' },
+      { sign: 'Gemini', transit: 'Mercury Retrograde', love_relations: 'Old flames might reach out. Avoid serious relationship talks.', career_money: 'Tech glitches and email delays. Backup all your work.', health_energy: 'Mental fatigue. Practice mindfulness and slow down.', lucky_color: 'Silver', lucky_number: 5, lucky_direction: 'West', energy_score: 2, day_tag: 'Caution' },
+      { sign: 'Cancer', transit: 'Moon Square Pluto', love_relations: 'Emotional intensity. Avoid power struggles with your partner.', career_money: 'Deep focus. Great for investigative work or auditing.', health_energy: 'Watch for stress-related stomach issues. Stay hydrated.', lucky_color: 'White', lucky_number: 2, lucky_direction: 'North', energy_score: 3, day_tag: 'Neutral' },
+      { sign: 'Leo', transit: 'Jupiter Sextile Sun', love_relations: 'Confidence is magnetic. You are the center of attention.', career_money: 'Career growth. Bosses are impressed by your optimism.', health_energy: 'High vitality. You feel invincible; share your energy.', lucky_color: 'Gold', lucky_number: 1, lucky_direction: 'East', energy_score: 5, day_tag: 'Good' },
+      { sign: 'Virgo', transit: 'Saturn Conjunct Sun', love_relations: 'Duty over desire. You may feel a bit lonely or serious today.', career_money: 'Heavy workload. Disciplined effort leads to long-term gain.', health_energy: 'Focus on bones and joints. Good day for stretching.', lucky_color: 'Brown', lucky_number: 8, lucky_direction: 'South', energy_score: 3, day_tag: 'Neutral' },
+      { sign: 'Libra', transit: 'Venus Conjunct Moon', love_relations: 'Pure harmony. Ideal day for marriage or deep commitments.', career_money: 'Collaborative success. Networking brings financial tips.', health_energy: 'Calm energy. Skin and beauty routines are effective now.', lucky_color: 'Pink', lucky_number: 7, lucky_direction: 'West', energy_score: 5, day_tag: 'Good' },
+      { sign: 'Scorpio', transit: 'Mars in 8th House', love_relations: 'Intense intimacy. Deep secrets may be revealed.', career_money: 'Focus on joint finances, taxes, or shared investments.', health_energy: 'High libido but risk of minor burn injuries. Be careful.', lucky_color: 'Black', lucky_number: 0, lucky_direction: 'North', energy_score: 3, day_tag: 'Caution' },
+      { sign: 'Sagittarius', transit: 'Jupiter in 9th House', love_relations: 'Growth through travel. Meet someone from a different culture.', career_money: 'Success in publishing, law, or higher education.', health_energy: 'Adventure energy. Great for hiking or outdoor sports.', lucky_color: 'Purple', lucky_number: 3, lucky_direction: 'East', energy_score: 5, day_tag: 'Good' },
+      { sign: 'Capricorn', transit: 'Saturn Square Uranus', love_relations: 'Tension between tradition and freedom in your relationship.', career_money: 'Conflict between old methods and new technology at work.', health_energy: 'Nervous tension. Take breaks from blue-light screens.', lucky_color: 'Grey', lucky_number: 4, lucky_direction: 'South', energy_score: 2, day_tag: 'Caution' },
+      { sign: 'Aquarius', transit: 'Uranus Trine Venus', love_relations: 'A sudden, exciting social connection. Expect the unexpected.', career_money: 'Breakthrough in tech or creative freelance work.', health_energy: 'Erratic energy. Try a new, unconventional workout.', lucky_color: 'Electric Blue', lucky_number: 11, lucky_direction: 'West', energy_score: 4, day_tag: 'Good' },
+      { sign: 'Pisces', transit: 'Neptune Sextile Moon', love_relations: 'Deep soul connection. Romantic dreams may come true.', career_money: 'Creative projects flow effortlessly. Trust your intuition.', health_energy: 'Spiritual healing. Good day for yoga or meditation.', lucky_color: 'Sea Foam', lucky_number: 12, lucky_direction: 'North', energy_score: 4, day_tag: 'Good' }
     ];
 
-    const signEl = document.getElementById('sign');
-    const userNameEl = document.getElementById('userName');
-    const relationshipStatusEl = document.getElementById('relationshipStatus');
-    const jobTitleEl = document.getElementById('jobTitle');
+    const signOrder = horoscopeRows.map(row => row.sign);
+    const state = {
+      language: 'en',
+      profile: {
+        name: null,
+        sign: null,
+        birthDate: null,
+        relationshipStatus: null,
+        jobTitle: null
+      }
+    };
 
-    const resultTitle = document.getElementById('resultTitle');
-    const resultSubtitle = document.getElementById('resultSubtitle');
-    const energyPill = document.getElementById('energyPill');
-    const tagPill = document.getElementById('tagPill');
-    const loveText = document.getElementById('loveText');
-    const careerText = document.getElementById('careerText');
-    const healthText = document.getElementById('healthText');
-    const luckyText = document.getElementById('luckyText');
-    const rowText = document.getElementById('rowText');
+    const chatLog = document.getElementById('chatLog');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const profileStrip = document.getElementById('profileStrip');
 
-    dataset.forEach(item => {
-      const option = document.createElement('option');
-      option.value = item.sign;
-      option.textContent = item.sign;
-      signEl.appendChild(option);
+    function addMessage(role, text) {
+      const wrapper = document.createElement('div');
+      wrapper.className = `message ${role}`;
+      const label = document.createElement('div');
+      label.className = 'message-label';
+      label.textContent = role === 'user' ? 'You' : 'Daily Horoscope Agent';
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.textContent = text;
+      wrapper.appendChild(label);
+      wrapper.appendChild(bubble);
+      chatLog.appendChild(wrapper);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function renderProfile() {
+      const chips = [];
+      if (state.language === 'gu') chips.push('Language: Gujarati');
+      else chips.push('Language: English');
+      if (state.profile.sign) chips.push(`Sign: ${state.profile.sign}`);
+      if (state.profile.birthDate) chips.push(`Birth date: ${state.profile.birthDate}`);
+      if (state.profile.relationshipStatus) chips.push(`Status: ${state.profile.relationshipStatus}`);
+      if (state.profile.jobTitle) chips.push(`Job: ${state.profile.jobTitle}`);
+      profileStrip.innerHTML = chips.map(item => `<span class="chip">${item}</span>`).join('');
+    }
+
+    function detectLanguage(text) {
+      const lower = text.toLowerCase();
+      if (/[\u0A80-\u0AFF]/.test(text) || lower.includes('gujarati') || lower.includes('gujaratima') || lower.includes('gujarati ma')) {
+        state.language = 'gu';
+      }
+      if (lower.includes('english')) {
+        state.language = 'en';
+      }
+    }
+
+    function extractSign(text) {
+      const lower = text.toLowerCase();
+      return signOrder.find(sign => lower.includes(sign.toLowerCase())) || null;
+    }
+
+    function extractBirthDate(text) {
+      const isoMatch = text.match(/\b(\d{4})-(\d{2})-(\d{2})\b/);
+      if (isoMatch) return isoMatch[0];
+      const slashMatch = text.match(/\b(\d{1,2})\/(\d{1,2})\/(\d{4})\b/);
+      if (slashMatch) {
+        const dd = slashMatch[1].padStart(2, '0');
+        const mm = slashMatch[2].padStart(2, '0');
+        const yyyy = slashMatch[3];
+        return `${yyyy}-${mm}-${dd}`;
+      }
+      return null;
+    }
+
+    function signFromBirthDate(isoDate) {
+      const date = new Date(`${isoDate}T00:00:00`);
+      if (Number.isNaN(date.getTime())) return null;
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return 'Aries';
+      if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return 'Taurus';
+      if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return 'Gemini';
+      if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return 'Cancer';
+      if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return 'Leo';
+      if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return 'Virgo';
+      if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return 'Libra';
+      if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return 'Scorpio';
+      if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return 'Sagittarius';
+      if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return 'Capricorn';
+      if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return 'Aquarius';
+      return 'Pisces';
+    }
+
+    function extractRelationshipStatus(text) {
+      const lower = text.toLowerCase();
+      if (lower.includes('married')) return 'married';
+      if (lower.includes('relationship')) return 'in a relationship';
+      if (lower.includes('single')) return 'single';
+      return null;
+    }
+
+    function extractJobTitle(text) {
+      const lower = text.toLowerCase();
+      const match = text.match(/\b(?:i am|i'm|my job is|job title is)\s+(?:an?\s+)?([A-Za-z][A-Za-z\s-]{2,40})/i);
+      if (match) return match[1].trim();
+      if (lower.includes('software engineer')) return 'Software Engineer';
+      if (lower.includes('marketing manager')) return 'Marketing Manager';
+      if (lower.includes('journalist')) return 'Journalist';
+      return null;
+    }
+
+    function extractName(text) {
+      const match = text.match(/\b(?:my name is|i am|i'm)\s+([A-Z][a-z]+)\b/);
+      return match ? match[1] : null;
+    }
+
+    function detectIntent(text) {
+      const lower = text.toLowerCase();
+      if (lower.includes('yesterday') || text.includes('ગઈકાલ')) return 'yesterday';
+      if (lower.includes('lucky') || lower.includes('color') || lower.includes('number') || lower.includes('direction') || text.includes('લકી') || text.includes('રંગ') || text.includes('નંબર') || text.includes('દિશા')) return 'lucky';
+      if (lower.includes('love') || lower.includes('relationship') || lower.includes('romance') || text.includes('પ્રેમ') || text.includes('લવ')) return 'love';
+      if (lower.includes('career') || lower.includes('job') || lower.includes('money') || lower.includes('finance') || lower.includes('work') || text.includes('કેરિયર') || text.includes('જોબ') || text.includes('પૈસા') || text.includes('કામ')) return 'career';
+      if (lower.includes('health') || lower.includes('energy') || lower.includes('wellness') || text.includes('હેલ્થ') || text.includes('આરોગ્ય') || text.includes('energy')) return 'health';
+      return 'full';
+    }
+
+    function isGreeting(text) {
+      const lower = text.toLowerCase().trim();
+      return ['hi', 'hello', 'hey', 'namaste', 'kem cho', 'kem chho', 'હાય', 'હેલો', 'નમસ્તે'].includes(lower);
+    }
+
+    function updateState(text) {
+      detectLanguage(text);
+      const sign = extractSign(text);
+      if (sign) state.profile.sign = sign;
+      const birthDate = extractBirthDate(text);
+      if (birthDate) {
+        state.profile.birthDate = birthDate;
+        state.profile.sign = signFromBirthDate(birthDate);
+      }
+      const status = extractRelationshipStatus(text);
+      if (status) state.profile.relationshipStatus = status;
+      const jobTitle = extractJobTitle(text);
+      if (jobTitle) state.profile.jobTitle = jobTitle;
+      const name = extractName(text);
+      if (name && !['I', 'My'].includes(name)) state.profile.name = name;
+      renderProfile();
+    }
+
+    function currentRow() {
+      return horoscopeRows.find(row => row.sign === state.profile.sign) || null;
+    }
+
+    function introName() {
+      return state.profile.name || (state.language === 'gu' ? 'મિત્ર' : 'friend');
+    }
+
+    function relationText(sign) {
+      const status = state.profile.relationshipStatus;
+      const name = introName();
+      if (state.language === 'gu') {
+        if (status === 'married') return `${name}, તમારા લગ્નજીવનમાં`; 
+        if (status === 'in a relationship') return `${name}, તમારા relationship માં`; 
+        return `${name}, ${sign} તરીકે`; 
+      }
+      if (status === 'married') return `${name}, in your marriage,`;
+      if (status === 'in a relationship') return `${name}, in your relationship,`;
+      return `As a ${sign}, ${name},`;
+    }
+
+    function buildEnglish(row, intent) {
+      const name = introName();
+      const job = state.profile.jobTitle || 'professional';
+      const love = `${relationText(row.sign)} ${row.love_relations.charAt(0).toLowerCase()}${row.love_relations.slice(1)}`;
+      const career = `${name}, as a ${job}, ${row.career_money.charAt(0).toLowerCase()}${row.career_money.slice(1)}`;
+      const health = `${name}, ${row.health_energy}`;
+      const lucky = `Lucky color: ${row.lucky_color}. Lucky number: ${row.lucky_number}. Power direction: ${row.lucky_direction}. Energy score: ${row.energy_score}/5. Day tag: ${row.day_tag}.`;
+
+      if (intent === 'love') return `${love}\n\nTransit: ${row.transit}`;
+      if (intent === 'career') return `${career}\n\nTransit: ${row.transit}`;
+      if (intent === 'health') return `${health}\n\nTransit: ${row.transit}`;
+      if (intent === 'lucky') return lucky;
+
+      return `${name}, here is your ${row.sign} reading for today.\n\nLove: ${love}\nCareer: ${career}\nHealth: ${health}\nLucky: ${lucky}`;
+    }
+
+    function buildGujarati(row, intent) {
+      const name = introName();
+      const job = state.profile.jobTitle || 'professional';
+      const love = `${relationText(row.sign)} પ્રેમ બાબતે ${row.love_relations}`;
+      const career = `${name}, ${job} તરીકે આજે ${row.career_money}`;
+      const health = `${name}, હેલ્થ અને energy માટે ${row.health_energy}`;
+      const lucky = `તમારો lucky color ${row.lucky_color} છે, lucky number ${row.lucky_number} છે, અને ${row.lucky_direction} દિશા આજે તમારા માટે favorable છે. Energy score ${row.energy_score}/5 છે અને day tag ${row.day_tag} છે.`;
+
+      if (intent === 'love') return `${love}\n\nTransit: ${row.transit}`;
+      if (intent === 'career') return `${career}\n\nTransit: ${row.transit}`;
+      if (intent === 'health') return `${health}\n\nTransit: ${row.transit}`;
+      if (intent === 'lucky') return lucky;
+
+      return `${name}, આજે ${row.sign} માટે તમારું full horoscope આ રહ્યું.\n\nપ્રેમ: ${love}\nકેરિયર: ${career}\nહેલ્થ: ${health}\nલકી: ${lucky}`;
+    }
+
+    function askForSign() {
+      if (state.language === 'gu') {
+        return 'તમારું sun sign કે birth date મોકલો, પછી હું today love, career, health અને lucky details આપી દઈશ.';
+      }
+      return 'Send me your sun sign or birth date, and I will generate your love, career, health, and lucky details for today.';
+    }
+
+    function buildReply(userText) {
+      const trimmed = userText.trim();
+      const intent = detectIntent(trimmed);
+
+      if (intent === 'yesterday') {
+        return state.language === 'gu'
+          ? 'ગઈકાલ સાથે compare કરવાનું feature next version માં add કરીશું. હાલ માટે આજેનું reading આપી શકું.'
+          : 'Yesterday comparison will be added in the next version. For now, I can give today\'s reading.';
+      }
+
+      if (isGreeting(trimmed) && !state.profile.sign) {
+        return state.language === 'gu'
+          ? 'હાય, હું Daily Horoscope Agent છું. તમારું sign કે birth date મોકલો.'
+          : 'Hi, I am the Daily Horoscope Agent. Send me your sign or birth date.';
+      }
+
+      const row = currentRow();
+      if (!row) return askForSign();
+
+      return state.language === 'gu' ? buildGujarati(row, intent) : buildEnglish(row, intent);
+    }
+
+    function submitMessage(text) {
+      const message = text.trim();
+      if (!message) return;
+      addMessage('user', message);
+      updateState(message);
+      const reply = buildReply(message);
+      setTimeout(() => addMessage('agent', reply), 180);
+      chatInput.value = '';
+    }
+
+    sendBtn.addEventListener('click', () => submitMessage(chatInput.value));
+    chatInput.addEventListener('keydown', event => {
+      if (event.key === 'Enter') submitMessage(chatInput.value);
     });
 
-    signEl.value = 'Aries';
+    document.querySelectorAll('[data-prompt]').forEach(button => {
+      button.addEventListener('click', () => submitMessage(button.dataset.prompt));
+    });
 
-    function relationPrefix(status, sign, name) {
-      if (status === 'single') return `As a single ${sign}, ${name},`;
-      if (status === 'married') return `${name}, in your marriage,`;
-      return `${name}, in your relationship,`;
-    }
-
-    function buildLove(row, name, status) {
-      return `${relationPrefix(status, row.sign, name)} ${row.love_relations.charAt(0).toLowerCase()}${row.love_relations.slice(1)}`;
-    }
-
-    function buildCareer(row, name, jobTitle) {
-      return `${name}, as a ${jobTitle}, ${row.career_money.charAt(0).toLowerCase()}${row.career_money.slice(1)}`;
-    }
-
-    function buildHealth(row, name) {
-      return `${name}, ${row.health_energy}`;
-    }
-
-    function buildLucky(row) {
-      return `Your lucky color is ${row.lucky_color}, your lucky number is ${row.lucky_number}, and ${row.lucky_direction} is your power direction today.`;
-    }
-
-    function render() {
-      const sign = signEl.value;
-      const row = dataset.find(item => item.sign === sign);
-      if (!row) return;
-
-      const name = userNameEl.value.trim() || 'Friend';
-      const status = relationshipStatusEl.value;
-      const jobTitle = jobTitleEl.value.trim() || 'professional';
-
-      resultTitle.textContent = `${name}'s ${row.sign} horoscope`;
-      resultSubtitle.textContent = `Transit: ${row.transit}`;
-      energyPill.textContent = `Energy score: ${row.energy_score}/5`;
-      tagPill.textContent = `${row.day_tag} day`;
-      tagPill.className = `pill ${row.day_tag.toLowerCase()}`;
-
-      loveText.textContent = buildLove(row, name, status);
-      careerText.textContent = buildCareer(row, name, jobTitle);
-      healthText.textContent = buildHealth(row, name);
-      luckyText.textContent = buildLucky(row);
-      rowText.textContent = `${row.sign} -> ${row.transit} | love seed: ${row.love_relations} | career seed: ${row.career_money} | health seed: ${row.health_energy}`;
-    }
-
-    document.getElementById('generateBtn').addEventListener('click', render);
-    signEl.addEventListener('change', render);
-    relationshipStatusEl.addEventListener('change', render);
-
-    render();
+    renderProfile();
+    addMessage('agent', 'Hi, I am the Daily Horoscope Agent. Send me your sun sign or birth date and I will reply here in chat. You can also ask me to speak in Gujarati.');
   </script>
 </body>
 </html>
