@@ -106,6 +106,141 @@
       box-shadow: 0 18px 35px rgba(37, 99, 235, 0.22);
     }
     .hint { margin-top: 0.8rem; font-size: 0.9rem; color: var(--muted); text-align: center; }
+  
+    /* Metrix responsive pass */
+    img, svg, video, canvas {
+      max-width: 100%;
+      height: auto;
+    }
+    * {
+      min-width: 0;
+    }
+    @media (max-width: 1024px) {
+      .layout,
+      .shell,
+      .page-shell,
+      .dashboard-grid,
+      .content-grid,
+      .two-col,
+      .three-col,
+      .hero-grid,
+      .main-layout {
+        grid-template-columns: 1fr !important;
+      }
+      .side-panel,
+      .sidebar,
+      aside,
+      .right-panel,
+      .left-panel {
+        position: static !important;
+        top: auto !important;
+        height: auto !important;
+        max-height: none !important;
+      }
+      .main-column,
+      .list-scroll,
+      .selected-list,
+      .agents,
+      .suggested-grid,
+      .grid {
+        max-height: none !important;
+      }
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 4.5rem 1rem 1.25rem !important;
+      }
+      .wrap,
+      .page,
+      .card,
+      .panel,
+      .hero,
+      .section-card,
+      .side-panel,
+      .main,
+      .main-column,
+      .content,
+      .container {
+        width: 100% !important;
+        padding: 1.25rem !important;
+      }
+      .layout,
+      .grid,
+      .suggested-grid,
+      .agents,
+      .footer-actions,
+      .toolbar,
+      .section-head,
+      .topbar,
+      .header-actions {
+        grid-template-columns: 1fr !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+      .nav-top,
+      .back-link {
+        max-width: 100%;
+        white-space: normal;
+      }
+      .search-box,
+      .search,
+      .search-box input,
+      input,
+      select,
+      textarea,
+      button,
+      .primary,
+      .secondary {
+        width: 100% !important;
+      }
+      table,
+      .table-wrap {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      h1 {
+        font-size: clamp(1.5rem, 7vw, 2rem) !important;
+      }
+      h2 {
+        font-size: clamp(1.15rem, 5vw, 1.4rem) !important;
+      }
+    }
+    @media (max-width: 480px) {
+      body {
+        padding: 4rem 0.85rem 1rem !important;
+      }
+      .nav-top,
+      .back-link {
+        padding: 0.55rem 0.85rem !important;
+        gap: 0.4rem !important;
+      }
+      .wrap,
+      .page,
+      .card,
+      .panel,
+      .hero,
+      .section-card,
+      .side-panel,
+      .main,
+      .main-column,
+      .content,
+      .container {
+        padding: 1rem !important;
+        border-radius: 1rem !important;
+      }
+      .agents,
+      .grid,
+      .suggested-grid {
+        gap: 0.75rem !important;
+      }
+      .agent-card,
+      label.card,
+      .selected-card {
+        min-height: auto !important;
+      }
+    }
+
   </style>
   </head>
 <body>
