@@ -1305,22 +1305,22 @@ const agentsData = [
     name: "Daily Horoscope Agent",
     category: "astrology",
     status: "online",
-    version: "v1.0",
+    version: "v1.1",
     roleSummary: [
-      "Generates personalized daily horoscopes from sun sign or birth credentials.",
-      "Highlights love, career, health, and money trends with lucky cues each day."
+      "Generates personalized daily horoscopes from sun sign, rashi aliases, or birth credentials.",
+      "Delivers structured love, career, health, money, spiritual, and lucky-cue readings in English or Gujarati."
     ],
     capabilities: [
-      "Accept sun sign or birth date to tailor predictions",
-      "Compare today's outlook to yesterday to flag trend shifts",
-      "Provide lucky colour, number, and direction suggestions",
-      "Trigger morning notification-style summaries automatically",
-      "Tag calendar days as auspicious or critical for fast scanning"
+      "Accept sun sign, rashi name, or birth date to tailor predictions",
+      "Switch between quick, focused, and full reading modes",
+      "Reply in Gujarati when the user asks in Gujarati or Gujarati script",
+      "Provide action steps, cautions, affirmation, and lucky colour/number/direction/time",
+      "Gracefully handle compare requests when yesterday data is not attached"
     ],
     suggestedPrompts: [
-      "Give me today's horoscope for Taurus focusing on career.",
-      "Compare yesterday vs today for my Leo forecast.",
-      "What's my lucky colour, number, and direction today?"
+      "Give me a full horoscope for Taurus focusing on career and money.",
+      "Gujarati ma vaat kariye. Maru sign Tula chhe.",
+      "My birth date is 1995-08-19. Give me love and lucky details."
     ],
     provider: "OpenAI",
     model: "GPT-4o",
